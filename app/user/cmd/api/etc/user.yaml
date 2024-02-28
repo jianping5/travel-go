@@ -1,0 +1,21 @@
+Name: user-api
+Host: 0.0.0.0
+Port: 1001
+Mode: dev
+
+#rpc service
+UserRpcConf:
+  Endpoints:
+    - 127.0.0.1:2001
+  NonBlock: true
+
+DB:
+  DataSource: root:011205@tcp(localhost:3306)/dravel_user?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+
+#jwtAuth
+JwtAuth:
+  AccessSecret: ae0536f9-6450-4606-8e13-5a19ed505da0
+  AccessExpire: 31536000
+
+Salt: jianping5
+
