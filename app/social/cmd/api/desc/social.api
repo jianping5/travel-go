@@ -1,0 +1,463 @@
+syntax = "v1"
+
+info (
+	title:  "社交API"
+	desc:   "社交API文档"
+	author: "jianping5"
+)
+
+type (
+	// 用户
+	UserInfoView {
+		Id      int64  `json:"id"`
+		Account string `json:"account"`
+		Avatar  string `json:"avatar"`
+		Email   string `json:"email"`
+	}
+	// 收藏
+	FavoriteCreateReq {
+		Name string `json:"name"`
+	}
+	FavoriteDeleteReq {
+		Id int64 `json:"id"`
+	}
+	FavoriteListReq {
+		UserId int64 `json:"userId"`
+	}
+	FavoriteListView {
+		Id       int64  `json:"id"`
+		UserId   int64  `json:"userId"`
+		Name     string `json:"name"`
+		CoverUrl string `json:"coverUrl"`
+	}
+	FavoriteListResp {
+		List []FavoriteListView `json:"list"`
+	}
+	FavorReq {
+		FavoriteId int64 `json:"favoriteId"`
+		ItemType   int   `json:"itemType"`
+		ItemId     int64 `json:"itemId"`
+	}
+	FavorDeleteReq {
+		Id int64 `json:"id"`
+	}
+	FavorListReq {
+		FavoriteId int64 `json:"favoriteId"`
+		ItemType   int   `json:"itemType"`
+	}
+	FavorView {
+		ItemType   int    `json:"itemType"`
+		ItemId     int64  `json:"itemId"`
+		CoverUrl   string `json:"coverUrl"`
+		UserId     int64  `json:"userId"`
+		Account    string `json:"account"`
+		Title      string `json:"title"`
+		LikeCount  int    `json:"likeCount"`
+		CreateTime string `json:"createTime"`
+	}
+	FavorListResp {
+		List []FavorView `json:"list"`
+	}
+	// 历史记录
+	HistoryCreateReq {
+		ItemType int   `json:"itemType"`
+		ItemId   int64 `json:"itemId"`
+	}
+	HistoryDeleteReq {
+		Id int64 `json:"id"`
+	}
+	HistoryListReq {
+		PageNum  int `json:"pageNum"`
+		PageSize int `json:"pageSize"`
+	}
+	HistoryView {
+		Id         int64  `json:"id"`
+		ItemType   int    `json:"itemType"`
+		ItemId     int64  `json:"itemId"`
+		CoverUrl   string `json:"coverUrl"`
+		UserId     int64  `json:"userId"`
+		Account    string `json:"account"`
+		Title      string `json:"title"`
+		LikeCount  int    `json:"likeCount"`
+		CreateTime string `json:"createTime"`
+	}
+	HistoryListResp {
+		List  []HistoryView `json:"list"`
+		Total int           `json:"total"`
+	}
+	// 社区
+	CommunityCreateReq {
+		Name        string `json:"name"`
+		Description string `json:"description"`
+	}
+	CommunityDeleteReq {
+		Id int64 `json:"id"`
+	}
+	CommunityUpdateReq {
+		Id          int64  `json:"id"`
+		Description string `json:"description"`
+		Avatar      string `json:"avatar"`
+	}
+	CommunityListReq {
+		UserId int64 `json:"userId"`
+	}
+	CommunityJoinReq {
+		CommunityId int64 `json:"communityId"`
+		Role        int   `json:"role"`
+	}
+	CommunityQuitReq {
+		CommunityId int64 `json:"communityId"`
+	}
+	CommunityDetailReq {
+		Id int64 `json:"id"`
+	}
+	CommunityView {
+		Id          int64  `json:"id"`
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		Avatar      string `json:"avatar"`
+		MemberCount int    `json:"memberCount"`
+		CreateTime  string `json:"createTime"`
+	}
+	CommunityListResp {
+		List []CommunityView `json:"list"`
+	}
+	CommunityDetailResp {
+		Community CommunityView `json:"community"`
+		UserId    int64         `json:"userId"`
+		Account   string        `json:"account"`
+		Avatar    string        `json:"avatar"`
+	}
+	CommunityDynamicCreateReq {
+		CommunityId int64  `json:"communityId"`
+		Title       string `json:"title"`
+		Content     string `json:"content"`
+		FileType    int    `json:"fileType"`
+	}
+	CommunityDynamicDeleteReq {
+		Id int64 `json:"id"`
+	}
+	CommunityDynamicListReq {
+		Type         int  `json:"type"`
+		JoinedSwitch bool `json:"joinedSwitch"`
+		PageNum      int  `json:"pageNum"`
+		PageSize     int  `json:"pageSize"`
+	}
+	CommunityDynamicView {
+		Id           int64         `json:"id"`
+		UserInfo     UserInfoView  `json:"userInfo"`
+		CommunityId  int64         `json:"communityId"`
+		Community    CommunityView `json:"communityView"`
+		Title        string        `json:"title"`
+		Content      string        `json:"content"`
+		FileType     int           `json:"fileType"`
+		LikeCount    int           `json:"likeCount"`
+		CommentCount int           `json:"CommentCount"`
+		CreateTime   string        `json:"createTime"`
+		IsLiked      bool          `json:"isLiked"`
+	}
+	CommunityDynamicListResp {
+		List  []CommunityDynamicView `json:"list"`
+		Total int                    `json:"total"`
+	}
+	// 创作
+	ContentCreateReq {
+		ItemType    int    `json:"itemType"`
+		Title       string `json:"title"`
+		CoverUrl    string `json:"coverUrl"`
+		Content     string `json:"content"`
+		Description string `json:"description"`
+		Tag         string `json:"tag"`
+	}
+	ContentDeleteReq {
+		ItemType int   `json:"itemType"`
+		ItemId   int64 `json:"itemId"`
+	}
+	ContentUpdateReq {
+		ItemType    int    `json:"itemType"`
+		ItemId      int64  `json:"itemId"`
+		Title       string `json:"title"`
+		Content     string `json:"content"`
+		CoverUrl    string `json:"coverUrl"`
+		Description string `json:"description"`
+		Tag         string `json:"tag"`
+	}
+	ContentListReq {
+		ContentType int `json:"contentType"`
+		ItemType    int `json:"itemType"`
+		PageNum     int `json:"pageNum"`
+		PageSize    int `json:"pageSize"`
+	}
+	ContentView {
+		Id           int64        `json:"id"`
+		UserId       int64        `json:"userId"`
+		UserInfo     UserInfoView `json:"userInfo"`
+		Title        string       `json:"title"`
+		CoverUrl     string       `json:"coverUrl"`
+		Content      string       `json:"content"`
+		Description  string       `json:"description"`
+		Tag          string       `json:"tag"`
+		LikeCount    int          `json:"likeCount"`
+		CommentCount int          `json:"commentCount"`
+		FavorCount   int          `json:"favorCount"`
+		CreateTime   string       `json:"createTime"`
+		IsLiked      bool         `json:"isLiked"`
+		IsFavored    bool         `json:"isFavored"`
+	}
+	ContentSimpleView {
+		Id         int64  `json:"id"`
+		Title      string `json:"title"`
+		CoverUrl   string `json:"coverUrl"`
+		LikeCount  int    `json:"likeCount"`
+		CreateTime string `json:"CreateTime"`
+	}
+	ContentListResp {
+		List  []ContentView `json:"list"`
+		Total int           `json:"total"`
+	}
+	// 评论
+	CommentCreateReq {
+		CommentItemType int    `json:"commentItemType"`
+		CommentItemId   int64  `json:"commentItemId"`
+		ParentUserId    int64  `json:"parentUserId"`
+		TopId           int64  `json:"topId"`
+		Content         string `json:"content"`
+	}
+	CommentDeleteReq {
+		Id int64 `json:"id"`
+	}
+	CommentListReq {
+		CommentItemType int   `json:"commentItemType"`
+		CommentItemId   int64 `json:"commentItemId"`
+		PageNum         int   `json:"pageNum"`
+		PageSize        int   `json:"pageSize"`
+	}
+	CommentView {
+		Id              int64        `json:"id"`
+		UserId          int64        `json:"userId"`
+		UserInfo        UserInfoView `json:"userInfo"`
+		ParentUserInfo  UserInfoView `json:"parentUserInfo"`
+		CommentItemType int          `json:"commentItemType"`
+		CommentItemId   int64        `json:"commentItemId"`
+		ParentUserId    int64        `json:"parentUserId"`
+		TopId           int64        `json:"topId"`
+		Content         string       `json:"content"`
+		IsLiked         bool         `json:"isLiked"`
+	}
+	CommentListView {
+		TopComment  CommentView   `json:"topComment"`
+		CommentList []CommentView `json:"commentList"`
+	}
+	CommentListResp {
+		List  []CommentListView `json:"list"`
+		Total int               `json:"total"`
+	}
+	// 消息
+	MessageCreateReq {
+		UserIds       []int64 `json:"userId"`
+		ItemType      int     `json:"itemType"`
+		ItemId        int64   `json:"itemId"`
+		MessageType   int     `json:"messageType"`
+		MessageUserId int64   `json:"messageUserId"`
+		Content       string  `json:"content"`
+	}
+	MessageDeleteReq {
+		Id int64 `json:"id"`
+	}
+	MessageUpdateReq {
+		Id            int64 `json:"id"`
+		MessageStatus bool  `json:"messageStatus"`
+	}
+	MessageView {
+		Id            int64  `json:"id"`
+		ItemType      int    `json:"itemType"`
+		ItemId        int    `json:"itemId"`
+		CoverUrl      string `json:"coverUrl"`
+		Title         string `json:"title"`
+		MessageType   int    `json:"messageType"`
+		MessageStatus bool   `json:"messageStatus"`
+		Content       string `json:"content"`
+		MessageUserId int64  `json:"messageUserId"`
+		Account       string `json:"account"`
+	}
+	MessageListResp {
+		List []MessageView `json:"list"`
+	}
+	// 用户主页
+	UserHomeListReq {
+		UserId int64 `json:"userId"`
+	}
+	UserHomeListResp {
+		RecentArticleList    []ContentSimpleView `json:"recentArticleList"`
+		RecentVideoList      []ContentSimpleView `json:"recentVideoList"`
+		RecommendArticleList []ContentSimpleView `json:"recommendArticleList"`
+		RecommendVideoList   []ContentSimpleView `json:"RecommendVideoList"`
+	}
+	UserHomeContentListReq {
+		UserId   int64 `json:"userId"`
+		ItemType int   `json:"itemType"`
+		SortType int   `json:"sortType"`
+		PageNum  int   `json:"pageNum"`
+		PageSize int   `json:"pageSize"`
+	}
+	UserHomeContentListResp {
+		List  []ContentSimpleView `json:"list"`
+		Total int                 `json:"total"`
+	}
+	UserHomeDynamicListReq {
+		UserId   int64 `json:"userId"`
+		PageNum  int   `json:"pageNum"`
+		PageSize int   `json:"pageSize"`
+	}
+	UserHomeDynamicListResp {
+		List  []CommunityDynamicView `json:"list"`
+		Total int                    `json:"total"'`
+	}
+	// 点赞
+	LikeReq {
+		ItemType    int   `json:"itemType"`
+		ItemId      int64 `json:"itemId"`
+		LikedStatus bool  `json:"likedStatus"`
+	}
+	// 版权
+	CopyrightCreateReq {
+		ItemType int   `json:"itemType"`
+		ItemId   int64 `json:"itemId"`
+	}
+	CopyrightDetailReq {
+		UserId   int64 `json:"userId"`
+		ItemType int   `json:"itemType"`
+		ItemId   int64 `json:"itemId"`
+	}
+	CopyrightView {
+		Id         int64  `json:"id"`
+		UserId     int64  `json:"userId"`
+		ItemType   int    `json:"itemType"`
+		ItemId     int64  `json:"itemId"`
+		Metadata   string `json:"metadata"`
+		TradeHash  string `json:"tradeHash"`
+		Address    string `json:"address"`
+		Status     int    `json:"status"`
+		CreateTime string `json:"createTime"`
+	}
+	CopyrightDetailResp {
+		Copyright CopyrightView `json:"copyright"`
+		UserInfo  UserInfoView  `json:"userInfo"`
+	}
+)
+
+service Social {
+	@handler FavoriteList
+	post /api/social/favorite/list (FavoriteListReq) returns (FavoriteListResp)
+
+	@handler FavorList
+	post /api/social/favor/list (FavorListReq) returns (FavorListResp)
+
+	@handler CommunityDynamicList
+	post /api/social/community/dynamic/list (CommunityDynamicListReq) returns (CommunityDynamicListResp)
+
+	@handler CommunityList
+	post /api/social/community/list (CommunityListReq) returns (CommunityListResp)
+
+	@handler ContentList
+	post /api/social/content/list (ContentListReq) returns (ContentListResp)
+
+	@handler CommentList
+	post /api/social/comment/list (CommentListReq) returns (CommentListResp)
+}
+
+@server (
+	jwt: Auth
+)
+service Social {
+	@handler FavoriteCreate
+	post /api/social/favorite/create (FavoriteCreateReq)
+
+	@handler FavoriteDelete
+	post /api/social/favorite/delete (FavoriteDeleteReq)
+
+	@handler Favor
+	post /api/user/favor (FavorReq)
+
+	@handler FavorDelete
+	post /api/user/favor/delete (FavorDeleteReq)
+
+	@handler HistoryCreate
+	post /api/user/history/create (HistoryCreateReq)
+
+	@handler HistoryDelete
+	post /api/social/history/delete (HistoryDeleteReq)
+
+	@handler HistoryList
+	post /api/social/history/list (HistoryListReq) returns (HistoryListResp)
+
+	@handler CommunityCreate
+	post /api/social/community/create (CommunityCreateReq)
+
+	@handler CommunityDelete
+	post /api/social/community/delete (CommunityDeleteReq)
+
+	@handler CommunityUpdate
+	post /api/social/community/update (CommunityUpdateReq)
+
+	@handler CommunityJoin
+	post /api/social/community/join (CommunityJoinReq)
+
+	@handler CommunityQuit
+	post /api/social/community/quit (CommunityQuitReq)
+
+	@handler CommunityDetail
+	post /api/social/community/detail (CommunityDetailReq) returns (CommunityDetailResp)
+
+	@handler CommunityDynamicCreate
+	post /api/social/community/dynamic/create (CommunityDynamicCreateReq)
+
+	@handler CommunityDynamicDelete
+	post /api/social/community/dynamic/delete (CommunityDynamicDeleteReq)
+
+	@handler ContentCreate
+	post /api/social/content/create (ContentCreateReq)
+
+	@handler ContentDelete
+	post /api/social/content/delete (ContentDeleteReq)
+
+	@handler ContentUpdate
+	post /api/social/content/update (ContentUpdateReq)
+
+	@handler CommentCreate
+	post /api/social/comment/create (CommentCreateReq)
+
+	@handler CommentDelete
+	post /api/social/comment/delete (CommentDeleteReq)
+
+	@handler MessageCreate
+	post /api/social/message/create (MessageCreateReq)
+
+	@handler MessageDelete
+	post /api/social/message/delete (MessageDeleteReq)
+
+	@handler MessageUpdate
+	post /api/social/message/update (MessageUpdateReq)
+
+	@handler MessageList
+	post /api/social/message/list returns (MessageListResp)
+
+	@handler UserHomeList
+	post /api/social/userhome/list (UserHomeListReq) returns (UserHomeListResp)
+
+	@handler UserHomeContentList
+	post /api/social/userhome/content/list (UserHomeContentListReq) returns (UserHomeContentListResp)
+
+	@handler UserHomeDynamicList
+	post /api/social/userhome/dynamic/list (UserHomeDynamicListReq) returns (UserHomeDynamicListResp)
+
+	@handler Like
+	post /api/social/like (LikeReq)
+
+	@handler CopyrightCreateReq
+	post /api/social/copyright/create (CopyrightCreateReq)
+
+	@handler CopyrightDetailReq
+	post /api/social/copyright/detail (CopyrightDetailReq) returns (CopyrightDetailResp)
+}
+

@@ -33,8 +33,8 @@ type UserInfoResp struct {
 	Email      string `json:"email"`
 	Avatar     string `json:"avatar"'`
 	Signature  string `json:"signature"`
-	CreateTime string `json:"createTime"`
-	UpdateTime string `json:"updateTime"`
+	CreateTime string `json:"createTime" format:"date-time"`
+	UpdateTime string `json:"updateTime" format:"date-time"`
 }
 
 type FollowListReq struct {

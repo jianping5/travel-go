@@ -1,0 +1,8 @@
+Name: social.rpc
+ListenOn: 0.0.0.0:2002
+Mode: dev
+
+
+DB:
+  DataSource: root:011205@tcp(localhost:3306)/dravel_social?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+

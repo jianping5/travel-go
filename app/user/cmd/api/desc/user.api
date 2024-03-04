@@ -1,8 +1,8 @@
 syntax = "v1"
 
 info (
-	title:  "用户实例"
-	desc:   "用户实例"
+	title:  "用户API"
+	desc:   "用户API文档"
 	author: "jianping5"
 )
 
@@ -37,8 +37,8 @@ type (
 		Email      string `json:"email"`
 		Avatar     string `json:"avatar"'`
 		Signature  string `json:"signature"`
-		CreateTime string `json:"createTime"`
-		UpdateTime string `json:"updateTime"`
+		CreateTime string `json:"createTime" format:"date-time"`
+		UpdateTime string `json:"updateTime" format:"date-time"`
 	}
 	// 关注
 	followReq {

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "./pb";
+
+// 用户登录
+message MessageCreateReq {
+  repeated int64 UserIds = 1;
+  int32 ItemType = 2;
+  int64 ItemId = 3;
+  int32 MessageType = 4;
+  int64 MessageUserId = 5;
+  string Content = 6;
+}
+
+message MessageCreateResp {
+
+}
+
+service Social {
+  rpc MessageCreate(MessageCreateReq) returns(MessageCreateResp) ;
+}

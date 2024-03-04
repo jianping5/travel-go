@@ -3,9 +3,6 @@ package handler
 
 import (
 	"net/http"
-	"travel/app/user/cmd/api/internal/handler/auth"
-	"travel/app/user/cmd/api/internal/handler/follow"
-
 	"travel/app/user/cmd/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -17,12 +14,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/api/user/login",
-				Handler: auth.LoginHandler(serverCtx),
+				Handler: LoginHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/api/user/register",
-				Handler: auth.RegisterHandler(serverCtx),
+				Handler: RegisterHandler(serverCtx),
 			},
 		},
 	)
@@ -32,12 +29,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/api/user/follow",
-				Handler: follow.FollowHandler(serverCtx),
+				Handler: FollowHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/api/user/follow/list",
-				Handler: follow.FollowListHandler(serverCtx),
+				Handler: FollowListHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,

@@ -1,0 +1,93 @@
+syntax = "v1"
+
+info (
+	title:  "智能API"
+	desc:   "智能API文档"
+	author: "jianping5"
+)
+
+type (
+	// 智能攻略
+	StrategyCreateReq {
+		Destination string `json:"destination"`
+		Duration    int    `json:"duration"`
+		Budget      string `json:"budget"`
+		TripGroup   string `json:"tripGroup"`
+		TripMood    string `json:"tripMood"`
+		Strategy    string `json:"strategy"`
+	}
+	StrategyDeleteReq {
+		Id int64 `json:"id"`
+	}
+	StrategyView {
+		Destination string `json:"destination"`
+		Duration    int    `json:"duration"`
+		Budget      string `json:"budget"`
+		TripGroup   string `json:"tripGroup"`
+		TripMood    string `json:"tripMood"`
+		Strategy    string `json:"strategy"`
+		CreateTime  string `json:"createTime"`
+	}
+	StrategyListResp {
+		List []StrategyView `json:"list"`
+	}
+	StrategyGenerateReq {
+		Destination string `json:"destination"`
+		Duration    int    `json:"duration"`
+		Budget      string `json:"budget"`
+		TripGroup   string `json:"tripGroup"`
+		TripMood    string `json:"tripMood"`
+		Strategy    string `json:"strategy"`
+	}
+	StrategyGenerateResp {
+		strategy string `json:"strategy"`
+	}
+	ConversationCreateReq {
+		Content     string `json:"content"`
+		IsGenerated bool   `json:"isGenerated"`
+	}
+	ConversationGenerateReq {
+		Content     string `json:"content"`
+		IsGenerated bool   `json:"isGenerated"`
+	}
+	ConversationGenerateResp {
+		Content string `json:"content"`
+	}
+	ConversationView {
+		Content     string `json:"content"`
+		IsGenerated bool   `json:"isGenerated"`
+	}
+	ConversationListResp {
+		List []ConversationView `json:"list"`
+	}
+)
+
+@server (
+	jwt: Auth
+)
+service Intelligence {
+	@handler StrategyCreate
+	post /api/intelligence/strategy/create (StrategyCreateReq)
+
+	@handler StrategyDelete
+	post /api/intelligence/strategy/delete (StrategyDeleteReq)
+
+	@handler StrategyList
+	post /api/intelligence/strategy/list returns (StrategyListResp)
+
+	@handler StrategyGenerate
+	post /api/intelligence/strategy/generate (StrategyGenerateReq) returns (StrategyGenerateResp)
+
+	@handler ConversationCreate
+	post /api/intelligence/conversation/create (ConversationCreateReq)
+
+	@handler ConversationDelete
+	post /api/intelligence/conversation/delete
+
+	@handler ConversationList
+	post /api/intelligence/conversation/list returns (ConversationListResp)
+
+	@handler ConversationGenerate
+	post /api/intelligence/conversation/generate (ConversationGenerateReq) returns (ConversationListResp)
+}
+

@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"fmt"
 	"github.com/pkg/errors"
 	"travel/app/user/cmd/model"
 	"travel/app/user/cmd/rpc/internal/logic/auth"
@@ -33,9 +32,6 @@ func (l *UserInfoLogic) UserInfo(in *pb.UserInfoReq) (*pb.UserInfoResp, error) {
 	if affected == 0 {
 		return nil, errors.Wrap(auth.UserNoExistsError, "抱歉，该用户不存在")
 	}
-
-	// todo：测试
-	fmt.Println(*user)
 
 	return user, nil
 }

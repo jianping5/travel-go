@@ -1,0 +1,23 @@
+Name: social-api
+Host: 0.0.0.0
+Port: 1002
+Mode: dev
+
+DB:
+  DataSource: root:011205@tcp(localhost:3306)/dravel_social?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+
+#jwtAuth
+JwtAuth:
+  AccessSecret: ae0536f9-6450-4606-8e13-5a19ed505da0
+  AccessExpire: 31536000
+
+#rpc service
+SocialRpcConf:
+  Endpoints:
+    - 127.0.0.1:2002
+  NonBlock: true
+
+UserRpcConf:
+  Endpoints:
+    - 127.0.0.1:1002
+  NonBlock: true
