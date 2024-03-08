@@ -3,13 +3,11 @@ package logic
 import (
 	"context"
 	"github.com/jinzhu/copier"
+	"travel/app/social/cmd/api/internal/svc"
+	"travel/app/social/cmd/api/internal/types"
 	"travel/app/social/cmd/model"
 	"travel/app/user/cmd/rpc/user"
 	"travel/common/ctxdata"
-	"travel/common/enum"
-
-	"travel/app/social/cmd/api/internal/svc"
-	"travel/app/social/cmd/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -41,22 +39,10 @@ func (l *MessageListLogic) MessageList() (resp *types.MessageListResp, err error
 		userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: m.MessageUserId})
 		messageView.Account = userInfo.Account
 		// 内容信息
-		switch enum.FileType(m.ItemType) {
-		case enum.Text:
-			var article model.Article
-			l.svcCtx.DB.Model(&model.Article{}).Select("title", "coverUrl").Where("id = ?", m.ItemId).First(&article)
-			messageView.Title = article.Title
-			messageView.CoverUrl = article.CoverUrl
-			break
-		case enum.Video:
-			var video model.Video
-			l.svcCtx.DB.Model(&model.Video{}).Select("title", "coverUrl").Where("id = ?", m.ItemId).First(&video)
-			messageView.Title = video.Title
-			messageView.CoverUrl = video.CoverUrl
-			break
-		default:
-			break
-		}
+		var content model.Content
+		l.svcCtx.DB.Model(&model.Content{}).Select("title", "coverUrl").Where("id = ?", m.ItemId).First(&content)
+		messageView.Title = content.Title
+		messageView.CoverUrl = content.CoverUrl
 		messageViews = append(messageViews, messageView)
 	}
 

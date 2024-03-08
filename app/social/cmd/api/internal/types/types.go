@@ -2,11 +2,10 @@
 package types
 
 type CommentCreateReq struct {
-	CommentItemType int    `json:"commentItemType"`
-	CommentItemId   int64  `json:"commentItemId"`
-	ParentUserId    int64  `json:"parentUserId"`
-	TopId           int64  `json:"topId"`
-	Content         string `json:"content"`
+	CommentItemId int64  `json:"commentItemId"`
+	ParentUserId  int64  `json:"parentUserId"`
+	TopId         int64  `json:"topId"`
+	Content       string `json:"content"`
 }
 
 type CommentDeleteReq struct {
@@ -66,6 +65,7 @@ type CommunityDetailResp struct {
 type CommunityDynamicCreateReq struct {
 	CommunityId int64  `json:"communityId"`
 	Title       string `json:"title"`
+	Description string `json:"description"`
 	Content     string `json:"content"`
 	FileType    int    `json:"fileType"`
 }
@@ -92,6 +92,7 @@ type CommunityDynamicView struct {
 	CommunityId  int64         `json:"communityId"`
 	Community    CommunityView `json:"communityView"`
 	Title        string        `json:"title"`
+	Description  string        `json:"description"`
 	Content      string        `json:"content"`
 	FileType     int           `json:"fileType"`
 	LikeCount    int           `json:"likeCount"`
@@ -133,17 +134,24 @@ type CommunityView struct {
 }
 
 type ContentCreateReq struct {
-	ItemType    int    `json:"itemType"`
-	Title       string `json:"title"`
-	CoverUrl    string `json:"coverUrl"`
-	Content     string `json:"content"`
-	Description string `json:"description"`
-	Tag         string `json:"tag"`
+	ItemType    int      `json:"itemType"`
+	Title       string   `json:"title"`
+	CoverUrl    string   `json:"coverUrl"`
+	Content     string   `json:"content"`
+	Description string   `json:"description"`
+	Tag         []string `json:"tag"`
 }
 
 type ContentDeleteReq struct {
-	ItemType int   `json:"itemType"`
-	ItemId   int64 `json:"itemId"`
+	Id int64 `json:"id"`
+}
+
+type ContentDetailReq struct {
+	Id int64 `json:"id"`
+}
+
+type ContentDetailResp struct {
+	ContentDetail ContentView `json:"contentDetail"`
 }
 
 type ContentListReq struct {
@@ -158,6 +166,16 @@ type ContentListResp struct {
 	Total int           `json:"total"`
 }
 
+type ContentSimilarReq struct {
+	Tag      []string `json:"tag"`
+	ItemType int      `json:"itemType"`
+	ItemId   int64    `json:"itemId"`
+}
+
+type ContentSimilarResp struct {
+	List []ContentView `json:"list"`
+}
+
 type ContentSimpleView struct {
 	Id         int64  `json:"id"`
 	Title      string `json:"title"`
@@ -167,24 +185,24 @@ type ContentSimpleView struct {
 }
 
 type ContentUpdateReq struct {
-	ItemType    int    `json:"itemType"`
-	ItemId      int64  `json:"itemId"`
-	Title       string `json:"title"`
-	Content     string `json:"content"`
-	CoverUrl    string `json:"coverUrl"`
-	Description string `json:"description"`
-	Tag         string `json:"tag"`
+	Id          int64    `json:"id"`
+	Title       string   `json:"title"`
+	Content     string   `json:"content"`
+	CoverUrl    string   `json:"coverUrl"`
+	Description string   `json:"description"`
+	Tag         []string `json:"tag"`
 }
 
 type ContentView struct {
 	Id           int64        `json:"id"`
 	UserId       int64        `json:"userId"`
 	UserInfo     UserInfoView `json:"userInfo"`
+	ItemType     int          `json:"itemType"`
 	Title        string       `json:"title"`
 	CoverUrl     string       `json:"coverUrl"`
 	Content      string       `json:"content"`
 	Description  string       `json:"description"`
-	Tag          string       `json:"tag"`
+	Tag          []string     `json:"tag"`
 	LikeCount    int          `json:"likeCount"`
 	CommentCount int          `json:"commentCount"`
 	FavorCount   int          `json:"favorCount"`
@@ -194,19 +212,27 @@ type ContentView struct {
 }
 
 type CopyrightCreateReq struct {
-	ItemType int   `json:"itemType"`
-	ItemId   int64 `json:"itemId"`
+	ItemType     int    `json:"itemType"`
+	ItemId       int64  `json:"itemId"`
+	ContentUrl   string `json:"contentUrl"`
+	UploadSwitch bool   `json:"uploadSwitch"`
 }
 
 type CopyrightDetailReq struct {
-	UserId   int64 `json:"userId"`
-	ItemType int   `json:"itemType"`
-	ItemId   int64 `json:"itemId"`
+	Id int64 `json:"id"`
 }
 
 type CopyrightDetailResp struct {
 	Copyright CopyrightView `json:"copyright"`
 	UserInfo  UserInfoView  `json:"userInfo"`
+}
+
+type CopyrightListReq struct {
+	UserId int64 `json:"userId"`
+}
+
+type CopyrightListResp struct {
+	List []CopyrightView `json:"list"`
 }
 
 type CopyrightView struct {
@@ -219,6 +245,10 @@ type CopyrightView struct {
 	Address    string `json:"address"`
 	Status     int    `json:"status"`
 	CreateTime string `json:"createTime"`
+	Title      string `json:"title"`
+	CoverUrl   string `json:"coverUrl"`
+	Account    string `json:"account"`
+	Avatar     string `json:"avatar"`
 }
 
 type FavorDeleteReq struct {
@@ -227,7 +257,6 @@ type FavorDeleteReq struct {
 
 type FavorListReq struct {
 	FavoriteId int64 `json:"favoriteId"`
-	ItemType   int   `json:"itemType"`
 }
 
 type FavorListResp struct {
@@ -236,7 +265,6 @@ type FavorListResp struct {
 
 type FavorReq struct {
 	FavoriteId int64 `json:"favoriteId"`
-	ItemType   int   `json:"itemType"`
 	ItemId     int64 `json:"itemId"`
 }
 
@@ -275,8 +303,7 @@ type FavoriteListView struct {
 }
 
 type HistoryCreateReq struct {
-	ItemType int   `json:"itemType"`
-	ItemId   int64 `json:"itemId"`
+	ItemId int64 `json:"itemId"`
 }
 
 type HistoryDeleteReq struct {
@@ -346,6 +373,23 @@ type MessageView struct {
 	Account       string `json:"account"`
 }
 
+type SearchReq struct {
+	Keyword  string `json:"keyword"`
+	ItemType int    `json:"itemType"`
+	SortType int    `json:"sortType"`
+	PageNum  int    `json:"pageNum"`
+	PageSize int    `json:"pageSize"`
+}
+
+type SearchResp struct {
+	ContentList   []ContentView          `json:"contentList"`
+	CommunityList []CommunityView        `json:"communityList"`
+	UserList      []UserInfoView         `json:"userList"`
+	DynamicList   []CommunityDynamicView `json:"dynamicList"`
+	CopyrightList []CopyrightView        `json:"copyrightList"`
+	Total         int                    `json:"total"`
+}
+
 type UserHomeContentListReq struct {
 	UserId   int64 `json:"userId"`
 	ItemType int   `json:"itemType"`
@@ -355,8 +399,8 @@ type UserHomeContentListReq struct {
 }
 
 type UserHomeContentListResp struct {
-	List  []ContentSimpleView `json:"list"`
-	Total int                 `json:"total"`
+	List  []ContentView `json:"list"`
+	Total int           `json:"total"`
 }
 
 type UserHomeDynamicListReq struct {
@@ -375,10 +419,10 @@ type UserHomeListReq struct {
 }
 
 type UserHomeListResp struct {
-	RecentArticleList    []ContentSimpleView `json:"recentArticleList"`
-	RecentVideoList      []ContentSimpleView `json:"recentVideoList"`
-	RecommendArticleList []ContentSimpleView `json:"recommendArticleList"`
-	RecommendVideoList   []ContentSimpleView `json:"RecommendVideoList"`
+	RecentArticleList    []ContentView `json:"recentArticleList"`
+	RecentVideoList      []ContentView `json:"recentVideoList"`
+	RecommendArticleList []ContentView `json:"recommendArticleList"`
+	RecommendVideoList   []ContentView `json:"RecommendVideoList"`
 }
 
 type UserInfoView struct {

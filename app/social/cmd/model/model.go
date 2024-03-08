@@ -70,6 +70,7 @@ type Dynamic struct {
 	BaseModel
 	UserId       int64  `json:"userId"`
 	Title        string `json:"title"`
+	Description  string `json:"description"`
 	CommunityId  int64  `json:"communityId"`
 	FileType     int    `json:"fileType"`
 	Content      string `json:"content"`
@@ -81,37 +82,22 @@ func (Dynamic) TableName() string {
 	return "travel_social_dynamic"
 }
 
-type Video struct {
+type Content struct {
 	BaseModel
-	UserId       int64  `json:"userId"`
-	Title        string `json:"title"`
-	CoverUrl     string `json:"coverUrl"`
-	Content      string `json:"contentUrl"`
-	Description  string `json:"description"`
-	Tag          string `json:"tag"`
-	LikeCount    int    `json:"likeCount"`
-	CommentCount int    `json:"commentCount"`
-	FavorCount   int    `json:"favorCount"`
+	UserId       int64    `json:"userId"`
+	Title        string   `json:"title"`
+	ItemType     int      `json:"itemType"`
+	CoverUrl     string   `json:"coverUrl"`
+	Content      string   `json:"contentUrl"`
+	Description  string   `json:"description"`
+	Tag          []string `gorm:"type:json" json:"tag"`
+	LikeCount    int      `json:"likeCount"`
+	CommentCount int      `json:"commentCount"`
+	FavorCount   int      `json:"favorCount"`
 }
 
-func (Video) TableName() string {
-	return "travel_social_video"
-}
-
-type Article struct {
-	BaseModel
-	UserId       int64  `json:"userId"`
-	Title        string `json:"title"`
-	CoverUrl     string `json:"coverUrl"`
-	Content      string `json:"content"`
-	Tag          string `json:"tag"`
-	LikeCount    int    `json:"likeCount"`
-	CommentCount int    `json:"commentCount"`
-	FavorCount   int    `json:"favorCount"`
-}
-
-func (Article) TableName() string {
-	return "travel_social_article"
+func (Content) TableName() string {
+	return "travel_social_content"
 }
 
 type Comment struct {

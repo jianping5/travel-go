@@ -48,9 +48,30 @@ message GenerateTokenResp {
   int64  accessExpire = 2;
 }
 
+message SearchUserReq {
+  int32 SortType = 1;
+  int32 Offset = 2;
+  int32 PageSize = 3;
+  string Keyword = 4;
+}
+
+message UserInfoView {
+  int64 Id = 1;
+  string Account = 2;
+  string Avatar = 3;
+  string Email = 4;
+  string CreateTime = 5;
+}
+
+message SearchUserResp {
+  int32 Total = 1;
+  repeated UserInfoView Users = 2;
+}
+
 service User {
   rpc Login(LoginReq) returns(LoginResp);
   rpc Register(RegisterReq) returns(RegisterResp);
   rpc UserInfo(UserInfoReq) returns(UserInfoResp);
   rpc generateToken(GenerateTokenReq) returns(GenerateTokenResp);
+  rpc SearchUser(SearchUserReq) returns(SearchUserResp);
 }

@@ -3,8 +3,11 @@ package enum
 type ItemType int
 
 const (
-	ARTICLE ItemType = iota
-	VIDEO
+	VIDEO ItemType = iota
+	ARTICLE
 	DYNAMIC
 	COMMENT
+	USER
+	COPYRIGHT
+	COMMUNITY
 )

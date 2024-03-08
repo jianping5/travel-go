@@ -35,7 +35,6 @@ type (
 	}
 	FavorReq {
 		FavoriteId int64 `json:"favoriteId"`
-		ItemType   int   `json:"itemType"`
 		ItemId     int64 `json:"itemId"`
 	}
 	FavorDeleteReq {
@@ -43,7 +42,6 @@ type (
 	}
 	FavorListReq {
 		FavoriteId int64 `json:"favoriteId"`
-		ItemType   int   `json:"itemType"`
 	}
 	FavorView {
 		ItemType   int    `json:"itemType"`
@@ -60,8 +58,7 @@ type (
 	}
 	// 历史记录
 	HistoryCreateReq {
-		ItemType int   `json:"itemType"`
-		ItemId   int64 `json:"itemId"`
+		ItemId int64 `json:"itemId"`
 	}
 	HistoryDeleteReq {
 		Id int64 `json:"id"`
@@ -131,6 +128,7 @@ type (
 	CommunityDynamicCreateReq {
 		CommunityId int64  `json:"communityId"`
 		Title       string `json:"title"`
+		Description string `json:"description"`
 		Content     string `json:"content"`
 		FileType    int    `json:"fileType"`
 	}
@@ -149,6 +147,7 @@ type (
 		CommunityId  int64         `json:"communityId"`
 		Community    CommunityView `json:"communityView"`
 		Title        string        `json:"title"`
+		Description  string        `json:"description"`
 		Content      string        `json:"content"`
 		FileType     int           `json:"fileType"`
 		LikeCount    int           `json:"likeCount"`
@@ -162,25 +161,26 @@ type (
 	}
 	// 创作
 	ContentCreateReq {
-		ItemType    int    `json:"itemType"`
-		Title       string `json:"title"`
-		CoverUrl    string `json:"coverUrl"`
-		Content     string `json:"content"`
-		Description string `json:"description"`
-		Tag         string `json:"tag"`
+		ItemType    int      `json:"itemType"`
+		Title       string   `json:"title"`
+		CoverUrl    string   `json:"coverUrl"`
+		Content     string   `json:"content"`
+		Description string   `json:"description"`
+		Tag         []string `json:"tag"`
 	}
 	ContentDeleteReq {
-		ItemType int   `json:"itemType"`
-		ItemId   int64 `json:"itemId"`
+		Id int64 `json:"id"`
 	}
 	ContentUpdateReq {
-		ItemType    int    `json:"itemType"`
-		ItemId      int64  `json:"itemId"`
-		Title       string `json:"title"`
-		Content     string `json:"content"`
-		CoverUrl    string `json:"coverUrl"`
-		Description string `json:"description"`
-		Tag         string `json:"tag"`
+		Id          int64    `json:"id"`
+		Title       string   `json:"title"`
+		Content     string   `json:"content"`
+		CoverUrl    string   `json:"coverUrl"`
+		Description string   `json:"description"`
+		Tag         []string `json:"tag"`
+	}
+	ContentDetailReq {
+		Id int64 `json:"id"`
 	}
 	ContentListReq {
 		ContentType int `json:"contentType"`
@@ -192,11 +192,12 @@ type (
 		Id           int64        `json:"id"`
 		UserId       int64        `json:"userId"`
 		UserInfo     UserInfoView `json:"userInfo"`
+		ItemType     int          `json:"itemType"`
 		Title        string       `json:"title"`
 		CoverUrl     string       `json:"coverUrl"`
 		Content      string       `json:"content"`
 		Description  string       `json:"description"`
-		Tag          string       `json:"tag"`
+		Tag          []string     `json:"tag"`
 		LikeCount    int          `json:"likeCount"`
 		CommentCount int          `json:"commentCount"`
 		FavorCount   int          `json:"favorCount"`
@@ -211,17 +212,19 @@ type (
 		LikeCount  int    `json:"likeCount"`
 		CreateTime string `json:"CreateTime"`
 	}
+	ContentDetailResp {
+		ContentDetail ContentView `json:"contentDetail"`
+	}
 	ContentListResp {
 		List  []ContentView `json:"list"`
 		Total int           `json:"total"`
 	}
 	// 评论
 	CommentCreateReq {
-		CommentItemType int    `json:"commentItemType"`
-		CommentItemId   int64  `json:"commentItemId"`
-		ParentUserId    int64  `json:"parentUserId"`
-		TopId           int64  `json:"topId"`
-		Content         string `json:"content"`
+		CommentItemId int64  `json:"commentItemId"`
+		ParentUserId  int64  `json:"parentUserId"`
+		TopId         int64  `json:"topId"`
+		Content       string `json:"content"`
 	}
 	CommentDeleteReq {
 		Id int64 `json:"id"`
@@ -288,10 +291,10 @@ type (
 		UserId int64 `json:"userId"`
 	}
 	UserHomeListResp {
-		RecentArticleList    []ContentSimpleView `json:"recentArticleList"`
-		RecentVideoList      []ContentSimpleView `json:"recentVideoList"`
-		RecommendArticleList []ContentSimpleView `json:"recommendArticleList"`
-		RecommendVideoList   []ContentSimpleView `json:"RecommendVideoList"`
+		RecentArticleList    []ContentView `json:"recentArticleList"`
+		RecentVideoList      []ContentView `json:"recentVideoList"`
+		RecommendArticleList []ContentView `json:"recommendArticleList"`
+		RecommendVideoList   []ContentView `json:"RecommendVideoList"`
 	}
 	UserHomeContentListReq {
 		UserId   int64 `json:"userId"`
@@ -301,8 +304,8 @@ type (
 		PageSize int   `json:"pageSize"`
 	}
 	UserHomeContentListResp {
-		List  []ContentSimpleView `json:"list"`
-		Total int                 `json:"total"`
+		List  []ContentView `json:"list"`
+		Total int           `json:"total"`
 	}
 	UserHomeDynamicListReq {
 		UserId   int64 `json:"userId"`
@@ -321,13 +324,16 @@ type (
 	}
 	// 版权
 	CopyrightCreateReq {
-		ItemType int   `json:"itemType"`
-		ItemId   int64 `json:"itemId"`
+		ItemType     int    `json:"itemType"`
+		ItemId       int64  `json:"itemId"`
+		ContentUrl   string `json:"contentUrl"`
+		UploadSwitch bool   `json:"uploadSwitch"`
 	}
 	CopyrightDetailReq {
-		UserId   int64 `json:"userId"`
-		ItemType int   `json:"itemType"`
-		ItemId   int64 `json:"itemId"`
+		Id int64 `json:"id"`
+	}
+	CopyrightListReq {
+		UserId int64 `json:"userId"`
 	}
 	CopyrightView {
 		Id         int64  `json:"id"`
@@ -339,10 +345,42 @@ type (
 		Address    string `json:"address"`
 		Status     int    `json:"status"`
 		CreateTime string `json:"createTime"`
+		Title      string `json:"title"`
+		CoverUrl   string `json:"coverUrl"`
+		Account    string `json:"account"`
+		Avatar     string `json:"avatar"`
 	}
 	CopyrightDetailResp {
 		Copyright CopyrightView `json:"copyright"`
 		UserInfo  UserInfoView  `json:"userInfo"`
+	}
+	CopyrightListResp {
+		List []CopyrightView `json:"list"`
+	}
+	// 推荐
+	ContentSimilarReq {
+		Tag      []string `json:"tag"`
+		ItemType int      `json:"itemType"`
+		ItemId   int64    `json:"itemId"`
+	}
+	ContentSimilarResp {
+		List []ContentView `json:"list"`
+	}
+	// 检索
+	SearchReq {
+		Keyword  string `json:"keyword"`
+		ItemType int    `json:"itemType"`
+		SortType int    `json:"sortType"`
+		PageNum  int    `json:"pageNum"`
+		PageSize int    `json:"pageSize"`
+	}
+	SearchResp {
+		ContentList   []ContentView          `json:"contentList"`
+		CommunityList []CommunityView        `json:"communityList"`
+		UserList      []UserInfoView         `json:"userList"`
+		DynamicList   []CommunityDynamicView `json:"dynamicList"`
+		CopyrightList []CopyrightView        `json:"copyrightList"`
+		Total         int                    `json:"total"`
 	}
 )
 
@@ -362,8 +400,17 @@ service Social {
 	@handler ContentList
 	post /api/social/content/list (ContentListReq) returns (ContentListResp)
 
+	@handler ContentDetail
+	post /api/social/content/detail (ContentDetailReq) returns (ContentDetailResp)
+
 	@handler CommentList
 	post /api/social/comment/list (CommentListReq) returns (CommentListResp)
+
+	@handler ContentSimilar
+	post /api/social/content/similar (ContentSimilarReq) returns (ContentSimilarResp)
+
+	@handler Search
+	post /api/social/search (SearchReq) returns (SearchResp)
 }
 
 @server (
@@ -459,5 +506,8 @@ service Social {
 
 	@handler CopyrightDetailReq
 	post /api/social/copyright/detail (CopyrightDetailReq) returns (CopyrightDetailResp)
+
+	@handler CopyrightList
+	post /api/social/copyright/list (CopyrightListReq) returns (CopyrightListResp)
 }
 

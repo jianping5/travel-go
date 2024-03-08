@@ -19,14 +19,18 @@ type (
 	LoginResp         = pb.LoginResp
 	RegisterReq       = pb.RegisterReq
 	RegisterResp      = pb.RegisterResp
+	SearchUserReq     = pb.SearchUserReq
+	SearchUserResp    = pb.SearchUserResp
 	UserInfoReq       = pb.UserInfoReq
 	UserInfoResp      = pb.UserInfoResp
+	UserInfoView      = pb.UserInfoView
 
 	User interface {
 		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
 		Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error)
 		UserInfo(ctx context.Context, in *UserInfoReq, opts ...grpc.CallOption) (*UserInfoResp, error)
 		GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*GenerateTokenResp, error)
+		SearchUser(ctx context.Context, in *SearchUserReq, opts ...grpc.CallOption) (*SearchUserResp, error)
 	}
 
 	defaultUser struct {
@@ -58,4 +62,9 @@ func (m *defaultUser) UserInfo(ctx context.Context, in *UserInfoReq, opts ...grp
 func (m *defaultUser) GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*GenerateTokenResp, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.GenerateToken(ctx, in, opts...)
+}
+
+func (m *defaultUser) SearchUser(ctx context.Context, in *SearchUserReq, opts ...grpc.CallOption) (*SearchUserResp, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.SearchUser(ctx, in, opts...)
 }

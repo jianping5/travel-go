@@ -29,8 +29,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/api/social/content/detail",
+				Handler: ContentDetailHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/api/social/content/list",
 				Handler: ContentListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/social/content/similar",
+				Handler: ContentSimilarHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
@@ -41,6 +51,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/api/social/favorite/list",
 				Handler: FavoriteListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/social/search",
+				Handler: SearchHandler(serverCtx),
 			},
 		},
 	)
@@ -121,6 +136,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/api/social/copyright/detail",
 				Handler: CopyrightDetailReqHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/social/copyright/list",
+				Handler: CopyrightListHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,

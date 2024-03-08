@@ -1,0 +1,113 @@
+syntax = "v1"
+
+info (
+	title:  "交易API"
+	desc:   "交易API文档"
+	author: "jianping5"
+)
+
+type (
+	// 商品
+	WorkCreateReq {
+		CopyrightId int64  `json:"copyrightId"`
+		Price       string `json:"price"`
+	}
+	// 下架、售卖、购买
+	WorkUpdateReq {
+		Id   int64 `json:"id"`
+		Type int   `json:"type"`
+	}
+	WorkListReq {
+		PageNum  int `json:"pageNum"`
+		PageSize int `json:"pageSize"`
+	}
+	WorkDetailReq {
+		Id int64 `json:"id"`
+	}
+	WorkView {
+		Id          int64  `json:"id"`
+		UserId      int64  `json:"userId"`
+		CopyrightId int64  `json:"copyrightId"`
+		Price       string `json:"price"`
+		Status      int    `json:"status"`
+		CreateTime  string `json:"createTime"`
+		Account     string `json:"account"`
+		Avatar      string `json:"avatar"`
+		ItemType    int    `json:"itemType"`
+		Title       string `json:"title"`
+		CoverUrl    string `json:"coverUrl"`
+	}
+	WorkDetailResp {
+		Work      WorkView      `json:"work"`
+		UserInfo  UserInfoView  `json:"userInfo"`
+		Copyright CopyrightView `json:"copyright"`
+	}
+	WorkListResp {
+		List  []WorkView `json:"list"`
+		Total int        `json:"total"`
+	}
+	// 用户
+	UserInfoView {
+		UserId  int64  `json:"userId"`
+		Account string `json:"account"`
+		Email   string `json:"email"`
+		Avatar  string `json:"avatar"`
+	}
+	// 版权
+	CopyrightView {
+		Id         int64  `json:"id"`
+		UserId     int64  `json:"userId"`
+		ItemType   int    `json:"itemType"`
+		ItemId     int64  `json:"itemId"`
+		Metadata   string `json:"metadata"`
+		TradeHash  string `json:"tradeHash"`
+		Address    string `json:"address"`
+		Status     int    `json:"status"`
+		CreateTime string `json:"createTime"`
+		Title      string `json:"title"`
+		CoverUrl   string `json:"coverUrl"`
+	}
+	// 交易记录
+	RecordCreateReq {
+		WorkId int64 `json:"workId"`
+		UserId int64 `json:"userId"`
+	}
+	RecordListReq {
+		WorkId int64 `json:"workId"`
+	}
+	RecordView {
+		Id          int64        `json:"id"`
+		OldUserId   int64        `json:"oldUserId"`
+		OldUserInfo UserInfoView `json:"oldUserInfo"`
+		NewUserId   int64        `json:"newUserId"`
+		NewUserInfo UserInfoView `json:"newUserInfo"`
+		CreateTime  string       `json:"createTime"`
+	}
+	RecordListResp {
+		List []RecordView `json:"list"`
+	}
+)
+
+@server (
+	jwt: Auth
+)
+service Trade {
+	@handler WorkCreate
+	post /api/trade/work/create (WorkCreateReq)
+
+	@handler WorkUpdate
+	post /api/trade/work/update (WorkUpdateReq)
+
+	@handler WorkDetail
+	post /api/trade/work/detail (WorkDetailReq) returns (WorkDetailResp)
+
+	@handler WorkList
+	post /api/trade/work/list (WorkListReq) returns (WorkListResp)
+
+	@handler RecordCreate
+	post /api/trade/record/create (RecordCreateReq)
+
+	@handler RecordList
+	post /api/trade/record/list (RecordListReq) returns (RecordListResp)
+}
+

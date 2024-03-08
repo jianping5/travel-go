@@ -26,3 +26,13 @@ func (s *SocialServer) MessageCreate(ctx context.Context, in *pb.MessageCreateRe
 	l := logic.NewMessageCreateLogic(ctx, s.svcCtx)
 	return l.MessageCreate(in)
 }
+
+func (s *SocialServer) CopyrightDetail(ctx context.Context, in *pb.CopyrightDetailReq) (*pb.CopyrightDetailResp, error) {
+	l := logic.NewCopyrightDetailLogic(ctx, s.svcCtx)
+	return l.CopyrightDetail(in)
+}
+
+func (s *SocialServer) ContentSimple(ctx context.Context, in *pb.ContentSimpleReq) (*pb.ContentSimpleResp, error) {
+	l := logic.NewContentSimpleLogic(ctx, s.svcCtx)
+	return l.ContentSimple(in)
+}

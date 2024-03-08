@@ -32,6 +32,7 @@ func (l *CommunityDynamicCreateLogic) CommunityDynamicCreate(req *types.Communit
 	dynamic := &model.Dynamic{
 		UserId:       loginUserId,
 		Title:        req.Title,
+		Description: req.Description,
 		CommunityId:  req.CommunityId,
 		FileType:     req.FileType,
 		Content:      req.Content,

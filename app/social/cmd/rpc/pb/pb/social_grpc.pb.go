@@ -19,7 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Social_MessageCreate_FullMethodName = "/pb.Social/MessageCreate"
+	Social_MessageCreate_FullMethodName   = "/pb.Social/MessageCreate"
+	Social_CopyrightDetail_FullMethodName = "/pb.Social/CopyrightDetail"
+	Social_ContentSimple_FullMethodName   = "/pb.Social/ContentSimple"
 )
 
 // SocialClient is the client API for Social service.
@@ -27,6 +29,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SocialClient interface {
 	MessageCreate(ctx context.Context, in *MessageCreateReq, opts ...grpc.CallOption) (*MessageCreateResp, error)
+	CopyrightDetail(ctx context.Context, in *CopyrightDetailReq, opts ...grpc.CallOption) (*CopyrightDetailResp, error)
+	ContentSimple(ctx context.Context, in *ContentSimpleReq, opts ...grpc.CallOption) (*ContentSimpleResp, error)
 }
 
 type socialClient struct {
@@ -46,11 +50,31 @@ func (c *socialClient) MessageCreate(ctx context.Context, in *MessageCreateReq, 
 	return out, nil
 }
 
+func (c *socialClient) CopyrightDetail(ctx context.Context, in *CopyrightDetailReq, opts ...grpc.CallOption) (*CopyrightDetailResp, error) {
+	out := new(CopyrightDetailResp)
+	err := c.cc.Invoke(ctx, Social_CopyrightDetail_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *socialClient) ContentSimple(ctx context.Context, in *ContentSimpleReq, opts ...grpc.CallOption) (*ContentSimpleResp, error) {
+	out := new(ContentSimpleResp)
+	err := c.cc.Invoke(ctx, Social_ContentSimple_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SocialServer is the server API for Social service.
 // All implementations must embed UnimplementedSocialServer
 // for forward compatibility
 type SocialServer interface {
 	MessageCreate(context.Context, *MessageCreateReq) (*MessageCreateResp, error)
+	CopyrightDetail(context.Context, *CopyrightDetailReq) (*CopyrightDetailResp, error)
+	ContentSimple(context.Context, *ContentSimpleReq) (*ContentSimpleResp, error)
 	mustEmbedUnimplementedSocialServer()
 }
 
@@ -60,6 +84,12 @@ type UnimplementedSocialServer struct {
 
 func (UnimplementedSocialServer) MessageCreate(context.Context, *MessageCreateReq) (*MessageCreateResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MessageCreate not implemented")
+}
+func (UnimplementedSocialServer) CopyrightDetail(context.Context, *CopyrightDetailReq) (*CopyrightDetailResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CopyrightDetail not implemented")
+}
+func (UnimplementedSocialServer) ContentSimple(context.Context, *ContentSimpleReq) (*ContentSimpleResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ContentSimple not implemented")
 }
 func (UnimplementedSocialServer) mustEmbedUnimplementedSocialServer() {}
 
@@ -92,6 +122,42 @@ func _Social_MessageCreate_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Social_CopyrightDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CopyrightDetailReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SocialServer).CopyrightDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Social_CopyrightDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SocialServer).CopyrightDetail(ctx, req.(*CopyrightDetailReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Social_ContentSimple_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ContentSimpleReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SocialServer).ContentSimple(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Social_ContentSimple_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SocialServer).ContentSimple(ctx, req.(*ContentSimpleReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Social_ServiceDesc is the grpc.ServiceDesc for Social service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +168,14 @@ var Social_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MessageCreate",
 			Handler:    _Social_MessageCreate_Handler,
+		},
+		{
+			MethodName: "CopyrightDetail",
+			Handler:    _Social_CopyrightDetail_Handler,
+		},
+		{
+			MethodName: "ContentSimple",
+			Handler:    _Social_ContentSimple_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

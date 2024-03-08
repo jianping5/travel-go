@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "./pb";
+
+// 内容相似
+message ContentSimilarReq {
+  int32 ItemType = 1;
+  int64 ItemId = 2;
+  repeated string Tag = 3;
+}
+
+message ContentSimilarResp {
+  repeated int64 ItemIds = 1;
+}
+
+// 用户偏好内容
+message UserLikeContentReq {
+  int64 UserId = 1;
+  int32 PageNum = 2;
+  int32 PageSize = 3;
+}
+
+message UserLikeContentResp {
+  repeated int64 ItemIds = 1;
+  int64 Total = 2;
+}
+
+service Data {
+  rpc ContentSimilar(ContentSimilarReq) returns(ContentSimilarResp);
+  rpc UserLikeContent(UserLikeContentReq) returns(UserLikeContentResp);
+}

@@ -29,9 +29,8 @@ func (l *HistoryCreateLogic) HistoryCreate(req *types.HistoryCreateReq) error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 
 	history := &model.History{
-		UserId:   loginUserId,
-		ItemType: req.ItemType,
-		ItemId:   req.ItemId,
+		UserId: loginUserId,
+		ItemId: req.ItemId,
 	}
 	l.svcCtx.DB.Create(history)
 

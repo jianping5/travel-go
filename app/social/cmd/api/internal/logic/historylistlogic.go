@@ -2,13 +2,11 @@ package logic
 
 import (
 	"context"
+	"travel/app/social/cmd/api/internal/svc"
+	"travel/app/social/cmd/api/internal/types"
 	"travel/app/social/cmd/model"
 	"travel/app/user/cmd/rpc/user"
 	"travel/common/ctxdata"
-	"travel/common/enum"
-
-	"travel/app/social/cmd/api/internal/svc"
-	"travel/app/social/cmd/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -43,28 +41,13 @@ func (l *HistoryListLogic) HistoryList(req *types.HistoryListReq) (resp *types.H
 
 	for i, h := range historys {
 		// 内容信息 + 用户信息
-		switch enum.FileType(h.ItemType) {
-		case enum.Text:
-			var article model.Article
-			l.svcCtx.DB.Select("title", "coverUrl", "likeCount", "userId").Where("id = ?", h.ItemId).First(&article)
-			historys[i].Title = article.Title
-			historys[i].CoverUrl = article.CoverUrl
-			historys[i].LikeCount = article.LikeCount
-			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: article.UserId})
-			historys[i].Account = info.Account
-			break
-		case enum.Video:
-			var video model.Video
-			l.svcCtx.DB.Select("title", "coverUrl", "likeCount").Where("id = ?", h.ItemId).First(&video)
-			historys[i].Title = video.Title
-			historys[i].CoverUrl = video.CoverUrl
-			historys[i].LikeCount = video.LikeCount
-			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: video.UserId})
-			historys[i].Account = info.Account
-			break
-		default:
-			break
-		}
+		var content model.Content
+		l.svcCtx.DB.Select("title", "coverUrl", "likeCount", "userId").Where("id = ?", h.ItemId).First(&content)
+		historys[i].Title = content.Title
+		historys[i].CoverUrl = content.CoverUrl
+		historys[i].LikeCount = content.LikeCount
+		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: content.UserId})
+		historys[i].Account = info.Account
 	}
 
 	return &types.HistoryListResp{

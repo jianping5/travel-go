@@ -5,7 +5,6 @@ package server
 
 import (
 	"context"
-	"travel/app/user/cmd/rpc/internal/logic/auth"
 
 	"travel/app/user/cmd/rpc/internal/logic"
 	"travel/app/user/cmd/rpc/internal/svc"
@@ -24,12 +23,12 @@ func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
 }
 
 func (s *UserServer) Login(ctx context.Context, in *pb.LoginReq) (*pb.LoginResp, error) {
-	l := auth.NewLoginLogic(ctx, s.svcCtx)
+	l := logic.NewLoginLogic(ctx, s.svcCtx)
 	return l.Login(in)
 }
 
 func (s *UserServer) Register(ctx context.Context, in *pb.RegisterReq) (*pb.RegisterResp, error) {
-	l := auth.NewRegisterLogic(ctx, s.svcCtx)
+	l := logic.NewRegisterLogic(ctx, s.svcCtx)
 	return l.Register(in)
 }
 
@@ -39,6 +38,11 @@ func (s *UserServer) UserInfo(ctx context.Context, in *pb.UserInfoReq) (*pb.User
 }
 
 func (s *UserServer) GenerateToken(ctx context.Context, in *pb.GenerateTokenReq) (*pb.GenerateTokenResp, error) {
-	l := auth.NewGenerateTokenLogic(ctx, s.svcCtx)
+	l := logic.NewGenerateTokenLogic(ctx, s.svcCtx)
 	return l.GenerateToken(in)
+}
+
+func (s *UserServer) SearchUser(ctx context.Context, in *pb.SearchUserReq) (*pb.SearchUserResp, error) {
+	l := logic.NewSearchUserLogic(ctx, s.svcCtx)
+	return l.SearchUser(in)
 }

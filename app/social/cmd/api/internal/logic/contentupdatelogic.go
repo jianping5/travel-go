@@ -5,7 +5,6 @@ import (
 	"github.com/pkg/errors"
 	"travel/app/social/cmd/model"
 	"travel/common/ctxdata"
-	"travel/common/enum"
 	"travel/common/xerr"
 
 	"travel/app/social/cmd/api/internal/svc"
@@ -30,32 +29,14 @@ func NewContentUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Con
 
 func (l *ContentUpdateLogic) ContentUpdate(req *types.ContentUpdateReq) error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
-	itemType := req.ItemType
-	switch enum.FileType(itemType) {
-	case enum.Text:
-		var userId int64
-		l.svcCtx.DB.Model(&model.Article{}).Select("userId").Where("id = ?", req.ItemId).Scan(&userId)
-		if loginUserId != userId {
-			return errors.Wrap(xerr.NewErrMsg("没有权限修改"), "没有权限修改")
-		}
-		// 修改文章
-		if err := l.svcCtx.DB.Model(&model.Article{}).Where("id = ?", req.ItemId).Updates(req).Error; err != nil {
-			return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "修改失败")
-		}
-		break
-	case enum.Video:
-		var userId int64
-		l.svcCtx.DB.Model(&model.Video{}).Select("userId").Where("id = ?", req.ItemId).Scan(&userId)
-		if loginUserId != userId {
-			return errors.Wrap(xerr.NewErrMsg("没有权限修改"), "没有权限修改")
-		}
-		// 修改视频
-		if err := l.svcCtx.DB.Model(&model.Video{}).Where("id = ?", req.ItemId).Updates(req).Error; err != nil {
-			return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "修改失败")
-		}
-		break
-	default:
-		return errors.Wrap(xerr.NewErrMsg("参数错误"), "参数错误")
+	var userId int64
+	l.svcCtx.DB.Model(&model.Content{}).Select("userId").Where("id = ?", req.Id).Scan(&userId)
+	if loginUserId != userId {
+		return errors.Wrap(xerr.NewErrMsg("没有权限修改"), "没有权限修改")
+	}
+	// 修改内容
+	if err := l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", req.Id).Updates(req).Error; err != nil {
+		return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "修改失败")
 	}
 	return nil
 }

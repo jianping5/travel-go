@@ -13,6 +13,7 @@ type Config struct {
 	}
 	SocialRpcConf zrpc.RpcClientConf
 	UserRpcConf   zrpc.RpcClientConf
+	DataRpcConf   zrpc.RpcClientConf
 	DB            struct {
 		DataSource string
 	}

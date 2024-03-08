@@ -2,11 +2,9 @@ package logic
 
 import (
 	"context"
-	"travel/app/social/cmd/model"
-	"travel/common/enum"
-
 	"travel/app/social/cmd/api/internal/svc"
 	"travel/app/social/cmd/api/internal/types"
+	"travel/app/social/cmd/model"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -38,18 +36,8 @@ func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *type
 			favorites[i].CoverUrl = coverUrl
 			continue
 		}
-		switch enum.FileType(favor.ItemType) {
-		case enum.Text:
-			l.svcCtx.DB.Model(&model.Article{}).Select("coverUrl").Scan(&coverUrl)
-			favorites[i].CoverUrl = coverUrl
-			break
-		case enum.Video:
-			l.svcCtx.DB.Model(&model.Video{}).Select("coverUrl").Scan(&coverUrl)
-			favorites[i].CoverUrl = coverUrl
-			break
-		default:
-			break
-		}
+		l.svcCtx.DB.Model(&model.Content{}).Select("coverUrl").Where("id = ?", favor.ItemId).Scan(&coverUrl)
+		favorites[i].CoverUrl = coverUrl
 	}
 
 	return &types.FavoriteListResp{

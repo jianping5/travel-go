@@ -1,32 +1,14 @@
 CREATE DATABASE dravel_social;
 USE dravel_social;
 
--- 文章表
-CREATE TABLE `travel_social_article` (
+-- 内容表
+CREATE TABLE `travel_social_content` (
     `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
     `user_id`   bigint  NOT NULL    COMMENT '用户 ID',
+    `item_type` int NOT NULL DEFAULT 0 COMMENT '内容类型',
     `title` varchar(255)    NOT NULL    COMMENT '标题',
     `cover_url` varchar(255)    NOT NULL COMMENT    '封面',
-    `content`   longtext    NOT NULL    COMMENT '内容',
-    `tag`    varchar(1024)  NULL    COMMENT '标签',
-    `like_count`    int NOT NULL DEFAULT 0  COMMENT '点赞量',
-    `comment_count` int NOT NULL DEFAULT 0  COMMENT '评论量',
-    `favor_count`   int NOT NULL DEFAULT 0  COMMENT '收藏量',
-    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `is_deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
-    PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '文章表';
-
-CREATE INDEX idx_user_id ON travel_social_article(`user_id`);
-
--- 视频表
-CREATE TABLE `travel_social_video` (
-    `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `user_id`   bigint  NOT NULL    COMMENT '用户 ID',
-    `title` varchar(255)    NOT NULL    COMMENT '标题',
-    `cover_url` varchar(255)    NOT NULL COMMENT    '封面',
-    `content`   varchar(255)    NOT NULL    COMMENT '视频 URL',
+    `content`   varchar(255)    NOT NULL    COMMENT '内容 URL',
     `description`   varchar(2048)   NULL    COMMENT '简介',
     `tag`    varchar(1024)  NULL    COMMENT '标签',
     `like_count`    int NOT NULL DEFAULT 0  COMMENT '点赞量',
@@ -36,9 +18,9 @@ CREATE TABLE `travel_social_video` (
     `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `is_deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '视频表';
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '内容表';
 
-CREATE INDEX idx_user_id ON travel_social_video(`user_id`);
+CREATE INDEX idx_user_id ON travel_social_content(`user_id`);
 
 -- 评论表
 CREATE TABLE `travel_social_comment` (
@@ -101,6 +83,7 @@ CREATE TABLE `travel_social_dynamic` (
     `user_id`   bigint  NOT NULL    COMMENT '用户 ID',
     `community_id`  bigint  NOT NULL    COMMENT '社区 ID',
     `title` varchar(255)    NULL    COMMENT '标题',
+    `description`   varchar(2048)   NULL COMMENT '描述',
     `content` varchar(2048) NOT NULL    COMMENT '动态内容',
     `file_type` int NOT NULL     COMMENT    '动态类型',
     `like_count`    int NOT NULL DEFAULT 0  COMMENT '点赞量',

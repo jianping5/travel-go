@@ -2,11 +2,9 @@ package logic
 
 import (
 	"context"
-	"travel/app/social/cmd/model"
-	"travel/common/enum"
-
 	"travel/app/social/cmd/api/internal/svc"
 	"travel/app/social/cmd/api/internal/types"
+	"travel/app/social/cmd/model"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -30,18 +28,8 @@ func (l *CopyrightCreateReqLogic) CopyrightCreateReq(req *types.CopyrightCreateR
 	// 用户信息
 	//userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: loginUserId})
 	// 作品信息
-	switch enum.FileType(req.ItemType) {
-	case enum.Text:
-		var article model.Article
-		l.svcCtx.DB.Model(&model.Article{}).Select("title", "description", "coverUrl", "createTime").Where("id = ?", req.ItemId).Scan(&article)
-		break
-	case enum.Video:
-		var video model.Video
-		l.svcCtx.DB.Model(&model.Video{}).Select("title", "description", "coverUrl", "createTime").Where("id = ?", req.ItemId).Scan(&video)
-		break
-	default:
-		break
-	}
+	var content model.Content
+	l.svcCtx.DB.Model(&model.Content{}).Select("title", "description", "coverUrl", "createTime").Where("id = ?", req.ItemId).Scan(&content)
 
 	// TODO: 消息队列，上传文件获取链接，版权存证到区块链，最后存入相关信息到数据库
 

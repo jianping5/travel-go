@@ -6,7 +6,6 @@ import (
 	"gorm.io/gorm"
 	"travel/app/social/cmd/model"
 	"travel/common/ctxdata"
-	"travel/common/enum"
 	"travel/common/xerr"
 
 	"travel/app/social/cmd/api/internal/svc"
@@ -43,14 +42,7 @@ func (l *CommentDeleteLogic) CommentDelete(req *types.CommentDeleteReq) error {
 	}
 
 	// 更新对应评论量
-	switch enum.ItemType(comment.CommentItemType) {
-	case enum.ARTICLE:
-		l.svcCtx.DB.Model(&model.Article{}).Where("id = ?", comment.CommentItemId).Update("commentCount", gorm.Expr("commentCount - ?", 1))
-		break
-	case enum.VIDEO:
-		l.svcCtx.DB.Model(&model.Video{}).Where("id = ?", comment.CommentItemId).Update("commentCount", gorm.Expr("commentCount - ?", 1))
-		break
-	}
+	l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", comment.CommentItemId).Update("commentCount", gorm.Expr("commentCount - ?", 1))
 
 	return nil
 }

@@ -5,7 +5,6 @@ import (
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 	"travel/app/social/cmd/model"
-	"travel/common/enum"
 	"travel/common/xerr"
 
 	"travel/app/social/cmd/api/internal/svc"
@@ -37,14 +36,7 @@ func (l *FavorDeleteLogic) FavorDelete(req *types.FavorDeleteReq) error {
 	l.svcCtx.DB.Model(&model.Favor{}).Select("itemType", "itemId").Where("id = ?", req.Id).Scan(&favor)
 
 	// 更新对应收藏量
-	switch enum.ItemType(favor.ItemType) {
-	case enum.ARTICLE:
-		l.svcCtx.DB.Model(&model.Article{}).Where("id = ?", favor.ItemId).Update("favorCount", gorm.Expr("favorCount - ?", 1))
-		break
-	case enum.VIDEO:
-		l.svcCtx.DB.Model(&model.Video{}).Where("id = ?", favor.ItemId).Update("favorCount", gorm.Expr("favorCount - ?", 1))
-		break
-	}
+	l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", favor.ItemId).Update("favorCount", gorm.Expr("favorCount - ?", 1))
 
 	return nil
 }

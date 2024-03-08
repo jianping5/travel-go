@@ -40,19 +40,11 @@ func (l *LikeLogic) Like(req *types.LikeReq) error {
 	// 更新对应点赞量
 	switch enum.ItemType(req.ItemType) {
 	case enum.ARTICLE:
-		l.svcCtx.DB.Create(like)
-
-		if req.LikedStatus {
-			l.svcCtx.DB.Model(&model.Article{}).Where("id = ?", req.ItemId).Update("likeCount", gorm.Expr("likeCount - ?", 1))
-		} else {
-			l.svcCtx.DB.Model(&model.Article{}).Where("id = ?", req.ItemId).Update("likeCount", gorm.Expr("likeCount + ?", 1))
-		}
-		break
 	case enum.VIDEO:
 		if req.LikedStatus {
-			l.svcCtx.DB.Model(&model.Video{}).Where("id = ?", req.ItemId).Update("likeCount", gorm.Expr("likeCount - ?", 1))
+			l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", req.ItemId).Update("likeCount", gorm.Expr("likeCount - ?", 1))
 		} else {
-			l.svcCtx.DB.Model(&model.Video{}).Where("id = ?", req.ItemId).Update("likeCount", gorm.Expr("likeCount + ?", 1))
+			l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", req.ItemId).Update("likeCount", gorm.Expr("likeCount + ?", 1))
 		}
 		break
 	case enum.DYNAMIC:

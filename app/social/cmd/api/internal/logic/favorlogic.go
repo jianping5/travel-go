@@ -6,7 +6,6 @@ import (
 	"gorm.io/gorm"
 	"travel/app/social/cmd/model"
 	"travel/common/ctxdata"
-	"travel/common/enum"
 	"travel/common/xerr"
 
 	"travel/app/social/cmd/api/internal/svc"
@@ -34,7 +33,6 @@ func (l *FavorLogic) Favor(req *types.FavorReq) error {
 	favor := &model.Favor{
 		UserId:     loginUserId,
 		FavoriteId: req.FavoriteId,
-		ItemType:   req.ItemType,
 		ItemId:     req.ItemId,
 	}
 	if err := l.svcCtx.DB.Create(favor).Error; err != nil {
@@ -42,13 +40,7 @@ func (l *FavorLogic) Favor(req *types.FavorReq) error {
 	}
 
 	// 更新对应收藏量
-	switch enum.ItemType(req.ItemType) {
-	case enum.ARTICLE:
-		l.svcCtx.DB.Model(&model.Article{}).Where("id = ?", req.ItemId).Update("favorCount", gorm.Expr("favorCount + ?", 1))
-		break
-	case enum.VIDEO:
-		l.svcCtx.DB.Model(&model.Video{}).Where("id = ?", req.ItemId).Update("favorCount", gorm.Expr("favorCount + ?", 1))
-		break
-	}
+	l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", req.ItemId).Update("favorCount", gorm.Expr("favorCount + ?", 1))
+
 	return nil
 }

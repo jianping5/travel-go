@@ -31,11 +31,12 @@ func NewContentCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Con
 func (l *ContentCreateLogic) ContentCreate(req *types.ContentCreateReq) error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	itemType := req.ItemType
-	switch enum.FileType(itemType) {
-	case enum.Text:
+	switch enum.ItemType(itemType) {
+	case enum.ARTICLE:
 		// todo：文章
-		content := &model.Article{
+		content := &model.Content{
 			UserId:   loginUserId,
+			ItemType: int(enum.ARTICLE),
 			Title:    req.Title,
 			CoverUrl: req.CoverUrl,
 			Content:  req.Content,
@@ -47,9 +48,10 @@ func (l *ContentCreateLogic) ContentCreate(req *types.ContentCreateReq) error {
 
 		// todo：给关注该用户的人发送消息
 		break
-	case enum.Video:
-		content := &model.Video{
+	case enum.VIDEO:
+		content := &model.Content{
 			UserId:      loginUserId,
+			ItemType:    int(enum.VIDEO),
 			Title:       req.Title,
 			CoverUrl:    req.CoverUrl,
 			Content:     req.Content,

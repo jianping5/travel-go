@@ -3,11 +3,10 @@ package logic
 import (
 	"context"
 	"github.com/jinzhu/copier"
-	"travel/app/social/cmd/model"
-	"travel/app/user/cmd/rpc/user"
-
 	"travel/app/social/cmd/api/internal/svc"
 	"travel/app/social/cmd/api/internal/types"
+	"travel/app/social/cmd/rpc/social"
+	"travel/app/user/cmd/rpc/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -29,7 +28,8 @@ func NewCopyrightDetailReqLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 func (l *CopyrightDetailReqLogic) CopyrightDetailReq(req *types.CopyrightDetailReq) (resp *types.CopyrightDetailResp, err error) {
 	// 版权信息
 	var copyright types.CopyrightView
-	l.svcCtx.DB.Model(&model.Copyright{}).Where("userId = ? and itemType = ? and itemId = ?", req.UserId, req.ItemType, req.ItemId).Scan(&copyright)
+	detail, err := l.svcCtx.SocialRpc.CopyrightDetail(l.ctx, &social.CopyrightDetailReq{Id: req.Id})
+	_ = copier.Copy(&copyright, &detail)
 
 	// 用户信息
 	var userInfoView types.UserInfoView

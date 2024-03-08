@@ -1,0 +1,33 @@
+syntax = "v1"
+
+info (
+	title:  "数据API"
+	desc:   "数据API文档"
+	author: "jianping5"
+)
+
+type (
+	// 行为
+	BehaviorCreateReq {
+		BehaviorItemType int   `json:"behavoirItemType"`
+		BehaviorItemId   int64 `json:"behaviorItemId"`
+		BehaviorType     int   `json:"behaviorType"`
+	}
+	ContentTagCreateReq {
+		Name     []string `json:"name"`
+		ItemType int      `json:"itemType"`
+		ItemId   int64    `json:"itemId"`
+	}
+)
+
+@server (
+	jwt: Auth
+)
+service Data {
+	@handler BehaviorCreate
+	post /api/data/behavior/create (BehaviorCreateReq)
+
+	@handler ContentTagCreate
+	post /api/data/content/create (ContentTagCreateReq)
+}
+

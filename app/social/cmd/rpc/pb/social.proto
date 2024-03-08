@@ -18,6 +18,38 @@ message MessageCreateResp {
 
 }
 
+// 版权详情查看
+message CopyrightDetailReq {
+  int64 Id = 1;
+}
+
+message CopyrightDetailResp {
+  int64 Id = 1;
+  int64 UserId = 2;
+  int32 ItemType = 3;
+  int64 ItemId = 4;
+  string Metadata = 5;
+  string TradeHash = 6;
+  string Address = 7;
+  int32 Status = 8;
+  string CreateTime = 9;
+  string Title = 10;
+  string CoverUrl = 11;
+}
+
+message ContentSimpleReq {
+  // copyrightId
+  int64 Id = 1;
+}
+
+message ContentSimpleResp {
+  string Title = 1;
+  string CoverUrl = 2;
+  int32 ItemType = 3;
+}
+
 service Social {
   rpc MessageCreate(MessageCreateReq) returns(MessageCreateResp) ;
+  rpc CopyrightDetail(CopyrightDetailReq) returns(CopyrightDetailResp);
+  rpc ContentSimple(ContentSimpleReq) returns(ContentSimpleResp);
 }
