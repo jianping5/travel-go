@@ -43,7 +43,6 @@ type StrategyGenerateReq struct {
 	Budget      string `json:"budget"`
 	TripGroup   string `json:"tripGroup"`
 	TripMood    string `json:"tripMood"`
-	Strategy    string `json:"strategy"`
 }
 
 type StrategyGenerateResp struct {
