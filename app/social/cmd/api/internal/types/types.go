@@ -2,10 +2,11 @@
 package types
 
 type CommentCreateReq struct {
-	CommentItemId int64  `json:"commentItemId"`
-	ParentUserId  int64  `json:"parentUserId"`
-	TopId         int64  `json:"topId"`
-	Content       string `json:"content"`
+	CommentItemId   int64  `json:"commentItemId"`
+	CommentItemType int    `json:"commentItemType"`
+	ParentUserId    int64  `json:"parentUserId"`
+	TopId           int64  `json:"topId"`
+	Content         string `json:"content"`
 }
 
 type CommentDeleteReq struct {
@@ -40,6 +41,8 @@ type CommentView struct {
 	TopId           int64        `json:"topId"`
 	Content         string       `json:"content"`
 	IsLiked         bool         `json:"isLiked"`
+	LikeCount       int          `json:"likeCount"`
+	ReplyCount      int          `json:"replyCount"`
 }
 
 type CommunityCreateReq struct {
@@ -96,7 +99,7 @@ type CommunityDynamicView struct {
 	Content      string        `json:"content"`
 	FileType     int           `json:"fileType"`
 	LikeCount    int           `json:"likeCount"`
-	CommentCount int           `json:"CommentCount"`
+	CommentCount int           `json:"commentCount"`
 	CreateTime   string        `json:"createTime"`
 	IsLiked      bool          `json:"isLiked"`
 }
@@ -120,8 +123,8 @@ type CommunityQuitReq struct {
 
 type CommunityUpdateReq struct {
 	Id          int64  `json:"id"`
-	Description string `json:"description"`
-	Avatar      string `json:"avatar"`
+	Description string `json:"description,omitempty"`
+	Avatar      string `json:"avatar,omitempty"`
 }
 
 type CommunityView struct {

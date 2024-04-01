@@ -18,6 +18,9 @@ type (
 		ItemType int      `json:"itemType"`
 		ItemId   int64    `json:"itemId"`
 	}
+	UploadResp {
+		FileUrl	string 	`json:"fileUrl"`
+	}
 )
 
 @server (
@@ -29,5 +32,8 @@ service Data {
 
 	@handler ContentTagCreate
 	post /api/data/content/create (ContentTagCreateReq)
+
+	@handler FileUpload
+	post /api/data/file/upload () returns (UploadResp)
 }
 

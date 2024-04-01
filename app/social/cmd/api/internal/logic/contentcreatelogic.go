@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/pkg/errors"
 	"travel/app/social/cmd/model"
 	"travel/common/ctxdata"
@@ -31,6 +32,8 @@ func NewContentCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Con
 func (l *ContentCreateLogic) ContentCreate(req *types.ContentCreateReq) error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	itemType := req.ItemType
+	// 转化成 json
+	tagJson, _ := json.Marshal(req.Tag)
 	switch enum.ItemType(itemType) {
 	case enum.ARTICLE:
 		// todo：文章
@@ -40,7 +43,7 @@ func (l *ContentCreateLogic) ContentCreate(req *types.ContentCreateReq) error {
 			Title:    req.Title,
 			CoverUrl: req.CoverUrl,
 			Content:  req.Content,
-			Tag:      req.Tag,
+			Tag:      tagJson,
 		}
 		if err := l.svcCtx.DB.Create(&content).Error; err != nil {
 			return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "创建失败")
@@ -56,7 +59,7 @@ func (l *ContentCreateLogic) ContentCreate(req *types.ContentCreateReq) error {
 			CoverUrl:    req.CoverUrl,
 			Content:     req.Content,
 			Description: req.Description,
-			Tag:         req.Tag,
+			Tag:         tagJson,
 		}
 		if err := l.svcCtx.DB.Create(&content).Error; err != nil {
 			return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "创建失败")

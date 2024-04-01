@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"gorm.io/datatypes"
+	"time"
+)
 
 type BaseModel struct {
 	Id         int64     `gorm:"primary_key"`
@@ -84,16 +87,16 @@ func (Dynamic) TableName() string {
 
 type Content struct {
 	BaseModel
-	UserId       int64    `json:"userId"`
-	Title        string   `json:"title"`
-	ItemType     int      `json:"itemType"`
-	CoverUrl     string   `json:"coverUrl"`
-	Content      string   `json:"contentUrl"`
-	Description  string   `json:"description"`
-	Tag          []string `gorm:"type:json" json:"tag"`
-	LikeCount    int      `json:"likeCount"`
-	CommentCount int      `json:"commentCount"`
-	FavorCount   int      `json:"favorCount"`
+	UserId       int64          `json:"userId"`
+	Title        string         `json:"title"`
+	ItemType     int            `json:"itemType"`
+	CoverUrl     string         `json:"coverUrl"`
+	Content      string         `json:"contentUrl"`
+	Description  string         `json:"description"`
+	Tag          datatypes.JSON `gorm:"type:json" json:"tag"`
+	LikeCount    int            `json:"likeCount"`
+	CommentCount int            `json:"commentCount"`
+	FavorCount   int            `json:"favorCount"`
 }
 
 func (Content) TableName() string {
@@ -156,4 +159,13 @@ type Copyright struct {
 
 func (Copyright) TableName() string {
 	return "travel_social_copyright"
+}
+
+type ContentUpdateReq struct {
+	Id          int64          `json:"id"`
+	Title       string         `json:"title"`
+	Content     string         `json:"content"`
+	CoverUrl    string         `json:"coverUrl"`
+	Description string         `json:"description"`
+	Tag         datatypes.JSON `gorm:"type:json" json:"tag"`
 }

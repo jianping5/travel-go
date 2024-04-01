@@ -31,7 +31,7 @@ func (l *ContentDeleteLogic) ContentDelete(req *types.ContentDeleteReq) error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	// 文章
 	var userId int64
-	l.svcCtx.DB.Model(&model.Content{}).Select("userId").Where("id = ?", req.Id).Scan(&userId)
+	l.svcCtx.DB.Model(&model.Content{}).Select("user_id").Where("id = ?", req.Id).Scan(&userId)
 	if loginUserId != userId {
 		return errors.Wrap(xerr.NewErrMsg("没有权限删除"), "没有权限删除")
 	}

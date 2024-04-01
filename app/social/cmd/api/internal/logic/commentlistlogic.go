@@ -34,7 +34,7 @@ func (l *CommentListLogic) CommentList(req *types.CommentListReq) (resp *types.C
 	var total int64
 	var topComments []types.CommentView
 	tx := l.svcCtx.DB.Model(&model.Comment{}).
-		Where("commentItemType = ? and commentItemId = ? and topId = 0", req.CommentItemType, req.CommentItemId)
+		Where("comment_item_type = ? and comment_item_id = ? and top_id = 0", req.CommentItemType, req.CommentItemId)
 	// 记录总数
 	countTx := tx
 	countTx.Count(&total)
@@ -48,7 +48,7 @@ func (l *CommentListLogic) CommentList(req *types.CommentListReq) (resp *types.C
 	for _, c := range topComments {
 		var commentListView types.CommentListView
 		var comments []types.CommentView
-		l.svcCtx.DB.Model(&model.Comment{}).Where("topId = ?", c.TopId).Scan(&comments)
+		l.svcCtx.DB.Model(&model.Comment{}).Where("top_id = ?", c.Id).Scan(&comments)
 		l.SetUserInfo(loginUserId, &comments)
 		commentListView.TopComment = c
 		commentListView.CommentList = comments
@@ -74,7 +74,7 @@ func (l *CommentListLogic) SetUserInfo(loginUserId int64, comments *[]types.Comm
 
 		// 是否点赞
 		var isLiked bool
-		l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.COMMENT, c.Id).Scan(&isLiked)
+		l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.COMMENT, c.Id).Scan(&isLiked)
 		(*comments)[i].IsLiked = isLiked
 	}
 }

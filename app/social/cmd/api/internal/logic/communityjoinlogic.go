@@ -42,7 +42,7 @@ func (l *CommunityJoinLogic) CommunityJoin(req *types.CommunityJoinReq) error {
 	// 增加社区成员量
 	if err := l.svcCtx.DB.Model(&model.Community{}).
 		Where("id = ?", req.CommunityId).
-		Update("memberCount", gorm.Expr("memberCount + ?", 1)).Error; err != nil {
+		Update("member_count", gorm.Expr("member_count + ?", 1)).Error; err != nil {
 		return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "增加失败")
 	}
 

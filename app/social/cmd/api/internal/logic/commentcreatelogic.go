@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 	"travel/app/social/cmd/model"
 	"travel/common/ctxdata"
+	"travel/common/enum"
 	"travel/common/xerr"
 
 	"travel/app/social/cmd/api/internal/svc"
@@ -31,17 +32,28 @@ func NewCommentCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Com
 func (l *CommentCreateLogic) CommentCreate(req *types.CommentCreateReq) error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	comment := &model.Comment{
-		UserId:        loginUserId,
-		CommentItemId: req.CommentItemId,
-		ParentUserId:  req.ParentUserId,
-		TopId:         req.TopId,
-		Content:       req.Content,
+		UserId:          loginUserId,
+		CommentItemId:   req.CommentItemId,
+		CommentItemType: req.CommentItemType,
+		ParentUserId:    req.ParentUserId,
+		TopId:           req.TopId,
+		Content:         req.Content,
 	}
 	if err := l.svcCtx.DB.Create(comment).Error; err != nil {
 		return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "创建失败")
 	}
 
 	// 更新对应评论量
-	l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", comment.CommentItemId).Update("commentCount", gorm.Expr("commentCount + ?", 1))
+	switch enum.ItemType(req.CommentItemType) {
+	case enum.VIDEO:
+		l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", comment.CommentItemId).Update("comment_count", gorm.Expr("comment_count + ?", 1))
+		break
+	case enum.DYNAMIC:
+		l.svcCtx.DB.Model(&model.Dynamic{}).Where("id = ?", comment.CommentItemId).Update("comment_count", gorm.Expr("comment_count + ?", 1))
+		break
+	default:
+		break
+	}
+
 	return nil
 }

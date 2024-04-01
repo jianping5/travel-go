@@ -92,8 +92,8 @@ type (
 	}
 	CommunityUpdateReq {
 		Id          int64  `json:"id"`
-		Description string `json:"description"`
-		Avatar      string `json:"avatar"`
+		Description string `json:"description,omitempty"`
+		Avatar      string `json:"avatar,omitempty"`
 	}
 	CommunityListReq {
 		UserId int64 `json:"userId"`
@@ -151,7 +151,7 @@ type (
 		Content      string        `json:"content"`
 		FileType     int           `json:"fileType"`
 		LikeCount    int           `json:"likeCount"`
-		CommentCount int           `json:"CommentCount"`
+		CommentCount int           `json:"commentCount"`
 		CreateTime   string        `json:"createTime"`
 		IsLiked      bool          `json:"isLiked"`
 	}
@@ -221,10 +221,11 @@ type (
 	}
 	// 评论
 	CommentCreateReq {
-		CommentItemId int64  `json:"commentItemId"`
-		ParentUserId  int64  `json:"parentUserId"`
-		TopId         int64  `json:"topId"`
-		Content       string `json:"content"`
+		CommentItemId   int64  `json:"commentItemId"`
+		CommentItemType int    `json:"commentItemType"`
+		ParentUserId    int64  `json:"parentUserId"`
+		TopId           int64  `json:"topId"`
+		Content         string `json:"content"`
 	}
 	CommentDeleteReq {
 		Id int64 `json:"id"`
@@ -246,6 +247,8 @@ type (
 		TopId           int64        `json:"topId"`
 		Content         string       `json:"content"`
 		IsLiked         bool         `json:"isLiked"`
+		LikeCount       int          `json:"likeCount"`
+		ReplyCount      int          `json:"replyCount"`
 	}
 	CommentListView {
 		TopComment  CommentView   `json:"topComment"`

@@ -19,7 +19,7 @@ SocialRpcConf:
 
 UserRpcConf:
   Endpoints:
-    - 127.0.0.1:1002
+    - 127.0.0.1:2001
   NonBlock: true
 
 DataRpcConf:

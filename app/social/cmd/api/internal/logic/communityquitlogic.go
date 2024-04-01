@@ -30,13 +30,13 @@ func NewCommunityQuitLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Com
 
 func (l *CommunityQuitLogic) CommunityQuit(req *types.CommunityQuitReq) error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
-	if err := l.svcCtx.DB.Delete(&model.UserCommunity{}, "userId = ? and communityId = ?", loginUserId, req.CommunityId).Error; err != nil {
+	if err := l.svcCtx.DB.Delete(&model.UserCommunity{}, "user_id = ? and community_id = ?", loginUserId, req.CommunityId).Error; err != nil {
 		return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "删除失败")
 	}
 
 	// 减少对应社区的成员量
 	if err := l.svcCtx.DB.Model(&model.Community{}).Where("id = ?", req.CommunityId).
-		Update("memberCount", gorm.Expr("memberCount - ?", 1)).Error; err != nil {
+		Update("member_count", gorm.Expr("member_count - ?", 1)).Error; err != nil {
 		return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "减少失败")
 	}
 

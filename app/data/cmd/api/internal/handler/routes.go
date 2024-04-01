@@ -22,6 +22,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/api/data/content/create",
 				Handler: ContentTagCreateHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/data/file/upload",
+				Handler: FileUploadHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
 	)

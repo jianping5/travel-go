@@ -16,3 +16,10 @@ DB:
 JwtAuth:
   AccessSecret: ae0536f9-6450-4606-8e13-5a19ed505da0
   AccessExpire: 31536000
+
+#COS
+COS:
+  SecretID: 'AKIDmWEohOyNcgkeLxSnunW7VwETfs2BE9ta'
+  SecretKey: 'nkhWAmOwLcoskXDmN6iEYfj3HRVSElT3'
+  Region: 'ap-shanghai'
+  Bucket: 'travel-7-1310703557'

@@ -4,8 +4,6 @@ import (
 	"context"
 	"github.com/pkg/errors"
 	"travel/app/user/cmd/model"
-	"travel/app/user/cmd/rpc/internal/logic/auth"
-
 	"travel/app/user/cmd/rpc/internal/svc"
 	"travel/app/user/cmd/rpc/pb/pb"
 
@@ -29,8 +27,9 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 func (l *UserInfoLogic) UserInfo(in *pb.UserInfoReq) (*pb.UserInfoResp, error) {
 	var user *pb.UserInfoResp
 	affected := l.svcCtx.DB.Take(&model.User{}, "id = ?", in.Id).Scan(&user).RowsAffected
+
 	if affected == 0 {
-		return nil, errors.Wrap(auth.UserNoExistsError, "抱歉，该用户不存在")
+		return nil, errors.Wrap(UserNoExistsError, "抱歉，该用户不存在")
 	}
 
 	return user, nil

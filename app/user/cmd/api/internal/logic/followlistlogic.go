@@ -29,7 +29,7 @@ func (l *FollowListLogic) FollowList(req *types.FollowListReq) (resp *types.Foll
 	var follows []model.Follow
 	offset := (req.PageNum - 1) * req.PageSize
 	// 分页获取当前用户关注列表
-	if err := l.svcCtx.DB.Where("userId = ?", req.Id).Offset(int(offset)).Limit(int(req.PageSize)).Find(&follows).Error; err != nil {
+	if err := l.svcCtx.DB.Where("user_id = ?", req.Id).Offset(int(offset)).Limit(int(req.PageSize)).Find(&follows).Error; err != nil {
 		return nil, err
 	}
 	// 未关注

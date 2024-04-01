@@ -29,9 +29,11 @@ func NewCommunityListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Com
 func (l *CommunityListLogic) CommunityList(req *types.CommunityListReq) (resp *types.CommunityListResp, err error) {
 	// 获取该用户下的社区 ID 列表
 	var userCommunityList []model.UserCommunity
-	l.svcCtx.DB.Select("communityId").Where("userId = ?", req.UserId).Find(&userCommunityList)
+	l.svcCtx.DB.Select("community_id").Where("user_id = ?", req.UserId).Find(&userCommunityList)
 	if len(userCommunityList) == 0 {
-		return nil, nil
+		return &types.CommunityListResp{
+			List: nil,
+		}, nil
 	}
 	var communityIds []int64
 	for _, userCommunity := range userCommunityList {

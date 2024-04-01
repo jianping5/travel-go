@@ -35,15 +35,15 @@ func (l *CommunityDynamicListLogic) CommunityDynamicList(req *types.CommunityDyn
 	offset := (req.PageNum - 1) * req.PageSize
 	var dynamics []model.Dynamic
 	var total int64
-	tx := l.svcCtx.DB
+	tx := l.svcCtx.DB.Model(&model.Dynamic{})
 
 	// Type: 最热动态	最新发布	最近常看	已加入社区
 	dynamicType := req.Type
 	switch enum.DynamicType(dynamicType) {
 	case enum.Hot:
-		tx = tx.Order("likeCount DESC")
+		tx = tx.Order("like_count DESC")
 	case enum.Latest:
-		tx = tx.Order("createTime DESC")
+		tx = tx.Order("create_time DESC")
 	case enum.Recent:
 		// todo: 最近常看，需要结合数据模块
 
@@ -54,10 +54,10 @@ func (l *CommunityDynamicListLogic) CommunityDynamicList(req *types.CommunityDyn
 	// 仅查看已加入社区的
 	var communityIds []int
 	if req.JoinedSwitch {
-		l.svcCtx.DB.Model(&model.UserCommunity{}).Where("userId = ?", loginUserId).Pluck("communityId", &communityIds)
+		l.svcCtx.DB.Model(&model.UserCommunity{}).Where("user_id = ?", loginUserId).Pluck("community_id", &communityIds)
 		// 反之，若社区为空，则表示没有对应动态，直接返回，不能只是说把条件去除
 		if len(communityIds) > 0 {
-			tx.Where("communityId in (?)", communityIds)
+			tx.Where("community_id in (?)", communityIds)
 		} else {
 			return &types.CommunityDynamicListResp{}, nil
 		}
@@ -78,7 +78,7 @@ func (l *CommunityDynamicListLogic) CommunityDynamicList(req *types.CommunityDyn
 		// 用户信息
 		var userInfoView types.UserInfoView
 		userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{
-			Id: loginUserId,
+			Id: dynamic.UserId,
 		})
 		_ = copier.Copy(&userInfoView, &userInfo)
 		dynamicView.UserInfo = userInfoView
@@ -89,7 +89,7 @@ func (l *CommunityDynamicListLogic) CommunityDynamicList(req *types.CommunityDyn
 
 		// 是否点赞
 		var isLiked bool
-		l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.DYNAMIC, dynamic.Id).Scan(&isLiked)
+		l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.DYNAMIC, dynamic.Id).Scan(&isLiked)
 		dynamicView.IsLiked = isLiked
 
 		dynamicViews = append(dynamicViews, dynamicView)

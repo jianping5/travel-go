@@ -31,7 +31,7 @@ func (l *CommunityDynamicDeleteLogic) CommunityDynamicDelete(req *types.Communit
 	// 判断是否有删除权限
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	var dynamic model.Dynamic
-	if affected := l.svcCtx.DB.Model(&model.Community{}).Select("userId").First(&dynamic).RowsAffected; affected == 0 {
+	if affected := l.svcCtx.DB.Model(&model.Community{}).Select("user_id").Where("id = ?", req.Id).First(&dynamic).RowsAffected; affected == 0 {
 		return errors.Wrap(xerr.NewErrMsg("该动态不存在"), "该动态不存在")
 	}
 	if dynamic.UserId != loginUserId {

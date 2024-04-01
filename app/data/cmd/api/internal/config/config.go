@@ -15,4 +15,10 @@ type Config struct {
 	DB          struct {
 		DataSource string
 	}
+	COS struct {
+		SecretID  string
+		SecretKey string
+		Region    string
+		Bucket    string
+	}
 }
