@@ -35,13 +35,13 @@ func (l *UserHomeDynamicListLogic) UserHomeDynamicList(req *types.UserHomeDynami
 	var total int64
 	var dynamics []types.CommunityDynamicView
 	tx := l.svcCtx.DB.Model(&model.Dynamic{}).
-		Where("userId = ?", userId).Order("createTime DESC")
+		Where("user_id = ?", userId).Order("create_time DESC")
 
 	// 记录总数
 	countTx := tx
 	countTx.Count(&total)
 
-	tx.Offset(offset).Limit(req.PageSize).Scan(dynamics)
+	tx.Offset(offset).Limit(req.PageSize).Scan(&dynamics)
 
 	for i, d := range dynamics {
 		// 用户信息
@@ -58,7 +58,7 @@ func (l *UserHomeDynamicListLogic) UserHomeDynamicList(req *types.UserHomeDynami
 
 		// 是否点赞
 		var isLiked bool
-		l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.DYNAMIC, d.Id).Scan(&isLiked)
+		l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.DYNAMIC, d.Id).Scan(&isLiked)
 		dynamics[i].IsLiked = isLiked
 	}
 

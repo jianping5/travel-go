@@ -30,7 +30,7 @@ func NewMessageDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Mes
 func (l *MessageDeleteLogic) MessageDelete(req *types.MessageDeleteReq) error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	var userId int64
-	l.svcCtx.DB.Select("userId").Where("id = ?", req.Id).Scan(&userId)
+	l.svcCtx.DB.Model(&model.Message{}).Select("user_id").Where("id = ?", req.Id).Scan(&userId)
 	if loginUserId != userId {
 		return errors.Wrap(xerr.NewErrMsg("没有权限删除"), "没有权限删除")
 	}

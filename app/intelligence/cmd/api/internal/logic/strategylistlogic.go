@@ -29,7 +29,7 @@ func (l *StrategyListLogic) StrategyList() (resp *types.StrategyListResp, err er
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 
 	var strategyList []types.StrategyView
-	l.svcCtx.DB.Model(&model.Strategy{}).Where("userId = ?", loginUserId).Scan(&strategyList)
+	l.svcCtx.DB.Model(&model.Strategy{}).Where("user_id = ?", loginUserId).Scan(&strategyList)
 
 	return &types.StrategyListResp{
 		List: strategyList,

@@ -29,7 +29,7 @@ func NewUserLikeContentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *U
 func (l *UserLikeContentLogic) UserLikeContent(in *pb.UserLikeContentReq) (*pb.UserLikeContentResp, error) {
 	offset := (in.PageNum - 1) * in.PageSize
 	var tags []string
-	if err := l.svcCtx.DB.Model(&model.UserTag{}).Select("tag").Where("userId = ?", in.UserId).Scan(&tags).Error; err != nil {
+	if err := l.svcCtx.DB.Model(&model.UserTag{}).Select("tag").Where("user_id = ?", in.UserId).Scan(&tags).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return &pb.UserLikeContentResp{}, nil
 		}

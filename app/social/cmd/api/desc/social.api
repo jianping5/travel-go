@@ -427,13 +427,13 @@ service Social {
 	post /api/social/favorite/delete (FavoriteDeleteReq)
 
 	@handler Favor
-	post /api/user/favor (FavorReq)
+	post /api/social/favor/create (FavorReq)
 
 	@handler FavorDelete
-	post /api/user/favor/delete (FavorDeleteReq)
+	post /api/social/favor/delete (FavorDeleteReq)
 
 	@handler HistoryCreate
-	post /api/user/history/create (HistoryCreateReq)
+	post /api/social/history/create (HistoryCreateReq)
 
 	@handler HistoryDelete
 	post /api/social/history/delete (HistoryDeleteReq)

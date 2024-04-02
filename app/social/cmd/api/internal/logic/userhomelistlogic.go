@@ -35,25 +35,25 @@ func (l *UserHomeListLogic) UserHomeList(req *types.UserHomeListReq) (resp *type
 	userId := req.UserId
 	// 最新文章
 	var recentArticles []types.ContentView
-	l.svcCtx.DB.Model(&model.Content{}).Select("id", "title", "coverUrl", "likeCount", "createTime").
-		Where("userId = ? and itemType = ?", userId, enum.ARTICLE).Order("createTime DESC").Limit(5).Scan(&recentArticles)
+	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "like_count", "create_time").
+		Where("user_id = ? and item_type = ?", userId, enum.ARTICLE).Order("create_time DESC").Limit(5).Scan(&recentArticles)
 	l.SetContentInfo(&recentArticles, loginUserId, enum.ARTICLE)
 	// 最新视频
 	var recentVideos []types.ContentView
-	l.svcCtx.DB.Model(&model.Content{}).Select("id", "title", "coverUrl", "likeCount", "createTime").
-		Where("userId = ? and itemType = ?", userId, enum.VIDEO).Order("createTime DESC").Limit(5).Scan(&recentVideos)
-	l.SetContentInfo(&recentArticles, loginUserId, enum.VIDEO)
+	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "like_count", "create_time").
+		Where("user_id = ? and item_type = ?", userId, enum.VIDEO).Order("create_time DESC").Limit(5).Scan(&recentVideos)
+	l.SetContentInfo(&recentVideos, loginUserId, enum.VIDEO)
 	// TODO: 推荐是否考虑评论的正负性
 	// 文章推荐
 	var recommendArticles []types.ContentView
-	l.svcCtx.DB.Model(&model.Content{}).Select("id", "title", "coverUrl", "likeCount", "createTime").
-		Where("userId = ? and itemType = ?", userId, enum.ARTICLE).Order("likeCount+commentCount+favorCount DESC").Limit(5).Scan(&recommendArticles)
-	l.SetContentInfo(&recentArticles, loginUserId, enum.ARTICLE)
+	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "like_count", "create_time").
+		Where("user_id = ? and item_type = ?", userId, enum.ARTICLE).Order("like_count+comment_count+favor_count DESC").Limit(5).Scan(&recommendArticles)
+	l.SetContentInfo(&recommendArticles, loginUserId, enum.ARTICLE)
 	// 视频推荐
 	var recommendVideos []types.ContentView
-	l.svcCtx.DB.Model(&model.Content{}).Select("id", "title", "coverUrl", "likeCount", "createTime").
-		Where("userId = ? and itemType = ?", userId, enum.VIDEO).Order("likeCount+commentCount+favorCount DESC").Limit(5).Scan(&recommendVideos)
-	l.SetContentInfo(&recentArticles, loginUserId, enum.VIDEO)
+	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "like_count", "create_time").
+		Where("user_id = ? and item_type = ?", userId, enum.VIDEO).Order("like_count+comment_count+favor_count DESC").Limit(5).Scan(&recommendVideos)
+	l.SetContentInfo(&recommendVideos, loginUserId, enum.VIDEO)
 
 	return &types.UserHomeListResp{
 		RecentArticleList:    recentArticles,
@@ -74,12 +74,12 @@ func (l *UserHomeListLogic) SetContentInfo(contents *[]types.ContentView, loginU
 
 		// 是否点赞
 		var isLiked bool
-		l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemType = ? and itemId = ?", loginUserId, itemType, v.Id).Scan(&isLiked)
+		l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, itemType, v.Id).Scan(&isLiked)
 		(*contents)[i].IsLiked = isLiked
 
 		// 是否收藏
 		var favor model.Favor
-		if err := l.svcCtx.DB.Model(&model.Favor{}).Where("userId = ? and itemType = ? and itemId = ?", loginUserId, itemType, v.Id).First(&favor).Error; err != nil {
+		if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, itemType, v.Id).First(&favor).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				(*contents)[i].IsFavored = false
 			}

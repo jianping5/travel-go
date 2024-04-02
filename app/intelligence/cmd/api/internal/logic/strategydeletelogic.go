@@ -30,7 +30,7 @@ func NewStrategyDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *St
 func (l *StrategyDeleteLogic) StrategyDelete(req *types.StrategyDeleteReq) error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	var userId int64
-	l.svcCtx.DB.Model(&model.Strategy{}).Select("userId").Where("id = ?", req.Id).Scan(&userId)
+	l.svcCtx.DB.Model(&model.Strategy{}).Select("user_id").Where("id = ?", req.Id).Scan(&userId)
 	if loginUserId != userId {
 		return errors.Wrap(xerr.NewErrMsg("权限不足"), "权限不足")
 	}

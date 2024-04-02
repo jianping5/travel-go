@@ -48,8 +48,18 @@ message ContentSimpleResp {
   int32 ItemType = 3;
 }
 
+// 删除作品归属权
+message ContentDeleteReq {
+  int64 Id = 1;
+}
+
+message ContentDeleteResp {
+
+}
+
 service Social {
   rpc MessageCreate(MessageCreateReq) returns(MessageCreateResp) ;
   rpc CopyrightDetail(CopyrightDetailReq) returns(CopyrightDetailResp);
   rpc ContentSimple(ContentSimpleReq) returns(ContentSimpleResp);
+  rpc ContentDelete(ContentDeleteReq) returns(ContentDeleteResp);
 }

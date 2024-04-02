@@ -31,3 +31,8 @@ func (s *DataServer) UserLikeContent(ctx context.Context, in *pb.UserLikeContent
 	l := logic.NewUserLikeContentLogic(ctx, s.svcCtx)
 	return l.UserLikeContent(in)
 }
+
+func (s *DataServer) ContentTagCreate(ctx context.Context, in *pb.ContentTagCreateReq) (*pb.ContentTagCreateResp, error) {
+	l := logic.NewContentTagCreateLogic(ctx, s.svcCtx)
+	return l.ContentTagCreate(in)
+}

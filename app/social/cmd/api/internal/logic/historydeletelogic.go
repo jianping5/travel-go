@@ -32,7 +32,7 @@ func (l *HistoryDeleteLogic) HistoryDelete(req *types.HistoryDeleteReq) error {
 	id := req.Id
 	// 清空历史记录
 	if id == 0 {
-		if err := l.svcCtx.DB.Delete(&model.History{}, "userId = ?", loginUserId).Error; err != nil {
+		if err := l.svcCtx.DB.Delete(&model.History{}, "user_id = ?", loginUserId).Error; err != nil {
 			return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "删除失败")
 		}
 	}

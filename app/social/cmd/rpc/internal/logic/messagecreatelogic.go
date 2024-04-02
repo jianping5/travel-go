@@ -33,6 +33,7 @@ func (l *MessageCreateLogic) MessageCreate(in *pb.MessageCreateReq) (*pb.Message
 		message.UserId = id
 		messages = append(messages, message)
 	}
+
 	l.svcCtx.DB.Create(&messages)
 
 	return &pb.MessageCreateResp{}, nil

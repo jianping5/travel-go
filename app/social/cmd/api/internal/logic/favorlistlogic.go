@@ -28,11 +28,11 @@ func NewFavorListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FavorLi
 
 func (l *FavorListLogic) FavorList(req *types.FavorListReq) (resp *types.FavorListResp, err error) {
 	var favors []types.FavorView
-	l.svcCtx.DB.Model(&model.Favor{}).Where("favoriteId = ?", req.FavoriteId).Scan(&favors)
+	l.svcCtx.DB.Model(&model.Favor{}).Where("favorite_id = ?", req.FavoriteId).Scan(&favors)
 	// 注入内容信息+用户信息
 	for i, f := range favors {
 		var content model.Content
-		l.svcCtx.DB.Select("title", "coverUrl", "likeCount", "userId", "createTime").Where("id = ?", f.ItemId).First(&content)
+		l.svcCtx.DB.Select("title", "cover_url", "like_count", "user_id", "create_time").Where("id = ?", f.ItemId).First(&content)
 		favors[i].Title = content.Title
 		favors[i].CoverUrl = content.CoverUrl
 		favors[i].LikeCount = content.LikeCount

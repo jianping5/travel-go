@@ -7,17 +7,6 @@ type BehaviorCreateReq struct {
 	BehaviorType     int   `json:"behaviorType"`
 }
 
-type ContentTagCreateReq struct {
-	Name     []string `json:"name"`
-	ItemType int      `json:"itemType"`
-	ItemId   int64    `json:"itemId"`
-}
-
-type UploadReq struct {
-	FileName string `json:"fileName"`
-	File     []byte `json:"file"`
-}
-
 type UploadResp struct {
 	FileUrl string `json:"fileUrl"`
 }

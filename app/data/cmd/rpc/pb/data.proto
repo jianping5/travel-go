@@ -27,7 +27,19 @@ message UserLikeContentResp {
   int64 Total = 2;
 }
 
+// 记录内容标签
+message ContentTagCreateReq {
+  repeated string Name = 1;
+  int32 ItemType = 2;
+  int64 ItemId = 3;
+}
+
+message ContentTagCreateResp {
+
+}
+
 service Data {
   rpc ContentSimilar(ContentSimilarReq) returns(ContentSimilarResp);
   rpc UserLikeContent(UserLikeContentReq) returns(UserLikeContentResp);
+  rpc ContentTagCreate(ContentTagCreateReq) returns(ContentTagCreateResp);
 }

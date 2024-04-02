@@ -28,7 +28,7 @@ func NewRecordListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Record
 
 func (l *RecordListLogic) RecordList(req *types.RecordListReq) (resp *types.RecordListResp, err error) {
 	var records []types.RecordView
-	l.svcCtx.DB.Model(&model.Record{}).Where("workId = ?", req.WorkId).Scan(records)
+	l.svcCtx.DB.Model(&model.Record{}).Where("work_id = ?", req.WorkId).Scan(records)
 
 	for i, r := range records {
 		var oldUserInfo types.UserInfoView

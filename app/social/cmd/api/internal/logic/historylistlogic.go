@@ -30,7 +30,7 @@ func (l *HistoryListLogic) HistoryList(req *types.HistoryListReq) (resp *types.H
 	offset := (req.PageNum - 1) * req.PageSize
 	var total int64
 	var historys []types.HistoryView
-	tx := l.svcCtx.DB.Model(&model.History{}).Where("userId = ?", loginUserId)
+	tx := l.svcCtx.DB.Model(&model.History{}).Where("user_id = ?", loginUserId)
 
 	// 记录总数
 	countTx := tx
@@ -42,7 +42,7 @@ func (l *HistoryListLogic) HistoryList(req *types.HistoryListReq) (resp *types.H
 	for i, h := range historys {
 		// 内容信息 + 用户信息
 		var content model.Content
-		l.svcCtx.DB.Select("title", "coverUrl", "likeCount", "userId").Where("id = ?", h.ItemId).First(&content)
+		l.svcCtx.DB.Select("title", "cover_url", "like_count", "user_id").Where("id = ?", h.ItemId).First(&content)
 		historys[i].Title = content.Title
 		historys[i].CoverUrl = content.CoverUrl
 		historys[i].LikeCount = content.LikeCount

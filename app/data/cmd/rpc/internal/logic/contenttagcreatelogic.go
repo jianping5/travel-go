@@ -4,37 +4,37 @@ import (
 	"context"
 	"travel/app/data/cmd/model"
 
-	"travel/app/data/cmd/api/internal/svc"
-	"travel/app/data/cmd/api/internal/types"
+	"travel/app/data/cmd/rpc/internal/svc"
+	"travel/app/data/cmd/rpc/pb/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type ContentTagCreateLogic struct {
-	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
+	logx.Logger
 }
 
 func NewContentTagCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ContentTagCreateLogic {
 	return &ContentTagCreateLogic{
-		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
+		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *ContentTagCreateLogic) ContentTagCreate(req *types.ContentTagCreateReq) error {
-	names := req.Name
+func (l *ContentTagCreateLogic) ContentTagCreate(in *pb.ContentTagCreateReq) (*pb.ContentTagCreateResp, error) {
+	names := in.Name
 	var contentTags []model.ContentTag
 	for _, n := range names {
 		var contentTag model.ContentTag
 		contentTag.Name = n
-		contentTag.ItemType = req.ItemType
-		contentTag.ItemId = req.ItemId
+		contentTag.ItemType = int(in.ItemType)
+		contentTag.ItemId = in.ItemId
 		contentTags = append(contentTags, contentTag)
 	}
 	l.svcCtx.DB.Create(contentTags)
 
-	return nil
+	return &pb.ContentTagCreateResp{}, nil
 }

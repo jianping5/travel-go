@@ -33,10 +33,10 @@ func (l *FavorDeleteLogic) FavorDelete(req *types.FavorDeleteReq) error {
 	}
 
 	var favor model.Favor
-	l.svcCtx.DB.Model(&model.Favor{}).Select("itemType", "itemId").Where("id = ?", req.Id).Scan(&favor)
+	l.svcCtx.DB.Model(&model.Favor{}).Select("item_type", "item_id").Where("id = ?", req.Id).Scan(&favor)
 
 	// 更新对应收藏量
-	l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", favor.ItemId).Update("favorCount", gorm.Expr("favorCount - ?", 1))
+	l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", favor.ItemId).Update("favor_count", gorm.Expr("favor_count - ?", 1))
 
 	return nil
 }

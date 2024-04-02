@@ -36,3 +36,8 @@ func (s *SocialServer) ContentSimple(ctx context.Context, in *pb.ContentSimpleRe
 	l := logic.NewContentSimpleLogic(ctx, s.svcCtx)
 	return l.ContentSimple(in)
 }
+
+func (s *SocialServer) ContentDelete(ctx context.Context, in *pb.ContentDeleteReq) (*pb.ContentDeleteResp, error) {
+	l := logic.NewContentDeleteLogic(ctx, s.svcCtx)
+	return l.ContentDelete(in)
+}

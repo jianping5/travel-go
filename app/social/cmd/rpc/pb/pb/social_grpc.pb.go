@@ -22,6 +22,7 @@ const (
 	Social_MessageCreate_FullMethodName   = "/pb.Social/MessageCreate"
 	Social_CopyrightDetail_FullMethodName = "/pb.Social/CopyrightDetail"
 	Social_ContentSimple_FullMethodName   = "/pb.Social/ContentSimple"
+	Social_ContentDelete_FullMethodName   = "/pb.Social/ContentDelete"
 )
 
 // SocialClient is the client API for Social service.
@@ -31,6 +32,7 @@ type SocialClient interface {
 	MessageCreate(ctx context.Context, in *MessageCreateReq, opts ...grpc.CallOption) (*MessageCreateResp, error)
 	CopyrightDetail(ctx context.Context, in *CopyrightDetailReq, opts ...grpc.CallOption) (*CopyrightDetailResp, error)
 	ContentSimple(ctx context.Context, in *ContentSimpleReq, opts ...grpc.CallOption) (*ContentSimpleResp, error)
+	ContentDelete(ctx context.Context, in *ContentDeleteReq, opts ...grpc.CallOption) (*ContentDeleteResp, error)
 }
 
 type socialClient struct {
@@ -68,6 +70,15 @@ func (c *socialClient) ContentSimple(ctx context.Context, in *ContentSimpleReq, 
 	return out, nil
 }
 
+func (c *socialClient) ContentDelete(ctx context.Context, in *ContentDeleteReq, opts ...grpc.CallOption) (*ContentDeleteResp, error) {
+	out := new(ContentDeleteResp)
+	err := c.cc.Invoke(ctx, Social_ContentDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SocialServer is the server API for Social service.
 // All implementations must embed UnimplementedSocialServer
 // for forward compatibility
@@ -75,6 +86,7 @@ type SocialServer interface {
 	MessageCreate(context.Context, *MessageCreateReq) (*MessageCreateResp, error)
 	CopyrightDetail(context.Context, *CopyrightDetailReq) (*CopyrightDetailResp, error)
 	ContentSimple(context.Context, *ContentSimpleReq) (*ContentSimpleResp, error)
+	ContentDelete(context.Context, *ContentDeleteReq) (*ContentDeleteResp, error)
 	mustEmbedUnimplementedSocialServer()
 }
 
@@ -90,6 +102,9 @@ func (UnimplementedSocialServer) CopyrightDetail(context.Context, *CopyrightDeta
 }
 func (UnimplementedSocialServer) ContentSimple(context.Context, *ContentSimpleReq) (*ContentSimpleResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ContentSimple not implemented")
+}
+func (UnimplementedSocialServer) ContentDelete(context.Context, *ContentDeleteReq) (*ContentDeleteResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ContentDelete not implemented")
 }
 func (UnimplementedSocialServer) mustEmbedUnimplementedSocialServer() {}
 
@@ -158,6 +173,24 @@ func _Social_ContentSimple_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Social_ContentDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ContentDeleteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SocialServer).ContentDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Social_ContentDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SocialServer).ContentDelete(ctx, req.(*ContentDeleteReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Social_ServiceDesc is the grpc.ServiceDesc for Social service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +209,10 @@ var Social_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ContentSimple",
 			Handler:    _Social_ContentSimple_Handler,
+		},
+		{
+			MethodName: "ContentDelete",
+			Handler:    _Social_ContentDelete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

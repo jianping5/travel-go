@@ -38,7 +38,7 @@ func (l *UserHomeContentListLogic) UserHomeContentList(req *types.UserHomeConten
 	var total int64
 	switch enum.ItemType(req.ItemType) {
 	case enum.ARTICLE:
-		l.svcCtx.DB.Model(&model.Content{}).Where("userId = ? and itemType = ?", userId, enum.ARTICLE).Count(&total)
+		l.svcCtx.DB.Model(&model.Content{}).Where("user_id = ? and item_type = ?", userId, enum.ARTICLE).Count(&total)
 		contents, _ = l.getSortedArticleList(req.SortType, offset, req.PageSize, userId)
 		for i, a := range contents {
 			// 用户信息
@@ -50,12 +50,12 @@ func (l *UserHomeContentListLogic) UserHomeContentList(req *types.UserHomeConten
 
 			// 是否点赞
 			var isLiked bool
-			l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.ARTICLE, a.Id).Scan(&isLiked)
+			l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.ARTICLE, a.Id).Scan(&isLiked)
 			contents[i].IsLiked = isLiked
 
 			// 是否收藏
 			var favor model.Favor
-			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.ARTICLE, a.Id).First(&favor).Error; err != nil {
+			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.ARTICLE, a.Id).First(&favor).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					contents[i].IsFavored = false
 				}
@@ -65,7 +65,7 @@ func (l *UserHomeContentListLogic) UserHomeContentList(req *types.UserHomeConten
 		}
 		break
 	case enum.VIDEO:
-		l.svcCtx.DB.Model(&model.Content{}).Where("userId = ? and itemType = ?", userId, enum.VIDEO).Count(&total)
+		l.svcCtx.DB.Model(&model.Content{}).Where("user_id = ? and item_type = ?", userId, enum.VIDEO).Count(&total)
 		contents, _ = l.getSortedVideoList(req.SortType, offset, req.PageSize, userId)
 		for i, v := range contents {
 			// 用户信息
@@ -77,12 +77,12 @@ func (l *UserHomeContentListLogic) UserHomeContentList(req *types.UserHomeConten
 
 			// 是否点赞
 			var isLiked bool
-			l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.VIDEO, v.Id).Scan(&isLiked)
+			l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, v.Id).Scan(&isLiked)
 			contents[i].IsLiked = isLiked
 
 			// 是否收藏
 			var favor model.Favor
-			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.VIDEO, v.Id).First(&favor).Error; err != nil {
+			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, v.Id).First(&favor).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					contents[i].IsFavored = false
 				}
@@ -105,17 +105,17 @@ func (l *UserHomeContentListLogic) getSortedArticleList(sortType, offset, pageSi
 	var contents []types.ContentView
 	switch enum.SortType(sortType) {
 	case enum.Newest:
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("createTime DESC").
-			Where("userId = ? and itemType = ?", userId, enum.ARTICLE).Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("create_time DESC").
+			Where("user_id = ? and item_type = ?", userId, enum.ARTICLE).Scan(&contents)
 		break
 	case enum.Popular:
 		// TODO: 考虑评论的正负性
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("likeCount+commentCount+favorCount DESC").
-			Where("userId = ? and itemType = ?", userId, enum.ARTICLE).Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("like_count+comment_count+favor_count DESC").
+			Where("user_id = ? and item_type = ?", userId, enum.ARTICLE).Scan(&contents)
 		break
 	case enum.Oldest:
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("createTime ASC").
-			Where("userId = ? and itemType = ?", userId, enum.ARTICLE).Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("create_time ASC").
+			Where("user_id = ? and item_type = ?", userId, enum.ARTICLE).Scan(&contents)
 		break
 	default:
 		break
@@ -127,17 +127,17 @@ func (l *UserHomeContentListLogic) getSortedVideoList(sortType, offset, pageSize
 	var contents []types.ContentView
 	switch enum.SortType(sortType) {
 	case enum.Newest:
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("createTime DESC").
-			Where("userId = ? and itemType = ?", userId, enum.VIDEO).Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("create_time DESC").
+			Where("user_id = ? and item_type = ?", userId, enum.VIDEO).Scan(&contents)
 		break
 	case enum.Popular:
 		// TODO: 考虑评论的正负性
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("likeCount+commentCount+favorCount DESC").
-			Where("userId = ? and itemType = ?", userId, enum.VIDEO).Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("like_count+comment_count+favor_count DESC").
+			Where("user_id = ? and item_type = ?", userId, enum.VIDEO).Scan(&contents)
 		break
 	case enum.Oldest:
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("createTime ASC").
-			Where("userId = ? and itemType = ?", userId, enum.VIDEO).Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("create_time ASC").
+			Where("user_id = ? and item_type = ?", userId, enum.VIDEO).Scan(&contents)
 		break
 	default:
 		break

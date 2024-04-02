@@ -144,6 +144,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/api/social/favor/create",
+				Handler: FavorHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/social/favor/delete",
+				Handler: FavorDeleteHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/api/social/favorite/create",
 				Handler: FavoriteCreateHandler(serverCtx),
 			},
@@ -151,6 +161,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/api/social/favorite/delete",
 				Handler: FavoriteDeleteHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/social/history/create",
+				Handler: HistoryCreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
@@ -201,21 +216,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/api/social/userhome/list",
 				Handler: UserHomeListHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/user/favor",
-				Handler: FavorHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/user/favor/delete",
-				Handler: FavorDeleteHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/user/history/create",
-				Handler: HistoryCreateHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),

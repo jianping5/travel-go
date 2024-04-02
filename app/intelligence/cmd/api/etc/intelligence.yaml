@@ -1,12 +1,12 @@
 Name: Intelligence
 Host: 0.0.0.0
-Port: 3001
+Port: 1003
 Mode: dev
 
 #rpc service
 IntelligenceRpcConf:
   Endpoints:
-    - 127.0.0.1:3001
+    - 127.0.0.1:1003
   NonBlock: true
 
 DB:

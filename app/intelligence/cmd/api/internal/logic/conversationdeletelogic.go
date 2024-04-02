@@ -26,7 +26,7 @@ func NewConversationDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 func (l *ConversationDeleteLogic) ConversationDelete() error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 
-	l.svcCtx.DB.Delete(&model.Conversation{}, "userId = ?", loginUserId)
+	l.svcCtx.DB.Delete(&model.Conversation{}, "user_id = ?", loginUserId)
 
 	return nil
 }

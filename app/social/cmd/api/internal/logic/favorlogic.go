@@ -40,7 +40,7 @@ func (l *FavorLogic) Favor(req *types.FavorReq) error {
 	}
 
 	// 更新对应收藏量
-	l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", req.ItemId).Update("favorCount", gorm.Expr("favorCount + ?", 1))
+	l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", req.ItemId).Update("favor_count", gorm.Expr("favor_count + ?", 1))
 
 	return nil
 }

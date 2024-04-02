@@ -29,7 +29,7 @@ func (l *ConversationListLogic) ConversationList() (resp *types.ConversationList
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 
 	var conversations []types.ConversationView
-	l.svcCtx.DB.Model(&model.Conversation{}).Where("userId = ?", loginUserId).Scan(&conversations)
+	l.svcCtx.DB.Model(&model.Conversation{}).Where("user_id = ?", loginUserId).Scan(&conversations)
 
 	return &types.ConversationListResp{
 		List: conversations,

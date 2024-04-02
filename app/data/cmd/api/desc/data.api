@@ -13,13 +13,8 @@ type (
 		BehaviorItemId   int64 `json:"behaviorItemId"`
 		BehaviorType     int   `json:"behaviorType"`
 	}
-	ContentTagCreateReq {
-		Name     []string `json:"name"`
-		ItemType int      `json:"itemType"`
-		ItemId   int64    `json:"itemId"`
-	}
 	UploadResp {
-		FileUrl	string 	`json:"fileUrl"`
+		FileUrl string `json:"fileUrl"`
 	}
 )
 
@@ -30,10 +25,7 @@ service Data {
 	@handler BehaviorCreate
 	post /api/data/behavior/create (BehaviorCreateReq)
 
-	@handler ContentTagCreate
-	post /api/data/content/create (ContentTagCreateReq)
-
 	@handler FileUpload
-	post /api/data/file/upload () returns (UploadResp)
+	post /api/data/file/upload returns (UploadResp)
 }
 

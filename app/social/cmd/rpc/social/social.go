@@ -13,6 +13,8 @@ import (
 )
 
 type (
+	ContentDeleteReq    = pb.ContentDeleteReq
+	ContentDeleteResp   = pb.ContentDeleteResp
 	ContentSimpleReq    = pb.ContentSimpleReq
 	ContentSimpleResp   = pb.ContentSimpleResp
 	CopyrightDetailReq  = pb.CopyrightDetailReq
@@ -24,6 +26,7 @@ type (
 		MessageCreate(ctx context.Context, in *MessageCreateReq, opts ...grpc.CallOption) (*MessageCreateResp, error)
 		CopyrightDetail(ctx context.Context, in *CopyrightDetailReq, opts ...grpc.CallOption) (*CopyrightDetailResp, error)
 		ContentSimple(ctx context.Context, in *ContentSimpleReq, opts ...grpc.CallOption) (*ContentSimpleResp, error)
+		ContentDelete(ctx context.Context, in *ContentDeleteReq, opts ...grpc.CallOption) (*ContentDeleteResp, error)
 	}
 
 	defaultSocial struct {
@@ -50,4 +53,9 @@ func (m *defaultSocial) CopyrightDetail(ctx context.Context, in *CopyrightDetail
 func (m *defaultSocial) ContentSimple(ctx context.Context, in *ContentSimpleReq, opts ...grpc.CallOption) (*ContentSimpleResp, error) {
 	client := pb.NewSocialClient(m.cli.Conn())
 	return client.ContentSimple(ctx, in, opts...)
+}
+
+func (m *defaultSocial) ContentDelete(ctx context.Context, in *ContentDeleteReq, opts ...grpc.CallOption) (*ContentDeleteResp, error) {
+	client := pb.NewSocialClient(m.cli.Conn())
+	return client.ContentDelete(ctx, in, opts...)
 }

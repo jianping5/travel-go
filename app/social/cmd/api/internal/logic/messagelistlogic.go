@@ -29,7 +29,7 @@ func NewMessageListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Messa
 func (l *MessageListLogic) MessageList() (resp *types.MessageListResp, err error) {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	var messages []model.Message
-	l.svcCtx.DB.Where("userId = ?", loginUserId).Scan(&messages)
+	l.svcCtx.DB.Model(&model.Message{}).Where("user_id = ?", loginUserId).Scan(&messages)
 
 	var messageViews []types.MessageView
 	for _, m := range messages {
@@ -40,7 +40,7 @@ func (l *MessageListLogic) MessageList() (resp *types.MessageListResp, err error
 		messageView.Account = userInfo.Account
 		// 内容信息
 		var content model.Content
-		l.svcCtx.DB.Model(&model.Content{}).Select("title", "coverUrl").Where("id = ?", m.ItemId).First(&content)
+		l.svcCtx.DB.Model(&model.Content{}).Select("title", "cover_url").Where("id = ?", m.ItemId).First(&content)
 		messageView.Title = content.Title
 		messageView.CoverUrl = content.CoverUrl
 		messageViews = append(messageViews, messageView)
