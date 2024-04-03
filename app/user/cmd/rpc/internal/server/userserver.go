@@ -46,3 +46,8 @@ func (s *UserServer) SearchUser(ctx context.Context, in *pb.SearchUserReq) (*pb.
 	l := logic.NewSearchUserLogic(ctx, s.svcCtx)
 	return l.SearchUser(in)
 }
+
+func (s *UserServer) GetUserIds(ctx context.Context, in *pb.GetUserIdsReq) (*pb.GetUserIdsResp, error) {
+	l := logic.NewGetUserIdsLogic(ctx, s.svcCtx)
+	return l.GetUserIds(in)
+}

@@ -2,7 +2,7 @@ package logic
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
 	"github.com/jinzhu/copier"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -10,6 +10,7 @@ import (
 	"travel/app/user/cmd/rpc/user"
 	"travel/common/ctxdata"
 	"travel/common/enum"
+	"travel/common/tool"
 	"travel/common/xerr"
 
 	"travel/app/social/cmd/api/internal/svc"
@@ -35,16 +36,22 @@ func NewContentDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Con
 func (l *ContentDetailLogic) ContentDetail(req *types.ContentDetailReq) (resp *types.ContentDetailResp, err error) {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	var content types.ContentView
-	if affected := l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", req.Id).Scan(&content).RowsAffected; affected == 0 {
+	var contentModel model.Content
+	if affected := l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", req.Id).Scan(&contentModel).RowsAffected; affected == 0 {
 		return nil, errors.Wrap(xerr.NewErrMsg("该内容不存在"), "该内容不存在")
 	}
+
+	// contentModel -> content
+	_ = copier.Copy(&content, &contentModel)
+	content.CreateTime = tool.TimeToString(contentModel.CreateTime)
+	// json -> []string
+	_ = json.Unmarshal(contentModel.Tag, &content.Tag)
 
 	// 用户信息
 	var userInfoView types.UserInfoView
 	userId := content.UserId
 	info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId})
-	// todo：测试
-	fmt.Println(info)
+
 	_ = copier.Copy(&userInfoView, &info)
 	content.UserInfo = userInfoView
 

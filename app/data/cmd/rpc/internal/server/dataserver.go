@@ -36,3 +36,13 @@ func (s *DataServer) ContentTagCreate(ctx context.Context, in *pb.ContentTagCrea
 	l := logic.NewContentTagCreateLogic(ctx, s.svcCtx)
 	return l.ContentTagCreate(in)
 }
+
+func (s *DataServer) AnalyzeUserBehavior(ctx context.Context, in *pb.AnalyzeUserBehaviorReq) (*pb.AnalyzeUserBehaviorResp, error) {
+	l := logic.NewAnalyzeUserBehaviorLogic(ctx, s.svcCtx)
+	return l.AnalyzeUserBehavior(in)
+}
+
+func (s *DataServer) UpdateUserTag(ctx context.Context, in *pb.UpdateUserTagReq) (*pb.UpdateUserTagResp, error) {
+	l := logic.NewUpdateUserTagLogic(ctx, s.svcCtx)
+	return l.UpdateUserTag(in)
+}

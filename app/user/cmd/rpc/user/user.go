@@ -15,6 +15,8 @@ import (
 type (
 	GenerateTokenReq  = pb.GenerateTokenReq
 	GenerateTokenResp = pb.GenerateTokenResp
+	GetUserIdsReq     = pb.GetUserIdsReq
+	GetUserIdsResp    = pb.GetUserIdsResp
 	LoginReq          = pb.LoginReq
 	LoginResp         = pb.LoginResp
 	RegisterReq       = pb.RegisterReq
@@ -31,6 +33,7 @@ type (
 		UserInfo(ctx context.Context, in *UserInfoReq, opts ...grpc.CallOption) (*UserInfoResp, error)
 		GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*GenerateTokenResp, error)
 		SearchUser(ctx context.Context, in *SearchUserReq, opts ...grpc.CallOption) (*SearchUserResp, error)
+		GetUserIds(ctx context.Context, in *GetUserIdsReq, opts ...grpc.CallOption) (*GetUserIdsResp, error)
 	}
 
 	defaultUser struct {
@@ -67,4 +70,9 @@ func (m *defaultUser) GenerateToken(ctx context.Context, in *GenerateTokenReq, o
 func (m *defaultUser) SearchUser(ctx context.Context, in *SearchUserReq, opts ...grpc.CallOption) (*SearchUserResp, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.SearchUser(ctx, in, opts...)
+}
+
+func (m *defaultUser) GetUserIds(ctx context.Context, in *GetUserIdsReq, opts ...grpc.CallOption) (*GetUserIdsResp, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.GetUserIds(ctx, in, opts...)
 }

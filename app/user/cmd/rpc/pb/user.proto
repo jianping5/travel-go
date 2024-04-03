@@ -68,10 +68,19 @@ message SearchUserResp {
   repeated UserInfoView Users = 2;
 }
 
+message GetUserIdsReq {
+
+}
+
+message GetUserIdsResp {
+  repeated int64 UserIds = 1;
+}
+
 service User {
   rpc Login(LoginReq) returns(LoginResp);
   rpc Register(RegisterReq) returns(RegisterResp);
   rpc UserInfo(UserInfoReq) returns(UserInfoResp);
   rpc generateToken(GenerateTokenReq) returns(GenerateTokenResp);
   rpc SearchUser(SearchUserReq) returns(SearchUserResp);
+  rpc GetUserIds(GetUserIdsReq) returns(GetUserIdsResp);
 }

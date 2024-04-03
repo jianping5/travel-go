@@ -19,9 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Data_ContentSimilar_FullMethodName   = "/pb.Data/ContentSimilar"
-	Data_UserLikeContent_FullMethodName  = "/pb.Data/UserLikeContent"
-	Data_ContentTagCreate_FullMethodName = "/pb.Data/ContentTagCreate"
+	Data_ContentSimilar_FullMethodName      = "/pb.Data/ContentSimilar"
+	Data_UserLikeContent_FullMethodName     = "/pb.Data/UserLikeContent"
+	Data_ContentTagCreate_FullMethodName    = "/pb.Data/ContentTagCreate"
+	Data_AnalyzeUserBehavior_FullMethodName = "/pb.Data/AnalyzeUserBehavior"
+	Data_UpdateUserTag_FullMethodName       = "/pb.Data/UpdateUserTag"
 )
 
 // DataClient is the client API for Data service.
@@ -31,6 +33,8 @@ type DataClient interface {
 	ContentSimilar(ctx context.Context, in *ContentSimilarReq, opts ...grpc.CallOption) (*ContentSimilarResp, error)
 	UserLikeContent(ctx context.Context, in *UserLikeContentReq, opts ...grpc.CallOption) (*UserLikeContentResp, error)
 	ContentTagCreate(ctx context.Context, in *ContentTagCreateReq, opts ...grpc.CallOption) (*ContentTagCreateResp, error)
+	AnalyzeUserBehavior(ctx context.Context, in *AnalyzeUserBehaviorReq, opts ...grpc.CallOption) (*AnalyzeUserBehaviorResp, error)
+	UpdateUserTag(ctx context.Context, in *UpdateUserTagReq, opts ...grpc.CallOption) (*UpdateUserTagResp, error)
 }
 
 type dataClient struct {
@@ -68,6 +72,24 @@ func (c *dataClient) ContentTagCreate(ctx context.Context, in *ContentTagCreateR
 	return out, nil
 }
 
+func (c *dataClient) AnalyzeUserBehavior(ctx context.Context, in *AnalyzeUserBehaviorReq, opts ...grpc.CallOption) (*AnalyzeUserBehaviorResp, error) {
+	out := new(AnalyzeUserBehaviorResp)
+	err := c.cc.Invoke(ctx, Data_AnalyzeUserBehavior_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataClient) UpdateUserTag(ctx context.Context, in *UpdateUserTagReq, opts ...grpc.CallOption) (*UpdateUserTagResp, error) {
+	out := new(UpdateUserTagResp)
+	err := c.cc.Invoke(ctx, Data_UpdateUserTag_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DataServer is the server API for Data service.
 // All implementations must embed UnimplementedDataServer
 // for forward compatibility
@@ -75,6 +97,8 @@ type DataServer interface {
 	ContentSimilar(context.Context, *ContentSimilarReq) (*ContentSimilarResp, error)
 	UserLikeContent(context.Context, *UserLikeContentReq) (*UserLikeContentResp, error)
 	ContentTagCreate(context.Context, *ContentTagCreateReq) (*ContentTagCreateResp, error)
+	AnalyzeUserBehavior(context.Context, *AnalyzeUserBehaviorReq) (*AnalyzeUserBehaviorResp, error)
+	UpdateUserTag(context.Context, *UpdateUserTagReq) (*UpdateUserTagResp, error)
 	mustEmbedUnimplementedDataServer()
 }
 
@@ -90,6 +114,12 @@ func (UnimplementedDataServer) UserLikeContent(context.Context, *UserLikeContent
 }
 func (UnimplementedDataServer) ContentTagCreate(context.Context, *ContentTagCreateReq) (*ContentTagCreateResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ContentTagCreate not implemented")
+}
+func (UnimplementedDataServer) AnalyzeUserBehavior(context.Context, *AnalyzeUserBehaviorReq) (*AnalyzeUserBehaviorResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AnalyzeUserBehavior not implemented")
+}
+func (UnimplementedDataServer) UpdateUserTag(context.Context, *UpdateUserTagReq) (*UpdateUserTagResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserTag not implemented")
 }
 func (UnimplementedDataServer) mustEmbedUnimplementedDataServer() {}
 
@@ -158,6 +188,42 @@ func _Data_ContentTagCreate_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Data_AnalyzeUserBehavior_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnalyzeUserBehaviorReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataServer).AnalyzeUserBehavior(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Data_AnalyzeUserBehavior_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataServer).AnalyzeUserBehavior(ctx, req.(*AnalyzeUserBehaviorReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Data_UpdateUserTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserTagReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataServer).UpdateUserTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Data_UpdateUserTag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataServer).UpdateUserTag(ctx, req.(*UpdateUserTagReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Data_ServiceDesc is the grpc.ServiceDesc for Data service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +242,14 @@ var Data_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ContentTagCreate",
 			Handler:    _Data_ContentTagCreate_Handler,
+		},
+		{
+			MethodName: "AnalyzeUserBehavior",
+			Handler:    _Data_AnalyzeUserBehavior_Handler,
+		},
+		{
+			MethodName: "UpdateUserTag",
+			Handler:    _Data_UpdateUserTag_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

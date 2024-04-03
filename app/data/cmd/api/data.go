@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 
 	"travel/app/data/cmd/api/internal/config"
 	"travel/app/data/cmd/api/internal/handler"
@@ -19,6 +20,9 @@ func main() {
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
+
+	// 取消默认日志打印
+	logx.DisableStat()
 
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()

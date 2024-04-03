@@ -13,17 +13,23 @@ import (
 )
 
 type (
-	ContentSimilarReq    = pb.ContentSimilarReq
-	ContentSimilarResp   = pb.ContentSimilarResp
-	ContentTagCreateReq  = pb.ContentTagCreateReq
-	ContentTagCreateResp = pb.ContentTagCreateResp
-	UserLikeContentReq   = pb.UserLikeContentReq
-	UserLikeContentResp  = pb.UserLikeContentResp
+	AnalyzeUserBehaviorReq  = pb.AnalyzeUserBehaviorReq
+	AnalyzeUserBehaviorResp = pb.AnalyzeUserBehaviorResp
+	ContentSimilarReq       = pb.ContentSimilarReq
+	ContentSimilarResp      = pb.ContentSimilarResp
+	ContentTagCreateReq     = pb.ContentTagCreateReq
+	ContentTagCreateResp    = pb.ContentTagCreateResp
+	UpdateUserTagReq        = pb.UpdateUserTagReq
+	UpdateUserTagResp       = pb.UpdateUserTagResp
+	UserLikeContentReq      = pb.UserLikeContentReq
+	UserLikeContentResp     = pb.UserLikeContentResp
 
 	Data interface {
 		ContentSimilar(ctx context.Context, in *ContentSimilarReq, opts ...grpc.CallOption) (*ContentSimilarResp, error)
 		UserLikeContent(ctx context.Context, in *UserLikeContentReq, opts ...grpc.CallOption) (*UserLikeContentResp, error)
 		ContentTagCreate(ctx context.Context, in *ContentTagCreateReq, opts ...grpc.CallOption) (*ContentTagCreateResp, error)
+		AnalyzeUserBehavior(ctx context.Context, in *AnalyzeUserBehaviorReq, opts ...grpc.CallOption) (*AnalyzeUserBehaviorResp, error)
+		UpdateUserTag(ctx context.Context, in *UpdateUserTagReq, opts ...grpc.CallOption) (*UpdateUserTagResp, error)
 	}
 
 	defaultData struct {
@@ -50,4 +56,14 @@ func (m *defaultData) UserLikeContent(ctx context.Context, in *UserLikeContentRe
 func (m *defaultData) ContentTagCreate(ctx context.Context, in *ContentTagCreateReq, opts ...grpc.CallOption) (*ContentTagCreateResp, error) {
 	client := pb.NewDataClient(m.cli.Conn())
 	return client.ContentTagCreate(ctx, in, opts...)
+}
+
+func (m *defaultData) AnalyzeUserBehavior(ctx context.Context, in *AnalyzeUserBehaviorReq, opts ...grpc.CallOption) (*AnalyzeUserBehaviorResp, error) {
+	client := pb.NewDataClient(m.cli.Conn())
+	return client.AnalyzeUserBehavior(ctx, in, opts...)
+}
+
+func (m *defaultData) UpdateUserTag(ctx context.Context, in *UpdateUserTagReq, opts ...grpc.CallOption) (*UpdateUserTagResp, error) {
+	client := pb.NewDataClient(m.cli.Conn())
+	return client.UpdateUserTag(ctx, in, opts...)
 }

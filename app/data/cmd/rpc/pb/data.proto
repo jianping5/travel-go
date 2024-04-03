@@ -38,8 +38,30 @@ message ContentTagCreateResp {
 
 }
 
+// 分析用户行为
+message AnalyzeUserBehaviorReq {
+  int64 UserId = 1;
+  int64 ItemType = 2;
+}
+
+message AnalyzeUserBehaviorResp {
+  repeated int64 ItemIds = 1;
+}
+
+// 更新用户标签
+message UpdateUserTagReq {
+  int64 UserId = 1;
+  string TagJson = 2;
+}
+
+message UpdateUserTagResp {
+
+}
+
 service Data {
   rpc ContentSimilar(ContentSimilarReq) returns(ContentSimilarResp);
   rpc UserLikeContent(UserLikeContentReq) returns(UserLikeContentResp);
   rpc ContentTagCreate(ContentTagCreateReq) returns(ContentTagCreateResp);
+  rpc AnalyzeUserBehavior(AnalyzeUserBehaviorReq) returns(AnalyzeUserBehaviorResp);
+  rpc UpdateUserTag(UpdateUserTagReq) returns(UpdateUserTagResp);
 }
