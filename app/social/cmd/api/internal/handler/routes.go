@@ -19,6 +19,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/api/social/community/dynamic/detail",
+				Handler: CommunityDynamicDetailHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/api/social/community/dynamic/list",
 				Handler: CommunityDynamicListHandler(serverCtx),
 			},
@@ -44,6 +49,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/api/social/copyright/detail",
+				Handler: CopyrightDetailHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/social/copyright/list",
+				Handler: CopyrightListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/api/social/favor/list",
 				Handler: FavorListHandler(serverCtx),
 			},
@@ -56,6 +71,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/api/social/search",
 				Handler: SearchHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/social/userhome/content/list",
+				Handler: UserHomeContentListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/social/userhome/dynamic/list",
+				Handler: UserHomeDynamicListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/social/userhome/list",
+				Handler: UserHomeListHandler(serverCtx),
 			},
 		},
 	)
@@ -130,17 +160,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/api/social/copyright/create",
-				Handler: CopyrightCreateReqHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/social/copyright/detail",
-				Handler: CopyrightDetailReqHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/social/copyright/list",
-				Handler: CopyrightListHandler(serverCtx),
+				Handler: CopyrightCreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
@@ -201,21 +221,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/api/social/message/update",
 				Handler: MessageUpdateHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/social/userhome/content/list",
-				Handler: UserHomeContentListHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/social/userhome/dynamic/list",
-				Handler: UserHomeDynamicListHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/social/userhome/list",
-				Handler: UserHomeListHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),

@@ -3,11 +3,8 @@ package logic
 import (
 	"context"
 	"github.com/jinzhu/copier"
-	"github.com/pkg/errors"
-	"gorm.io/gorm"
 	"travel/app/social/cmd/model"
 	"travel/app/user/cmd/rpc/user"
-	"travel/common/ctxdata"
 	"travel/common/enum"
 
 	"travel/app/social/cmd/api/internal/svc"
@@ -31,7 +28,6 @@ func NewUserHomeContentListLogic(ctx context.Context, svcCtx *svc.ServiceContext
 }
 
 func (l *UserHomeContentListLogic) UserHomeContentList(req *types.UserHomeContentListReq) (resp *types.UserHomeContentListResp, err error) {
-	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	userId := req.UserId
 	offset := (req.PageNum - 1) * req.PageSize
 	var contents []types.ContentView
@@ -47,21 +43,6 @@ func (l *UserHomeContentListLogic) UserHomeContentList(req *types.UserHomeConten
 			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId})
 			_ = copier.Copy(&userInfoView, &info)
 			contents[i].UserInfo = userInfoView
-
-			// 是否点赞
-			var isLiked bool
-			l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.ARTICLE, a.Id).Scan(&isLiked)
-			contents[i].IsLiked = isLiked
-
-			// 是否收藏
-			var favor model.Favor
-			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.ARTICLE, a.Id).First(&favor).Error; err != nil {
-				if errors.Is(err, gorm.ErrRecordNotFound) {
-					contents[i].IsFavored = false
-				}
-			} else {
-				contents[i].IsFavored = true
-			}
 		}
 		break
 	case enum.VIDEO:
@@ -74,21 +55,6 @@ func (l *UserHomeContentListLogic) UserHomeContentList(req *types.UserHomeConten
 			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId})
 			_ = copier.Copy(&userInfoView, &info)
 			contents[i].UserInfo = userInfoView
-
-			// 是否点赞
-			var isLiked bool
-			l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, v.Id).Scan(&isLiked)
-			contents[i].IsLiked = isLiked
-
-			// 是否收藏
-			var favor model.Favor
-			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, v.Id).First(&favor).Error; err != nil {
-				if errors.Is(err, gorm.ErrRecordNotFound) {
-					contents[i].IsFavored = false
-				}
-			} else {
-				contents[i].IsFavored = true
-			}
 		}
 		break
 	default:

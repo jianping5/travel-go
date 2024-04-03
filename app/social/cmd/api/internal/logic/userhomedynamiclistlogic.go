@@ -56,10 +56,15 @@ func (l *UserHomeDynamicListLogic) UserHomeDynamicList(req *types.UserHomeDynami
 		l.svcCtx.DB.Take(&model.Community{}).Where("id = ?", d.CommunityId).Scan(&communityView)
 		dynamics[i].Community = communityView
 
-		// 是否点赞
-		var isLiked bool
-		l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.DYNAMIC, d.Id).Scan(&isLiked)
-		dynamics[i].IsLiked = isLiked
+		// 未登录
+		if loginUserId == 0 {
+			dynamics[i].IsLiked = false
+		} else {
+			// 是否点赞
+			var isLiked bool
+			l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.DYNAMIC, d.Id).Scan(&isLiked)
+			dynamics[i].IsLiked = isLiked
+		}
 	}
 
 	return &types.UserHomeDynamicListResp{

@@ -30,7 +30,7 @@ func (l *ContentSimilarLogic) ContentSimilar(in *pb.ContentSimilarReq) (*pb.Cont
 		return &pb.ContentSimilarResp{}, nil
 	}
 	var itemIds []int64
-	l.svcCtx.DB.Model(&model.ContentTag{}).Select("item_id").Where("item_type = ? and tag in (?)", in.ItemType, tags).Limit(10).Scan(&itemIds)
+	l.svcCtx.DB.Model(&model.ContentTag{}).Select("item_id").Where("item_type = ? and name in (?)", in.ItemType, tags).Limit(10).Scan(&itemIds)
 
 	return &pb.ContentSimilarResp{
 		ItemIds: itemIds,

@@ -1,4 +1,4 @@
-Name: social.rpc
+Name: social-rpc
 ListenOn: 0.0.0.0:2002
 Mode: dev
 

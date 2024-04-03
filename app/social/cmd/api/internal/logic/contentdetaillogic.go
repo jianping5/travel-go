@@ -52,21 +52,21 @@ func (l *ContentDetailLogic) ContentDetail(req *types.ContentDetailReq) (resp *t
 	if loginUserId == 0 {
 		content.IsFavored = false
 		content.IsLiked = false
-	}
-
-	// 是否点赞
-	var isLiked bool
-	l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, content.Id).Scan(&isLiked)
-	content.IsLiked = isLiked
-
-	// 是否收藏
-	var favor model.Favor
-	if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, content.Id).First(&favor).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			content.IsFavored = false
-		}
 	} else {
-		content.IsFavored = true
+		// 是否点赞
+		var isLiked bool
+		l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, content.Id).Scan(&isLiked)
+		content.IsLiked = isLiked
+
+		// 是否收藏
+		var favor model.Favor
+		if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, content.Id).First(&favor).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				content.IsFavored = false
+			}
+		} else {
+			content.IsFavored = true
+		}
 	}
 
 	return &types.ContentDetailResp{

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/pkg/errors"
+	"travel/app/data/cmd/rpc/data"
 	"travel/app/social/cmd/model"
 	"travel/common/ctxdata"
 	"travel/common/enum"
@@ -49,6 +50,13 @@ func (l *ContentCreateLogic) ContentCreate(req *types.ContentCreateReq) error {
 			return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "创建失败")
 		}
 
+		// 插入内容标签表
+		l.svcCtx.DataRpc.ContentTagCreate(l.ctx, &data.ContentTagCreateReq{
+			Name:     req.Tag,
+			ItemType: int32(enum.VIDEO),
+			ItemId:   content.Id,
+		})
+
 		// todo：给关注该用户的人发送消息
 		break
 	case enum.VIDEO:
@@ -64,6 +72,13 @@ func (l *ContentCreateLogic) ContentCreate(req *types.ContentCreateReq) error {
 		if err := l.svcCtx.DB.Create(&content).Error; err != nil {
 			return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "创建失败")
 		}
+
+		// 插入内容标签表
+		l.svcCtx.DataRpc.ContentTagCreate(l.ctx, &data.ContentTagCreateReq{
+			Name:     req.Tag,
+			ItemType: int32(enum.VIDEO),
+			ItemId:   content.Id,
+		})
 
 		// todo：给关注该用户的人发送消息
 		break

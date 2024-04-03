@@ -50,12 +50,12 @@ func (l *ContentSimilarLogic) ContentSimilar(req *types.ContentSimilarReq) (resp
 
 			// 是否点赞
 			var isLiked bool
-			l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.ARTICLE, c.Id).Scan(&isLiked)
+			l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.ARTICLE, c.Id).Scan(&isLiked)
 			contents[i].IsLiked = isLiked
 
 			// 是否收藏
 			var favor model.Favor
-			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.ARTICLE, c.Id).First(&favor).Error; err != nil {
+			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.ARTICLE, c.Id).First(&favor).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					contents[i].IsFavored = false
 				}
@@ -74,12 +74,12 @@ func (l *ContentSimilarLogic) ContentSimilar(req *types.ContentSimilarReq) (resp
 
 			// 是否点赞
 			var isLiked bool
-			l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.VIDEO, c.Id).Scan(&isLiked)
+			l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, c.Id).Scan(&isLiked)
 			contents[i].IsLiked = isLiked
 
 			// 是否收藏
 			var favor model.Favor
-			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.VIDEO, c.Id).First(&favor).Error; err != nil {
+			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, c.Id).First(&favor).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					contents[i].IsFavored = false
 				}

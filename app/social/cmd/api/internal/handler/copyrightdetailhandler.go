@@ -10,16 +10,16 @@ import (
 	"travel/app/social/cmd/api/internal/types"
 )
 
-func CopyrightCreateReqHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func CopyrightDetailHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.CopyrightCreateReq
+		var req types.CopyrightDetailReq
 		if err := httpx.Parse(r, &req); err != nil {
 			result.ParamErrorResult(r, w, err)
 			return
 		}
 
-		l := logic.NewCopyrightCreateReqLogic(r.Context(), svcCtx)
-		err := l.CopyrightCreateReq(&req)
-		result.HttpResult(r, w, nil, err)
+		l := logic.NewCopyrightDetailReqLogic(r.Context(), svcCtx)
+		resp, err := l.CopyrightDetailReq(&req)
+		result.HttpResult(r, w, resp, err)
 	}
 }

@@ -1,4 +1,4 @@
-Name: user.rpc
+Name: user-rpc
 ListenOn: 0.0.0.0:2001
 Mode: dev
 

@@ -1,5 +1,5 @@
-Name: data.rpc
-ListenOn: 0.0.0.0:8080
+Name: data-rpc
+ListenOn: 0.0.0.0:2005
 Mode: dev
 
 DB:

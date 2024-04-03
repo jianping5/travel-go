@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	"travel/app/data/cmd/model"
 
 	"travel/app/data/cmd/rpc/internal/svc"
@@ -34,6 +35,8 @@ func (l *ContentTagCreateLogic) ContentTagCreate(in *pb.ContentTagCreateReq) (*p
 		contentTag.ItemId = in.ItemId
 		contentTags = append(contentTags, contentTag)
 	}
+	// todo:test
+	fmt.Println(contentTags)
 	l.svcCtx.DB.Create(contentTags)
 
 	return &pb.ContentTagCreateResp{}, nil

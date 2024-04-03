@@ -77,6 +77,14 @@ type CommunityDynamicDeleteReq struct {
 	Id int64 `json:"id"`
 }
 
+type CommunityDynamicDetailReq struct {
+	Id int64 `json:"id"`
+}
+
+type CommunityDynamicDetailResp struct {
+	DynamicDetail CommunityDynamicView `json:"dynamicDetail"`
+}
+
 type CommunityDynamicListReq struct {
 	Type         int  `json:"type"`
 	JoinedSwitch bool `json:"joinedSwitch"`

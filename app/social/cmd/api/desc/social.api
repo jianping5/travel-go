@@ -135,6 +135,9 @@ type (
 	CommunityDynamicDeleteReq {
 		Id int64 `json:"id"`
 	}
+	CommunityDynamicDetailReq {
+		Id int64 `json:"id"`
+	}
 	CommunityDynamicListReq {
 		Type         int  `json:"type"`
 		JoinedSwitch bool `json:"joinedSwitch"`
@@ -154,6 +157,9 @@ type (
 		CommentCount int           `json:"commentCount"`
 		CreateTime   string        `json:"createTime"`
 		IsLiked      bool          `json:"isLiked"`
+	}
+	CommunityDynamicDetailResp {
+		DynamicDetail CommunityDynamicView `json:"dynamicDetail"`
 	}
 	CommunityDynamicListResp {
 		List  []CommunityDynamicView `json:"list"`
@@ -394,6 +400,9 @@ service Social {
 	@handler FavorList
 	post /api/social/favor/list (FavorListReq) returns (FavorListResp)
 
+	@handler CommunityDynamicDetail
+	post /api/social/community/dynamic/detail (CommunityDynamicDetailReq) returns (CommunityDynamicDetailResp)
+
 	@handler CommunityDynamicList
 	post /api/social/community/dynamic/list (CommunityDynamicListReq) returns (CommunityDynamicListResp)
 
@@ -409,11 +418,26 @@ service Social {
 	@handler CommentList
 	post /api/social/comment/list (CommentListReq) returns (CommentListResp)
 
+	@handler UserHomeList
+	post /api/social/userhome/list (UserHomeListReq) returns (UserHomeListResp)
+
+	@handler UserHomeContentList
+	post /api/social/userhome/content/list (UserHomeContentListReq) returns (UserHomeContentListResp)
+
+	@handler UserHomeDynamicList
+	post /api/social/userhome/dynamic/list (UserHomeDynamicListReq) returns (UserHomeDynamicListResp)
+
 	@handler ContentSimilar
 	post /api/social/content/similar (ContentSimilarReq) returns (ContentSimilarResp)
 
 	@handler Search
 	post /api/social/search (SearchReq) returns (SearchResp)
+
+	@handler CopyrightDetail
+	post /api/social/copyright/detail (CopyrightDetailReq) returns (CopyrightDetailResp)
+
+	@handler CopyrightList
+	post /api/social/copyright/list (CopyrightListReq) returns (CopyrightListResp)
 }
 
 @server (
@@ -492,25 +516,10 @@ service Social {
 	@handler MessageList
 	post /api/social/message/list returns (MessageListResp)
 
-	@handler UserHomeList
-	post /api/social/userhome/list (UserHomeListReq) returns (UserHomeListResp)
-
-	@handler UserHomeContentList
-	post /api/social/userhome/content/list (UserHomeContentListReq) returns (UserHomeContentListResp)
-
-	@handler UserHomeDynamicList
-	post /api/social/userhome/dynamic/list (UserHomeDynamicListReq) returns (UserHomeDynamicListResp)
-
 	@handler Like
 	post /api/social/like (LikeReq)
 
-	@handler CopyrightCreateReq
+	@handler CopyrightCreate
 	post /api/social/copyright/create (CopyrightCreateReq)
-
-	@handler CopyrightDetailReq
-	post /api/social/copyright/detail (CopyrightDetailReq) returns (CopyrightDetailResp)
-
-	@handler CopyrightList
-	post /api/social/copyright/list (CopyrightListReq) returns (CopyrightListResp)
 }
 
