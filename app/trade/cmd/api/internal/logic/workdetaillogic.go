@@ -7,6 +7,7 @@ import (
 	"travel/app/social/cmd/rpc/social"
 	"travel/app/trade/cmd/model"
 	"travel/app/user/cmd/rpc/user"
+	"travel/common/ctxdata"
 	"travel/common/xerr"
 
 	"travel/app/trade/cmd/api/internal/svc"
@@ -30,6 +31,7 @@ func NewWorkDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *WorkDe
 }
 
 func (l *WorkDetailLogic) WorkDetail(req *types.WorkDetailReq) (resp *types.WorkDetailResp, err error) {
+	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	var work types.WorkView
 	l.svcCtx.DB.Model(&model.Work{}).Where("id = ?", req.Id).Scan(&work)
 	if work == (types.WorkView{}) {
@@ -37,7 +39,7 @@ func (l *WorkDetailLogic) WorkDetail(req *types.WorkDetailReq) (resp *types.Work
 	}
 
 	var userInfoView types.UserInfoView
-	userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: work.UserId})
+	userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: work.UserId, LoginUserId: loginUserId})
 	_ = copier.Copy(userInfoView, userInfo)
 
 	var copyright types.CopyrightView

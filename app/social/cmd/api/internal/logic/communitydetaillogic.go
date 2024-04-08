@@ -6,6 +6,7 @@ import (
 	"github.com/pkg/errors"
 	"travel/app/social/cmd/model"
 	"travel/app/user/cmd/rpc/pb/pb"
+	"travel/common/ctxdata"
 	"travel/common/tool"
 	"travel/common/xerr"
 
@@ -30,6 +31,7 @@ func NewCommunityDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *C
 }
 
 func (l *CommunityDetailLogic) CommunityDetail(req *types.CommunityDetailReq) (resp *types.CommunityDetailResp, err error) {
+	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	// 获取社区信息
 	var community model.Community
 	if affected := l.svcCtx.DB.Take(&model.Community{}, "id = ?", req.Id).Scan(&community).RowsAffected; affected == 0 {
@@ -41,7 +43,7 @@ func (l *CommunityDetailLogic) CommunityDetail(req *types.CommunityDetailReq) (r
 
 	// 获取用户信息
 	userId := community.UserId
-	userInfo, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &pb.UserInfoReq{Id: userId})
+	userInfo, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &pb.UserInfoReq{Id: userId, LoginUserId: loginUserId})
 	if err != nil {
 		return nil, err
 	}

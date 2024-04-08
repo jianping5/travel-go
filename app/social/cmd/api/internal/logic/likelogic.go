@@ -38,7 +38,7 @@ func (l *LikeLogic) Like(req *types.LikeReq) error {
 	}
 	// 简陋写法（如果点赞记录之前存在，则将其删除）
 	var id int64
-	if affected := l.svcCtx.DB.Model(&model.Like{}).Select("id").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, req.ItemType, req.ItemId).Scan(&id).RowsAffected; affected != 0 {
+	if l.svcCtx.DB.Model(&model.Like{}).Select("id").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, req.ItemType, req.ItemId).Scan(&id); id != 0 {
 		l.svcCtx.DB.Delete(&model.Like{}, "id = ?", id)
 	}
 	l.svcCtx.DB.Create(like)

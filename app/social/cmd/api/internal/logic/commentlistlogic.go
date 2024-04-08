@@ -30,6 +30,7 @@ func NewCommentListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Comme
 
 func (l *CommentListLogic) CommentList(req *types.CommentListReq) (resp *types.CommentListResp, err error) {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
+
 	offset := (req.PageNum - 1) * req.PageSize
 	var total int64
 	var topComments []types.CommentView
@@ -65,8 +66,8 @@ func (l *CommentListLogic) SetUserInfo(loginUserId int64, comments *[]types.Comm
 	for i, c := range *comments {
 		var userInfoView types.UserInfoView
 		var parentUserInfoView types.UserInfoView
-		userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId})
-		parentUserInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.ParentUserId})
+		userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId, LoginUserId: loginUserId})
+		parentUserInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.ParentUserId, LoginUserId: loginUserId})
 		_ = copier.Copy(&userInfoView, userInfo)
 		_ = copier.Copy(&parentUserInfoView, parentUserInfo)
 		(*comments)[i].UserInfo = userInfoView
@@ -75,6 +76,7 @@ func (l *CommentListLogic) SetUserInfo(loginUserId int64, comments *[]types.Comm
 		// 是否点赞
 		var isLiked bool
 		l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.COMMENT, c.Id).Scan(&isLiked)
+
 		(*comments)[i].IsLiked = isLiked
 	}
 }

@@ -7,6 +7,7 @@ import (
 	"travel/app/user/cmd/api/internal/svc"
 	"travel/app/user/cmd/api/internal/types"
 	"travel/app/user/cmd/rpc/user"
+	"travel/common/ctxdata"
 )
 
 type UserInfoLogic struct {
@@ -25,12 +26,15 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 
 func (l *UserInfoLogic) UserInfo(req *types.UserInfoReq) (resp *types.UserInfoResp, err error) {
 	userId := req.Id
+	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 
 	// 从当前登录态中获取
-	// userId = ctxdata.GetUidFromCtx(l.ctx)
-
+	if userId == 0 {
+		userId = loginUserId
+	}
 	userInfoResp, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{
-		Id: userId,
+		Id:          userId,
+		LoginUserId: loginUserId,
 	})
 	if err != nil {
 		return nil, err

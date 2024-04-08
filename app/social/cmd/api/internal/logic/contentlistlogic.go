@@ -63,7 +63,7 @@ func (l *ContentListLogic) ContentList(req *types.ContentListReq) (resp *types.C
 
 		break
 	case enum.RecentContent:
-		tx := l.svcCtx.DB.Model(&model.Content{}).Order("createTime DESC")
+		tx := l.svcCtx.DB.Model(&model.Content{}).Order("create_time DESC")
 		// 记录总数
 		countTx := tx
 		countTx.Count(&total)
@@ -74,7 +74,7 @@ func (l *ContentListLogic) ContentList(req *types.ContentListReq) (resp *types.C
 		break
 	case enum.ArticleContent:
 		// todo：文章
-		tx := l.svcCtx.DB.Model(&model.Content{}).Where("itemType = ?", enum.ARTICLE)
+		tx := l.svcCtx.DB.Model(&model.Content{}).Where("item_type = ?", enum.ARTICLE)
 		// 记录总数
 		countTx := tx
 		countTx.Count(&total)
@@ -85,7 +85,7 @@ func (l *ContentListLogic) ContentList(req *types.ContentListReq) (resp *types.C
 		break
 	case enum.VideoContent:
 		// 视频
-		tx := l.svcCtx.DB.Model(&model.Content{}).Where("itemType = ?", enum.VIDEO)
+		tx := l.svcCtx.DB.Model(&model.Content{}).Where("item_type = ?", enum.VIDEO)
 		// 记录总数
 		countTx := tx
 		countTx.Count(&total)
@@ -108,7 +108,7 @@ func (l *ContentListLogic) SetBasicInfo(contents *[]types.ContentView, loginUser
 		// 用户信息
 		var userInfoView types.UserInfoView
 		userId := a.UserId
-		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId})
+		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId, LoginUserId: loginUserId})
 		_ = copier.Copy(&userInfoView, &info)
 		(*contents)[i].UserInfo = userInfoView
 
@@ -120,12 +120,12 @@ func (l *ContentListLogic) SetBasicInfo(contents *[]types.ContentView, loginUser
 
 		// 是否点赞
 		var isLiked bool
-		l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemId = ?", loginUserId, a.Id).Scan(&isLiked)
+		l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_id = ?", loginUserId, a.Id).Scan(&isLiked)
 		(*contents)[i].IsLiked = isLiked
 
 		// 是否收藏
 		var favor model.Favor
-		if err := l.svcCtx.DB.Model(&model.Favor{}).Where("userId = ? and itemType = ? and itemId = ?", loginUserId, a.Id).First(&favor).Error; err != nil {
+		if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, a.Id).First(&favor).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				(*contents)[i].IsFavored = false
 			}

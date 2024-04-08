@@ -41,7 +41,8 @@ func (l *CommunityDynamicDetailLogic) CommunityDynamicDetail(req *types.Communit
 	// 用户信息
 	var userInfoView types.UserInfoView
 	userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{
-		Id: dynamic.UserId,
+		Id:          dynamic.UserId,
+		LoginUserId: loginUserId,
 	})
 	_ = copier.Copy(&userInfoView, &userInfo)
 	dynamicView.UserInfo = userInfoView

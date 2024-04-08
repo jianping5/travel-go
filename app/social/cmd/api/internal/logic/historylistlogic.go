@@ -46,7 +46,7 @@ func (l *HistoryListLogic) HistoryList(req *types.HistoryListReq) (resp *types.H
 		historys[i].Title = content.Title
 		historys[i].CoverUrl = content.CoverUrl
 		historys[i].LikeCount = content.LikeCount
-		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: content.UserId})
+		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: content.UserId, LoginUserId: loginUserId})
 		historys[i].Account = info.Account
 	}
 

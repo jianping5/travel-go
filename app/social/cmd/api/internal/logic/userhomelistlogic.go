@@ -5,6 +5,7 @@ import (
 	"github.com/jinzhu/copier"
 	"travel/app/social/cmd/model"
 	"travel/app/user/cmd/rpc/user"
+	"travel/common/ctxdata"
 	"travel/common/enum"
 
 	"travel/app/social/cmd/api/internal/svc"
@@ -60,11 +61,12 @@ func (l *UserHomeListLogic) UserHomeList(req *types.UserHomeListReq) (resp *type
 }
 
 func (l *UserHomeListLogic) SetContentInfo(contents *[]types.ContentView) {
+	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	for i, v := range *contents {
 		// 用户信息
 		var userInfoView types.UserInfoView
 		userId := v.UserId
-		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId})
+		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId, LoginUserId: loginUserId})
 		_ = copier.Copy(&userInfoView, &info)
 		(*contents)[i].UserInfo = userInfoView
 	}

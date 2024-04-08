@@ -9,10 +9,11 @@ info (
 type (
 	// 用户
 	UserInfoView {
-		Id      int64  `json:"id"`
-		Account string `json:"account"`
-		Avatar  string `json:"avatar"`
-		Email   string `json:"email"`
+		Id         int64  `json:"id"`
+		Account    string `json:"account"`
+		Avatar     string `json:"avatar"`
+		Email      string `json:"email"`
+		IsFollowed bool   `json:"isFollowed"`
 	}
 	// 收藏
 	FavoriteCreateReq {
@@ -39,6 +40,10 @@ type (
 	}
 	FavorDeleteReq {
 		Id int64 `json:"id"`
+	}
+	FavorCancelReq {
+		FavoriteId int64 `json:"favoriteId"`
+		ItemId     int64 `json:"itemId"`
 	}
 	FavorListReq {
 		FavoriteId int64 `json:"favoriteId"`
@@ -255,6 +260,7 @@ type (
 		IsLiked         bool         `json:"isLiked"`
 		LikeCount       int          `json:"likeCount"`
 		ReplyCount      int          `json:"replyCount"`
+		CreateTime      string       `json:"createTime"`
 	}
 	CommentListView {
 		TopComment  CommentView   `json:"topComment"`
@@ -368,9 +374,8 @@ type (
 	}
 	// 推荐
 	ContentSimilarReq {
-		Tag      []string `json:"tag"`
-		ItemType int      `json:"itemType"`
-		ItemId   int64    `json:"itemId"`
+		ItemType int   `json:"itemType"`
+		ItemId   int64 `json:"itemId"`
 	}
 	ContentSimilarResp {
 		List []ContentView `json:"list"`
@@ -393,6 +398,9 @@ type (
 	}
 )
 
+@server (
+	jwt: Auth
+)
 service Social {
 	@handler FavoriteList
 	post /api/social/favorite/list (FavoriteListReq) returns (FavoriteListResp)
@@ -452,6 +460,9 @@ service Social {
 
 	@handler Favor
 	post /api/social/favor/create (FavorReq)
+
+	@handler FavorCancel
+	post /api/social/favor/cancle (FavorCancelReq)
 
 	@handler FavorDelete
 	post /api/social/favor/delete (FavorDeleteReq)

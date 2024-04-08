@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"gorm.io/datatypes"
+	"time"
+)
 
 type BaseModel struct {
 	Id         int64     `gorm:"primary_key"`
@@ -33,8 +36,8 @@ func (ContentTag) TableName() string {
 
 type UserTag struct {
 	BaseModel
-	UserId int64    `json:"userId"`
-	Tag    []string `gorm:"type:json" json:"tag"`
+	UserId int64          `json:"userId"`
+	Tag    datatypes.JSON `gorm:"type:json" json:"tag"`
 }
 
 func (UserTag) TableName() string {

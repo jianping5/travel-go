@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/jinzhu/copier"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -33,10 +34,17 @@ func NewContentSimilarLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Co
 
 func (l *ContentSimilarLogic) ContentSimilar(req *types.ContentSimilarReq) (resp *types.ContentSimilarResp, err error) {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
+
+	// 根据 itemType + itemId 获取 tags
+	var tag string
+	var tags []string
+	l.svcCtx.DB.Model(&model.Content{}).Select("tag").Where("id = ?", req.ItemId).Scan(&tag)
+	_ = json.Unmarshal([]byte(tag), &tags)
+
 	similar, err := l.svcCtx.DataRpc.ContentSimilar(l.ctx, &data.ContentSimilarReq{
 		ItemType: int32(req.ItemType),
 		ItemId:   req.ItemId,
-		Tag:      req.Tag,
+		Tag:      tags,
 	})
 	var contents []types.ContentView
 	switch enum.ItemType(req.ItemType) {
@@ -44,7 +52,7 @@ func (l *ContentSimilarLogic) ContentSimilar(req *types.ContentSimilarReq) (resp
 		l.svcCtx.DB.Model(&model.Content{}).Where("id IN (?)", similar.ItemIds).Scan(&contents)
 		for i, c := range contents {
 			var userInfoView types.UserInfoView
-			userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId})
+			userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId, LoginUserId: loginUserId})
 			_ = copier.Copy(&userInfoView, &userInfo)
 			contents[i].UserInfo = userInfoView
 
@@ -68,7 +76,7 @@ func (l *ContentSimilarLogic) ContentSimilar(req *types.ContentSimilarReq) (resp
 		l.svcCtx.DB.Model(&model.Content{}).Where("id IN (?)", similar.ItemIds).Scan(&contents)
 		for i, c := range contents {
 			var userInfoView types.UserInfoView
-			userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId})
+			userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId, LoginUserId: loginUserId})
 			_ = copier.Copy(&userInfoView, &userInfo)
 			contents[i].UserInfo = userInfoView
 

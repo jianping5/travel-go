@@ -26,7 +26,7 @@ func NewCopyrightCreateReqLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 func (l *CopyrightCreateReqLogic) CopyrightCreateReq(req *types.CopyrightCreateReq) error {
 	//loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	// 用户信息
-	//userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: loginUserId})
+	//userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: loginUserId, LoginUserId: loginUserId})
 	// 作品信息
 	var content model.Content
 	l.svcCtx.DB.Model(&model.Content{}).Select("title", "description", "coverUrl", "createTime").Where("id = ?", req.ItemId).Scan(&content)

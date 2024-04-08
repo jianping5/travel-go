@@ -4,6 +4,7 @@ import (
 	"context"
 	"travel/app/social/cmd/model"
 	"travel/app/user/cmd/rpc/user"
+	"travel/common/ctxdata"
 	"travel/common/tool"
 
 	"travel/app/social/cmd/api/internal/svc"
@@ -27,6 +28,7 @@ func NewFavorListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FavorLi
 }
 
 func (l *FavorListLogic) FavorList(req *types.FavorListReq) (resp *types.FavorListResp, err error) {
+	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	var favors []types.FavorView
 	l.svcCtx.DB.Model(&model.Favor{}).Where("favorite_id = ?", req.FavoriteId).Scan(&favors)
 	// 注入内容信息+用户信息
@@ -36,7 +38,7 @@ func (l *FavorListLogic) FavorList(req *types.FavorListReq) (resp *types.FavorLi
 		favors[i].Title = content.Title
 		favors[i].CoverUrl = content.CoverUrl
 		favors[i].LikeCount = content.LikeCount
-		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: content.UserId})
+		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: content.UserId, LoginUserId: loginUserId})
 		favors[i].Account = info.Account
 		favors[i].CreateTime = tool.TimeToString(content.CreateTime)
 	}

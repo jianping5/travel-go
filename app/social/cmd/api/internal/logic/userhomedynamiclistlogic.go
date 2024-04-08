@@ -47,7 +47,8 @@ func (l *UserHomeDynamicListLogic) UserHomeDynamicList(req *types.UserHomeDynami
 		// 用户信息
 		var userInfoView types.UserInfoView
 		userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{
-			Id: userId,
+			Id:          userId,
+			LoginUserId: loginUserId,
 		})
 		_ = copier.Copy(&userInfoView, &userInfo)
 		dynamics[i].UserInfo = userInfoView

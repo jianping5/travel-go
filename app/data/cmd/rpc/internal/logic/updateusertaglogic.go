@@ -2,6 +2,9 @@ package logic
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"gorm.io/datatypes"
+	"gorm.io/gorm"
 	"travel/app/data/cmd/model"
 
 	"travel/app/data/cmd/rpc/internal/svc"
@@ -25,10 +28,19 @@ func NewUpdateUserTagLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upd
 }
 
 func (l *UpdateUserTagLogic) UpdateUserTag(in *pb.UpdateUserTagReq) (*pb.UpdateUserTagResp, error) {
-	// todo: add your logic here and delete this line
 	userId := in.UserId
 	tagJson := in.TagJson
-	l.svcCtx.DB.Model(model.UserTag{}).Update("tag", tagJson).Where("user_id = ?", userId)
+	err := l.svcCtx.DB.Model(model.UserTag{}).Select("id").Where("user_id = ?", userId).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			var userTag model.UserTag
+			userTag.UserId = userId
+			userTag.Tag = datatypes.JSON(tagJson)
+			l.svcCtx.DB.Create(&userTag)
+		}
+	} else {
+		l.svcCtx.DB.Model(model.UserTag{}).Where("user_id = ?", userId).Update("tag", tagJson)
+	}
 
 	return &pb.UpdateUserTagResp{}, nil
 }

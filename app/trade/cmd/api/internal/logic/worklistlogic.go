@@ -5,6 +5,7 @@ import (
 	"travel/app/social/cmd/rpc/social"
 	"travel/app/trade/cmd/model"
 	"travel/app/user/cmd/rpc/user"
+	"travel/common/ctxdata"
 	"travel/common/enum"
 
 	"travel/app/trade/cmd/api/internal/svc"
@@ -28,6 +29,7 @@ func NewWorkListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *WorkList
 }
 
 func (l *WorkListLogic) WorkList(req *types.WorkListReq) (resp *types.WorkListResp, err error) {
+	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	offset := (req.PageNum - 1) * req.PageSize
 	var works []types.WorkView
 	var total int64
@@ -40,7 +42,7 @@ func (l *WorkListLogic) WorkList(req *types.WorkListReq) (resp *types.WorkListRe
 	tx.Offset(offset).Limit(req.PageSize).Scan(&works)
 
 	for i, w := range works {
-		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: w.UserId})
+		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: w.UserId, LoginUserId: loginUserId})
 		works[i].Avatar = info.Avatar
 		works[i].Account = info.Account
 

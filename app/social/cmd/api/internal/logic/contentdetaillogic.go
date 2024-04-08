@@ -50,7 +50,7 @@ func (l *ContentDetailLogic) ContentDetail(req *types.ContentDetailReq) (resp *t
 	// 用户信息
 	var userInfoView types.UserInfoView
 	userId := content.UserId
-	info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId})
+	info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId, LoginUserId: loginUserId})
 
 	_ = copier.Copy(&userInfoView, &info)
 	content.UserInfo = userInfoView

@@ -24,7 +24,7 @@ func main() {
 	// 取消默认日志打印
 	logx.DisableStat()
 
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithCors())
 	defer server.Stop()
 
 	ctx := svc.NewServiceContext(c)

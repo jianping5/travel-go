@@ -43,6 +43,11 @@ func (l *CommentCreateLogic) CommentCreate(req *types.CommentCreateReq) error {
 		return errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "创建失败")
 	}
 
+	// 更新回复量
+	if req.TopId != 0 {
+		l.svcCtx.DB.Model(&model.Comment{}).Where("id = ?", comment.TopId).Update("reply_count", gorm.Expr("reply_count + ?", 1))
+	}
+
 	// 更新对应评论量
 	switch enum.ItemType(req.CommentItemType) {
 	case enum.VIDEO:

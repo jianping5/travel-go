@@ -88,6 +88,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: UserHomeListHandler(serverCtx),
 			},
 		},
+		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
 	)
 
 	server.AddRoutes(
@@ -161,6 +162,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/api/social/copyright/create",
 				Handler: CopyrightCreateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/social/favor/cancle",
+				Handler: FavorCancelHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,

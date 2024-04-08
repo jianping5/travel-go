@@ -38,10 +38,11 @@ type RecordView struct {
 }
 
 type UserInfoView struct {
-	UserId  int64  `json:"userId"`
-	Account string `json:"account"`
-	Email   string `json:"email"`
-	Avatar  string `json:"avatar"`
+	UserId     int64  `json:"userId"`
+	Account    string `json:"account"`
+	Email      string `json:"email"`
+	Avatar     string `json:"avatar"`
+	IsFollowed bool   `json:"isFollowed"`
 }
 
 type WorkCreateReq struct {

@@ -42,7 +42,7 @@ func (l *SearchLogic) Search(req *types.SearchReq) (resp *types.SearchResp, err 
 			// 用户信息
 			var userInfoView types.UserInfoView
 			userId := a.UserId
-			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId})
+			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId, LoginUserId: loginUserId})
 			_ = copier.Copy(&userInfoView, &info)
 			contents[i].UserInfo = userInfoView
 
@@ -71,7 +71,7 @@ func (l *SearchLogic) Search(req *types.SearchReq) (resp *types.SearchResp, err 
 			// 用户信息
 			var userInfoView types.UserInfoView
 			userId := a.UserId
-			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId})
+			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId, LoginUserId: loginUserId})
 			_ = copier.Copy(&userInfoView, &info)
 			contents[i].UserInfo = userInfoView
 
@@ -119,7 +119,8 @@ func (l *SearchLogic) Search(req *types.SearchReq) (resp *types.SearchResp, err 
 			// 用户信息
 			var userInfoView types.UserInfoView
 			userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{
-				Id: loginUserId,
+				Id:          loginUserId,
+				LoginUserId: loginUserId,
 			})
 			_ = copier.Copy(&userInfoView, &userInfo)
 			dynamics[i].UserInfo = userInfoView
@@ -238,6 +239,7 @@ func (l *SearchLogic) getSortedDynamicList(sortType, offset, pageSize int, keywo
 }
 
 func (l *SearchLogic) getSortedCopyrightList(sortType, offset, pageSize int, keyword string) ([]types.CopyrightView, error) {
+	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	var copyrights []types.CopyrightView
 	switch enum.SortType(sortType) {
 	case enum.Newest:
@@ -261,7 +263,7 @@ func (l *SearchLogic) getSortedCopyrightList(sortType, offset, pageSize int, key
 			copyrights[i].CoverUrl = article.CoverUrl
 
 			// 用户信息
-			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId})
+			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId, LoginUserId: loginUserId})
 			copyrights[i].Account = info.Account
 			copyrights[i].CoverUrl = info.Avatar
 			break
@@ -271,7 +273,7 @@ func (l *SearchLogic) getSortedCopyrightList(sortType, offset, pageSize int, key
 			copyrights[i].Title = video.Title
 			copyrights[i].CoverUrl = video.CoverUrl
 			// 用户信息
-			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId})
+			info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId, LoginUserId: loginUserId})
 			copyrights[i].Account = info.Account
 			copyrights[i].CoverUrl = info.Avatar
 			break

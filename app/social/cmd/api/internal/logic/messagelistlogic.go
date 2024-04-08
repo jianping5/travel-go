@@ -36,7 +36,7 @@ func (l *MessageListLogic) MessageList() (resp *types.MessageListResp, err error
 		var messageView types.MessageView
 		_ = copier.Copy(&messageView, &m)
 		// 用户信息
-		userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: m.MessageUserId})
+		userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: m.MessageUserId, LoginUserId: loginUserId})
 		messageView.Account = userInfo.Account
 		// 内容信息
 		var content model.Content

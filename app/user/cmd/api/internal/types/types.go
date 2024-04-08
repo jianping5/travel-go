@@ -33,6 +33,7 @@ type UserInfoResp struct {
 	Email      string `json:"email"`
 	Avatar     string `json:"avatar"'`
 	Signature  string `json:"signature"`
+	IsFollowed bool   `json:"isFollowed"`
 	CreateTime string `json:"createTime" format:"date-time"`
 	UpdateTime string `json:"updateTime" format:"date-time"`
 }

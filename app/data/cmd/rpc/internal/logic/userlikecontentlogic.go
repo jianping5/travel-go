@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 	"travel/app/data/cmd/model"
@@ -28,12 +29,15 @@ func NewUserLikeContentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *U
 
 func (l *UserLikeContentLogic) UserLikeContent(in *pb.UserLikeContentReq) (*pb.UserLikeContentResp, error) {
 	offset := (in.PageNum - 1) * in.PageSize
-	var tags []string
-	if err := l.svcCtx.DB.Model(&model.UserTag{}).Select("tag").Where("user_id = ?", in.UserId).Scan(&tags).Error; err != nil {
+	var tagJson string
+	if err := l.svcCtx.DB.Model(&model.UserTag{}).Select("tag").Where("user_id = ?", in.UserId).Scan(&tagJson).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return &pb.UserLikeContentResp{}, nil
 		}
 	}
+	var tags []string
+	_ = json.Unmarshal([]byte(tagJson), &tags)
+
 	var total int64
 	var itemIds []int64
 	tx := l.svcCtx.DB.Model(&model.ContentTag{}).Select("id").Where("name IN (?)", tags)

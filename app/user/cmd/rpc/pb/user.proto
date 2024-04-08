@@ -29,6 +29,7 @@ message RegisterResp {
 // 用户信息
 message UserInfoReq {
   int64 Id = 1;
+  int64 LoginUserId = 2;
 }
 message UserInfoResp {
   int64 Id = 1;
@@ -38,6 +39,7 @@ message UserInfoResp {
   string Avatar = 5;
   string CreateTime = 6;
   string UpdateTime = 7;
+  bool isFollowed = 8;
 }
 
 message GenerateTokenReq {

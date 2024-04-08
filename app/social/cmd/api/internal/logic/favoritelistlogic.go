@@ -5,6 +5,7 @@ import (
 	"travel/app/social/cmd/api/internal/svc"
 	"travel/app/social/cmd/api/internal/types"
 	"travel/app/social/cmd/model"
+	"travel/common/ctxdata"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,8 +25,14 @@ func NewFavoriteListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Favo
 }
 
 func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *types.FavoriteListResp, err error) {
+	userId := req.UserId
+	// 传输 0，则表示获取自己的
+	if userId == 0 {
+		userId = ctxdata.GetUidFromCtx(l.ctx)
+	}
+
 	var favorites []types.FavoriteListView
-	l.svcCtx.DB.Model(&model.Favorite{}).Where("user_id = ?", req.UserId).Scan(&favorites)
+	l.svcCtx.DB.Model(&model.Favorite{}).Where("user_id = ?", userId).Scan(&favorites)
 
 	// 获取封面
 	for i, f := range favorites {

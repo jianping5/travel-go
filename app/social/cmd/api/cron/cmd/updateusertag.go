@@ -17,6 +17,9 @@ func UpdateUserTag() {
 
 	// 遍历每个用户
 	for _, userId := range userIds {
+		if userId != 8 {
+			continue
+		}
 		// 1. 分析用户行为，获取 itemIds
 		var itemIds []int64
 		behavior, _ := svcCtx.DataRpc.AnalyzeUserBehavior(context.Background(), &data.AnalyzeUserBehaviorReq{
@@ -42,8 +45,10 @@ func UpdateUserTag() {
 		for tag := range mp {
 			tags = append(tags, tag)
 		}
+
 		// 转换成 json
 		tagJson, _ := json.Marshal(tags)
+
 		// 更新
 		svcCtx.DataRpc.UpdateUserTag(context.Background(), &data.UpdateUserTagReq{
 			UserId:  userId,

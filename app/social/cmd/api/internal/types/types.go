@@ -43,6 +43,7 @@ type CommentView struct {
 	IsLiked         bool         `json:"isLiked"`
 	LikeCount       int          `json:"likeCount"`
 	ReplyCount      int          `json:"replyCount"`
+	CreateTime      string       `json:"createTime"`
 }
 
 type CommunityCreateReq struct {
@@ -178,9 +179,8 @@ type ContentListResp struct {
 }
 
 type ContentSimilarReq struct {
-	Tag      []string `json:"tag"`
-	ItemType int      `json:"itemType"`
-	ItemId   int64    `json:"itemId"`
+	ItemType int   `json:"itemType"`
+	ItemId   int64 `json:"itemId"`
 }
 
 type ContentSimilarResp struct {
@@ -260,6 +260,11 @@ type CopyrightView struct {
 	CoverUrl   string `json:"coverUrl"`
 	Account    string `json:"account"`
 	Avatar     string `json:"avatar"`
+}
+
+type FavorCancelReq struct {
+	FavoriteId int64 `json:"favoriteId"`
+	ItemId     int64 `json:"itemId"`
 }
 
 type FavorDeleteReq struct {
@@ -437,8 +442,9 @@ type UserHomeListResp struct {
 }
 
 type UserInfoView struct {
-	Id      int64  `json:"id"`
-	Account string `json:"account"`
-	Avatar  string `json:"avatar"`
-	Email   string `json:"email"`
+	Id         int64  `json:"id"`
+	Account    string `json:"account"`
+	Avatar     string `json:"avatar"`
+	Email      string `json:"email"`
+	IsFollowed bool   `json:"isFollowed"`
 }
