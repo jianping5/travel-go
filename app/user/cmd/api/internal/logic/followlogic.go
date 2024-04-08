@@ -43,7 +43,7 @@ func (l *FollowLogic) Follow(req *types.FollowReq) error {
 		}
 	case true:
 		// 取消关注
-		err := l.svcCtx.DB.Delete(&model.Follow{}, "userId = ? and followUserId = ?", loginUserId, req.Id)
+		err := l.svcCtx.DB.Delete(&model.Follow{}, "user_id = ? and follow_user_id = ?", loginUserId, req.Id).Error
 		if err != nil {
 			return errors.Wrap(FollowDeleteError, "删除失败")
 		}

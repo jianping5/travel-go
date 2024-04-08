@@ -2,10 +2,13 @@ package logic
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"gorm.io/gorm"
 	"travel/app/social/cmd/api/internal/svc"
 	"travel/app/social/cmd/api/internal/types"
 	"travel/app/social/cmd/model"
 	"travel/common/ctxdata"
+	"travel/common/enum"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -26,6 +29,7 @@ func NewFavoriteListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Favo
 
 func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *types.FavoriteListResp, err error) {
 	userId := req.UserId
+	itemId := req.ItemId
 	// 传输 0，则表示获取自己的
 	if userId == 0 {
 		userId = ctxdata.GetUidFromCtx(l.ctx)
@@ -45,6 +49,15 @@ func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *type
 		}
 		l.svcCtx.DB.Model(&model.Content{}).Select("cover_url").Where("id = ?", favor.ItemId).Scan(&coverUrl)
 		favorites[i].CoverUrl = coverUrl
+		// 是否收藏
+		var favorModel model.Favor
+		if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", userId, enum.VIDEO, itemId).First(&favorModel).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				favorites[i].IsFavored = false
+			}
+		} else {
+			favorites[i].IsFavored = true
+		}
 	}
 
 	return &types.FavoriteListResp{

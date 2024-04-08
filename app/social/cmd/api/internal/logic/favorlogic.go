@@ -40,7 +40,12 @@ func (l *FavorLogic) Favor(req *types.FavorReq) error {
 	}
 
 	// 更新对应收藏量
-	l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", req.ItemId).Update("favor_count", gorm.Expr("favor_count + ?", 1))
+	// 查看除去当前收藏夹之外该 item 是否存在其他收藏夹中
+	var id int64
+	// 若没有，则增加收藏量
+	if l.svcCtx.DB.Model(&model.Favor{}).Select("id").Where("user_id = ? and item_id = ? and favorite_id != ?", loginUserId, req.ItemId, req.FavoriteId).First(&id); id == 0 {
+		l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", req.ItemId).Update("favor_count", gorm.Expr("favor_count + ?", 1))
+	}
 
 	return nil
 }

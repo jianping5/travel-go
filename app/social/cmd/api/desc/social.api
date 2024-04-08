@@ -24,12 +24,14 @@ type (
 	}
 	FavoriteListReq {
 		UserId int64 `json:"userId"`
+		ItemId int64 `json:"itemId"`
 	}
 	FavoriteListView {
-		Id       int64  `json:"id"`
-		UserId   int64  `json:"userId"`
-		Name     string `json:"name"`
-		CoverUrl string `json:"coverUrl"`
+		Id        int64  `json:"id"`
+		UserId    int64  `json:"userId"`
+		Name      string `json:"name"`
+		CoverUrl  string `json:"coverUrl"`
+		IsFavored bool   `json:"isFavored"`
 	}
 	FavoriteListResp {
 		List []FavoriteListView `json:"list"`
@@ -120,6 +122,7 @@ type (
 		Avatar      string `json:"avatar"`
 		MemberCount int    `json:"memberCount"`
 		CreateTime  string `json:"createTime"`
+		IsJoined    bool   `json:"isJoined"`
 	}
 	CommunityListResp {
 		List []CommunityView `json:"list"`
@@ -149,6 +152,12 @@ type (
 		PageNum      int  `json:"pageNum"`
 		PageSize     int  `json:"pageSize"`
 	}
+	CommunityDynamicSpecificListReq {
+		SortType    int   `json:"sortType"`
+		CommunityId int64 `json:"communityId"`
+		PageNum     int   `json:"pageNum"`
+		PageSize    int   `json:"pageSize"`
+	}
 	CommunityDynamicView {
 		Id           int64         `json:"id"`
 		UserInfo     UserInfoView  `json:"userInfo"`
@@ -167,6 +176,10 @@ type (
 		DynamicDetail CommunityDynamicView `json:"dynamicDetail"`
 	}
 	CommunityDynamicListResp {
+		List  []CommunityDynamicView `json:"list"`
+		Total int                    `json:"total"`
+	}
+	CommunityDynamicSpecificListResp {
 		List  []CommunityDynamicView `json:"list"`
 		Total int                    `json:"total"`
 	}
@@ -414,6 +427,9 @@ service Social {
 	@handler CommunityDynamicList
 	post /api/social/community/dynamic/list (CommunityDynamicListReq) returns (CommunityDynamicListResp)
 
+	@handler CommunityDynamicSpecificList
+	post /api/social/community/dynamic/specific/list (CommunityDynamicSpecificListReq) returns (CommunityDynamicSpecificListResp)
+
 	@handler CommunityList
 	post /api/social/community/list (CommunityListReq) returns (CommunityListResp)
 
@@ -462,7 +478,7 @@ service Social {
 	post /api/social/favor/create (FavorReq)
 
 	@handler FavorCancel
-	post /api/social/favor/cancle (FavorCancelReq)
+	post /api/social/favor/cancel (FavorCancelReq)
 
 	@handler FavorDelete
 	post /api/social/favor/delete (FavorDeleteReq)

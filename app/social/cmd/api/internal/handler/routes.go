@@ -29,6 +29,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/api/social/community/dynamic/specific/list",
+				Handler: CommunityDynamicSpecificListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/api/social/community/list",
 				Handler: CommunityListHandler(serverCtx),
 			},
@@ -165,7 +170,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/api/social/favor/cancle",
+				Path:    "/api/social/favor/cancel",
 				Handler: FavorCancelHandler(serverCtx),
 			},
 			{

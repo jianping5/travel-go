@@ -98,6 +98,18 @@ type CommunityDynamicListResp struct {
 	Total int                    `json:"total"`
 }
 
+type CommunityDynamicSpecificListReq struct {
+	SortType    int   `json:"sortType"`
+	CommunityId int64 `json:"communityId"`
+	PageNum     int   `json:"pageNum"`
+	PageSize    int   `json:"pageSize"`
+}
+
+type CommunityDynamicSpecificListResp struct {
+	List  []CommunityDynamicView `json:"list"`
+	Total int                    `json:"total"`
+}
+
 type CommunityDynamicView struct {
 	Id           int64         `json:"id"`
 	UserInfo     UserInfoView  `json:"userInfo"`
@@ -143,6 +155,7 @@ type CommunityView struct {
 	Avatar      string `json:"avatar"`
 	MemberCount int    `json:"memberCount"`
 	CreateTime  string `json:"createTime"`
+	IsJoined    bool   `json:"isJoined"`
 }
 
 type ContentCreateReq struct {
@@ -305,6 +318,7 @@ type FavoriteDeleteReq struct {
 
 type FavoriteListReq struct {
 	UserId int64 `json:"userId"`
+	ItemId int64 `json:"itemId"`
 }
 
 type FavoriteListResp struct {
@@ -312,10 +326,11 @@ type FavoriteListResp struct {
 }
 
 type FavoriteListView struct {
-	Id       int64  `json:"id"`
-	UserId   int64  `json:"userId"`
-	Name     string `json:"name"`
-	CoverUrl string `json:"coverUrl"`
+	Id        int64  `json:"id"`
+	UserId    int64  `json:"userId"`
+	Name      string `json:"name"`
+	CoverUrl  string `json:"coverUrl"`
+	IsFavored bool   `json:"isFavored"`
 }
 
 type HistoryCreateReq struct {

@@ -48,6 +48,14 @@ func (l *CommunityDetailLogic) CommunityDetail(req *types.CommunityDetailReq) (r
 		return nil, err
 	}
 
+	// 获取是否已经加入
+	var id int64
+	if l.svcCtx.DB.Model(&model.UserCommunity{}).Select("id").Where("user_id = ? and community_id = ?", loginUserId, req.Id).Scan(&id); id == 0 {
+		communityView.IsJoined = false
+	} else {
+		communityView.IsJoined = true
+	}
+
 	return &types.CommunityDetailResp{
 		Community: communityView,
 		UserId:    userId,
