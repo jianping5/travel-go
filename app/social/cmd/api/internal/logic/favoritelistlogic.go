@@ -29,6 +29,8 @@ func NewFavoriteListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Favo
 
 func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *types.FavoriteListResp, err error) {
 	userId := req.UserId
+	// 这里的 itemId 主要是在收藏某个具体的 item 时会需要，其它的传 0 即可
+	// todo：怎么更改成不传也可也不报错？
 	itemId := req.ItemId
 	// 传输 0，则表示获取自己的
 	if userId == 0 {
@@ -45,10 +47,10 @@ func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *type
 		l.svcCtx.DB.Model(&model.Favor{}).Where("favorite_id = ?", f.Id).Order("create_time DESC").First(&favor)
 		if favor == (model.Favor{}) {
 			favorites[i].CoverUrl = coverUrl
-			continue
+		} else {
+			l.svcCtx.DB.Model(&model.Content{}).Select("cover_url").Where("id = ?", favor.ItemId).Scan(&coverUrl)
+			favorites[i].CoverUrl = coverUrl
 		}
-		l.svcCtx.DB.Model(&model.Content{}).Select("cover_url").Where("id = ?", favor.ItemId).Scan(&coverUrl)
-		favorites[i].CoverUrl = coverUrl
 		// 是否收藏
 		var favorModel model.Favor
 		if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", userId, enum.VIDEO, itemId).First(&favorModel).Error; err != nil {

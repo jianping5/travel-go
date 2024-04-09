@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/jinzhu/copier"
 	"travel/app/user/cmd/model"
+	"travel/common/ctxdata"
 
 	"travel/app/user/cmd/api/internal/svc"
 	"travel/app/user/cmd/api/internal/types"
@@ -27,9 +28,14 @@ func NewFollowListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Follow
 
 func (l *FollowListLogic) FollowList(req *types.FollowListReq) (resp *types.FollowListView, err error) {
 	var follows []model.Follow
+	userId := req.Id
+	// 若传入的 userId 为 0，则表示为当前用户
+	if userId == 0 {
+		userId = ctxdata.GetUidFromCtx(l.ctx)
+	}
 	offset := (req.PageNum - 1) * req.PageSize
 	// 分页获取当前用户关注列表
-	if err := l.svcCtx.DB.Where("user_id = ?", req.Id).Offset(int(offset)).Limit(int(req.PageSize)).Find(&follows).Error; err != nil {
+	if err := l.svcCtx.DB.Where("user_id = ?", userId).Offset(int(offset)).Limit(int(req.PageSize)).Find(&follows).Error; err != nil {
 		return nil, err
 	}
 	// 未关注
@@ -53,6 +59,15 @@ func (l *FollowListLogic) FollowList(req *types.FollowListReq) (resp *types.Foll
 		_ = copier.Copy(&userInfo, &user)
 		userInfo.CreateTime = user.CreateTime.Format("2006-01-02 15:04:05")
 		userInfo.UpdateTime = user.UpdateTime.Format("2006-01-02 15:04:05")
+
+		// 注入是否关注
+		var id int64
+		if l.svcCtx.DB.Model(&model.Follow{}).Select("id").Where("user_id = ? and follow_user_id = ?", userId, user.Id).Scan(&id); id == 0 {
+			userInfo.IsFollowed = false
+		} else {
+			userInfo.IsFollowed = true
+		}
+
 		userInfos = append(userInfos, userInfo)
 	}
 

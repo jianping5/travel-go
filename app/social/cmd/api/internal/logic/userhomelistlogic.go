@@ -30,6 +30,10 @@ func NewUserHomeListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 
 func (l *UserHomeListLogic) UserHomeList(req *types.UserHomeListReq) (resp *types.UserHomeListResp, err error) {
 	userId := req.UserId
+	// 若传入的 userId 为 0，则表示为当前用户
+	if userId == 0 {
+		userId = ctxdata.GetUidFromCtx(l.ctx)
+	}
 	// 最新文章
 	var recentArticles []types.ContentView
 	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "like_count", "create_time").

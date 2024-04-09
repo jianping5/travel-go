@@ -298,6 +298,7 @@ type FavorReq struct {
 }
 
 type FavorView struct {
+	Id         int    `json:"id"`
 	ItemType   int    `json:"itemType"`
 	ItemId     int64  `json:"itemId"`
 	CoverUrl   string `json:"coverUrl"`
@@ -314,6 +315,14 @@ type FavoriteCreateReq struct {
 
 type FavoriteDeleteReq struct {
 	Id int64 `json:"id"`
+}
+
+type FavoriteDetailReq struct {
+	Id int64 `json:"id"`
+}
+
+type FavoriteDetailResp struct {
+	FavoriteDetail FavoriteListView `json:"favoriteDetail"`
 }
 
 type FavoriteListReq struct {

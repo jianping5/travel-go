@@ -43,10 +43,13 @@ func (l *CommunityDynamicSpecificListLogic) CommunityDynamicSpecificList(req *ty
 	switch enum.SortType(sortType) {
 	case enum.Popular:
 		tx = tx.Order("like_count DESC")
+		break
 	case enum.Newest:
 		tx = tx.Order("create_time DESC")
+		break
 	case enum.Oldest:
 		tx = tx.Order("create_time ASC")
+		break
 	default:
 		return nil, errors.Wrap(xerr.NewErrMsg("参数错误"), "参数不匹配")
 	}

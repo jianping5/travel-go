@@ -31,6 +31,10 @@ func NewUserHomeContentListLogic(ctx context.Context, svcCtx *svc.ServiceContext
 func (l *UserHomeContentListLogic) UserHomeContentList(req *types.UserHomeContentListReq) (resp *types.UserHomeContentListResp, err error) {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	userId := req.UserId
+	// 若传入的 userId 为 0，则表示为当前用户
+	if userId == 0 {
+		userId = ctxdata.GetUidFromCtx(l.ctx)
+	}
 	offset := (req.PageNum - 1) * req.PageSize
 	var contents []types.ContentView
 	var total int64

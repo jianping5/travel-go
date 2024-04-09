@@ -26,12 +26,18 @@ type (
 		UserId int64 `json:"userId"`
 		ItemId int64 `json:"itemId"`
 	}
+	FavoriteDetailReq {
+		Id int64 `json:"id"`
+	}
 	FavoriteListView {
 		Id        int64  `json:"id"`
 		UserId    int64  `json:"userId"`
 		Name      string `json:"name"`
 		CoverUrl  string `json:"coverUrl"`
 		IsFavored bool   `json:"isFavored"`
+	}
+	FavoriteDetailResp {
+		FavoriteDetail FavoriteListView `json:"favoriteDetail"`
 	}
 	FavoriteListResp {
 		List []FavoriteListView `json:"list"`
@@ -51,6 +57,7 @@ type (
 		FavoriteId int64 `json:"favoriteId"`
 	}
 	FavorView {
+		Id         int    `json:"id"`
 		ItemType   int    `json:"itemType"`
 		ItemId     int64  `json:"itemId"`
 		CoverUrl   string `json:"coverUrl"`
@@ -420,6 +427,9 @@ service Social {
 
 	@handler FavorList
 	post /api/social/favor/list (FavorListReq) returns (FavorListResp)
+
+	@handler FavoriteDetail
+	post /api/social/favorite/detail (FavoriteDeleteReq) returns (FavoriteDetailResp)
 
 	@handler CommunityDynamicDetail
 	post /api/social/community/dynamic/detail (CommunityDynamicDetailReq) returns (CommunityDynamicDetailResp)
