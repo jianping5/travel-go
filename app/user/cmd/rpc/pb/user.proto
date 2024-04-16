@@ -63,6 +63,7 @@ message UserInfoView {
   string Avatar = 3;
   string Email = 4;
   string CreateTime = 5;
+  string signature = 6;
 }
 
 message SearchUserResp {

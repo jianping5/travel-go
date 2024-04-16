@@ -1,0 +1,370 @@
+@startuml
+namespace logic {
+    class CommentCreateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommentCreate(req *types.CommentCreateReq) error
+
+    }
+    class CommentDeleteLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommentDelete(req *types.CommentDeleteReq) error
+
+    }
+    class CommentListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommentList(req *types.CommentListReq) (*types.CommentListResp, error)
+        + SetUserInfo(loginUserId int64, comments *[]types.CommentView) 
+
+    }
+    class CommunityCreateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityCreate(req *types.CommunityCreateReq) error
+
+    }
+    class CommunityDeleteLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityDelete(req *types.CommunityDeleteReq) error
+
+    }
+    class CommunityDetailLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityDetail(req *types.CommunityDetailReq) (*types.CommunityDetailResp, error)
+
+    }
+    class CommunityDynamicCreateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityDynamicCreate(req *types.CommunityDynamicCreateReq) error
+
+    }
+    class CommunityDynamicDeleteLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityDynamicDelete(req *types.CommunityDynamicDeleteReq) error
+
+    }
+    class CommunityDynamicDetailLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityDynamicDetail(req *types.CommunityDynamicDetailReq) (*types.CommunityDynamicDetailResp, error)
+
+    }
+    class CommunityDynamicListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityDynamicList(req *types.CommunityDynamicListReq) (*types.CommunityDynamicListResp, error)
+
+    }
+    class CommunityDynamicSpecificListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityDynamicSpecificList(req *types.CommunityDynamicSpecificListReq) (*types.CommunityDynamicSpecificListResp, error)
+
+    }
+    class CommunityJoinLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityJoin(req *types.CommunityJoinReq) error
+
+    }
+    class CommunityListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityList(req *types.CommunityListReq) (*types.CommunityListResp, error)
+
+    }
+    class CommunityQuitLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityQuit(req *types.CommunityQuitReq) error
+
+    }
+    class CommunityUpdateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CommunityUpdate(req *types.CommunityUpdateReq) error
+
+    }
+    class ContentCreateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + ContentCreate(req *types.ContentCreateReq) error
+
+    }
+    class ContentDeleteLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + ContentDelete(req *types.ContentDeleteReq) error
+
+    }
+    class ContentDetailLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + ContentDetail(req *types.ContentDetailReq) (*types.ContentDetailResp, error)
+
+    }
+    class ContentListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + ContentList(req *types.ContentListReq) (*types.ContentListResp, error)
+        + SetBasicInfo(contents *[]types.ContentView, loginUserId int64) 
+
+    }
+    class ContentSimilarLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + ContentSimilar(req *types.ContentSimilarReq) (*types.ContentSimilarResp, error)
+
+    }
+    class ContentUpdateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + ContentUpdate(req *types.ContentUpdateReq) error
+
+    }
+    class CopyrightCreateReqLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CopyrightCreateReq(req *types.CopyrightCreateReq) error
+
+    }
+    class CopyrightDetailLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CopyrightDetail(req *types.CopyrightDetailReq) (*types.CopyrightDetailResp, error)
+
+    }
+    class CopyrightListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + CopyrightList(req *types.CopyrightListReq) (*types.CopyrightListResp, error)
+
+    }
+    class FavorCancelLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + FavorCancel(req *types.FavorCancelReq) error
+
+    }
+    class FavorDeleteLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + FavorDelete(req *types.FavorDeleteReq) error
+
+    }
+    class FavorListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + FavorList(req *types.FavorListReq) (*types.FavorListResp, error)
+
+    }
+    class FavorLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + Favor(req *types.FavorReq) error
+
+    }
+    class FavoriteCreateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + FavoriteCreate(req *types.FavoriteCreateReq) error
+
+    }
+    class FavoriteDeleteLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + FavoriteDelete(req *types.FavoriteDeleteReq) error
+
+    }
+    class FavoriteDetailLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + FavoriteDetail(req *types.FavoriteDeleteReq) (*types.FavoriteDetailResp, error)
+
+    }
+    class FavoriteListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + FavoriteList(req *types.FavoriteListReq) (*types.FavoriteListResp, error)
+
+    }
+    class HistoryCreateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + HistoryCreate(req *types.HistoryCreateReq) error
+
+    }
+    class HistoryDeleteLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + HistoryDelete(req *types.HistoryDeleteReq) error
+
+    }
+    class HistoryListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + HistoryList(req *types.HistoryListReq) (*types.HistoryListResp, error)
+
+    }
+    class LikeLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + Like(req *types.LikeReq) error
+
+    }
+    class MessageCreateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + MessageCreate(req *types.MessageCreateReq) error
+
+    }
+    class MessageDeleteLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + MessageDelete(req *types.MessageDeleteReq) error
+
+    }
+    class MessageListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + MessageList() (*types.MessageListResp, error)
+
+    }
+    class MessageUpdateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + MessageUpdate(req *types.MessageUpdateReq) error
+
+    }
+    class SearchLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        - getSortedArticleList(sortType int, offset int, pageSize int, keyword string) ([]types.ContentView, error)
+        - getSortedVideoList(sortType int, offset int, pageSize int, keyword string) ([]types.ContentView, error)
+        - getSortedCommunityList(sortType int, offset int, pageSize int, keyword string) ([]types.CommunityView, error)
+        - getSortedDynamicList(sortType int, offset int, pageSize int, keyword string) ([]types.CommunityDynamicView, error)
+        - getSortedCopyrightList(sortType int, offset int, pageSize int, keyword string) ([]types.CopyrightView, error)
+
+        + Search(req *types.SearchReq) (*types.SearchResp, error)
+
+    }
+    class UserHomeContentListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        - getSortedArticleList(sortType int, offset int, pageSize int, userId int64) ([]types.ContentView, error)
+        - getSortedVideoList(sortType int, offset int, pageSize int, userId int64) ([]types.ContentView, error)
+
+        + UserHomeContentList(req *types.UserHomeContentListReq) (*types.UserHomeContentListResp, error)
+
+    }
+    class UserHomeDynamicListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + UserHomeDynamicList(req *types.UserHomeDynamicListReq) (*types.UserHomeDynamicListResp, error)
+
+    }
+    class UserHomeListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + UserHomeList(req *types.UserHomeListReq) (*types.UserHomeListResp, error)
+        + SetContentInfo(contents *[]types.ContentView) 
+
+    }
+}
+"logx.Logger" *-- "logic.CommentCreateLogic"
+"logx.Logger" *-- "logic.CommentDeleteLogic"
+"logx.Logger" *-- "logic.CommentListLogic"
+"logx.Logger" *-- "logic.CommunityCreateLogic"
+"logx.Logger" *-- "logic.CommunityDeleteLogic"
+"logx.Logger" *-- "logic.CommunityDetailLogic"
+"logx.Logger" *-- "logic.CommunityDynamicCreateLogic"
+"logx.Logger" *-- "logic.CommunityDynamicDeleteLogic"
+"logx.Logger" *-- "logic.CommunityDynamicDetailLogic"
+"logx.Logger" *-- "logic.CommunityDynamicListLogic"
+"logx.Logger" *-- "logic.CommunityDynamicSpecificListLogic"
+"logx.Logger" *-- "logic.CommunityJoinLogic"
+"logx.Logger" *-- "logic.CommunityListLogic"
+"logx.Logger" *-- "logic.CommunityQuitLogic"
+"logx.Logger" *-- "logic.CommunityUpdateLogic"
+"logx.Logger" *-- "logic.ContentCreateLogic"
+"logx.Logger" *-- "logic.ContentDeleteLogic"
+"logx.Logger" *-- "logic.ContentDetailLogic"
+"logx.Logger" *-- "logic.ContentListLogic"
+"logx.Logger" *-- "logic.ContentSimilarLogic"
+"logx.Logger" *-- "logic.ContentUpdateLogic"
+"logx.Logger" *-- "logic.CopyrightCreateReqLogic"
+"logx.Logger" *-- "logic.CopyrightDetailLogic"
+"logx.Logger" *-- "logic.CopyrightListLogic"
+"logx.Logger" *-- "logic.FavorCancelLogic"
+"logx.Logger" *-- "logic.FavorDeleteLogic"
+"logx.Logger" *-- "logic.FavorListLogic"
+"logx.Logger" *-- "logic.FavorLogic"
+"logx.Logger" *-- "logic.FavoriteCreateLogic"
+"logx.Logger" *-- "logic.FavoriteDeleteLogic"
+"logx.Logger" *-- "logic.FavoriteDetailLogic"
+"logx.Logger" *-- "logic.FavoriteListLogic"
+"logx.Logger" *-- "logic.HistoryCreateLogic"
+"logx.Logger" *-- "logic.HistoryDeleteLogic"
+"logx.Logger" *-- "logic.HistoryListLogic"
+"logx.Logger" *-- "logic.LikeLogic"
+"logx.Logger" *-- "logic.MessageCreateLogic"
+"logx.Logger" *-- "logic.MessageDeleteLogic"
+"logx.Logger" *-- "logic.MessageListLogic"
+"logx.Logger" *-- "logic.MessageUpdateLogic"
+"logx.Logger" *-- "logic.SearchLogic"
+"logx.Logger" *-- "logic.UserHomeContentListLogic"
+"logx.Logger" *-- "logic.UserHomeDynamicListLogic"
+"logx.Logger" *-- "logic.UserHomeListLogic"
+
+
+@enduml

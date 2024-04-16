@@ -361,15 +361,16 @@ type HistoryListResp struct {
 }
 
 type HistoryView struct {
-	Id         int64  `json:"id"`
-	ItemType   int    `json:"itemType"`
-	ItemId     int64  `json:"itemId"`
-	CoverUrl   string `json:"coverUrl"`
-	UserId     int64  `json:"userId"`
-	Account    string `json:"account"`
-	Title      string `json:"title"`
-	LikeCount  int    `json:"likeCount"`
-	CreateTime string `json:"createTime"`
+	Id          int64  `json:"id"`
+	ItemType    int    `json:"itemType"`
+	ItemId      int64  `json:"itemId"`
+	CoverUrl    string `json:"coverUrl"`
+	UserId      int64  `json:"userId"`
+	Account     string `json:"account"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	LikeCount   int    `json:"likeCount"`
+	CreateTime  string `json:"createTime"`
 }
 
 type LikeReq struct {
@@ -471,4 +472,5 @@ type UserInfoView struct {
 	Avatar     string `json:"avatar"`
 	Email      string `json:"email"`
 	IsFollowed bool   `json:"isFollowed"`
+	Signature  string `json:"signature"`
 }

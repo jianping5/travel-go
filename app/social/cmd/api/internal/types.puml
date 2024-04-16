@@ -1,0 +1,480 @@
+@startuml
+namespace types {
+    class CommentCreateReq << (S,Aquamarine) >> {
+        + CommentItemId int64
+        + CommentItemType int
+        + ParentUserId int64
+        + TopId int64
+        + Content string
+
+    }
+    class CommentDeleteReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class CommentListReq << (S,Aquamarine) >> {
+        + CommentItemType int
+        + CommentItemId int64
+        + PageNum int
+        + PageSize int
+
+    }
+    class CommentListResp << (S,Aquamarine) >> {
+        + List []CommentListView
+        + Total int
+
+    }
+    class CommentListView << (S,Aquamarine) >> {
+        + TopComment CommentView
+        + CommentList []CommentView
+
+    }
+    class CommentView << (S,Aquamarine) >> {
+        + Id int64
+        + UserId int64
+        + UserInfo UserInfoView
+        + ParentUserInfo UserInfoView
+        + CommentItemType int
+        + CommentItemId int64
+        + ParentUserId int64
+        + TopId int64
+        + Content string
+        + IsLiked bool
+        + LikeCount int
+        + ReplyCount int
+        + CreateTime string
+
+    }
+    class CommunityCreateReq << (S,Aquamarine) >> {
+        + Name string
+        + Description string
+
+    }
+    class CommunityDeleteReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class CommunityDetailReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class CommunityDetailResp << (S,Aquamarine) >> {
+        + Community CommunityView
+        + UserId int64
+        + Account string
+        + Avatar string
+
+    }
+    class CommunityDynamicCreateReq << (S,Aquamarine) >> {
+        + CommunityId int64
+        + Title string
+        + Description string
+        + Content string
+        + FileType int
+
+    }
+    class CommunityDynamicDeleteReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class CommunityDynamicDetailReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class CommunityDynamicDetailResp << (S,Aquamarine) >> {
+        + DynamicDetail CommunityDynamicView
+
+    }
+    class CommunityDynamicListReq << (S,Aquamarine) >> {
+        + Type int
+        + JoinedSwitch bool
+        + PageNum int
+        + PageSize int
+
+    }
+    class CommunityDynamicListResp << (S,Aquamarine) >> {
+        + List []CommunityDynamicView
+        + Total int
+
+    }
+    class CommunityDynamicSpecificListReq << (S,Aquamarine) >> {
+        + SortType int
+        + CommunityId int64
+        + PageNum int
+        + PageSize int
+
+    }
+    class CommunityDynamicSpecificListResp << (S,Aquamarine) >> {
+        + List []CommunityDynamicView
+        + Total int
+
+    }
+    class CommunityDynamicView << (S,Aquamarine) >> {
+        + Id int64
+        + UserInfo UserInfoView
+        + CommunityId int64
+        + Community CommunityView
+        + Title string
+        + Description string
+        + Content string
+        + FileType int
+        + LikeCount int
+        + CommentCount int
+        + CreateTime string
+        + IsLiked bool
+
+    }
+    class CommunityJoinReq << (S,Aquamarine) >> {
+        + CommunityId int64
+        + Role int
+
+    }
+    class CommunityListReq << (S,Aquamarine) >> {
+        + UserId int64
+
+    }
+    class CommunityListResp << (S,Aquamarine) >> {
+        + List []CommunityView
+
+    }
+    class CommunityQuitReq << (S,Aquamarine) >> {
+        + CommunityId int64
+
+    }
+    class CommunityUpdateReq << (S,Aquamarine) >> {
+        + Id int64
+        + Description string
+        + Avatar string
+
+    }
+    class CommunityView << (S,Aquamarine) >> {
+        + Id int64
+        + Name string
+        + Description string
+        + Avatar string
+        + MemberCount int
+        + CreateTime string
+        + IsJoined bool
+
+    }
+    class ContentCreateReq << (S,Aquamarine) >> {
+        + ItemType int
+        + Title string
+        + CoverUrl string
+        + Content string
+        + Description string
+        + Tag []string
+
+    }
+    class ContentDeleteReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class ContentDetailReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class ContentDetailResp << (S,Aquamarine) >> {
+        + ContentDetail ContentView
+
+    }
+    class ContentListReq << (S,Aquamarine) >> {
+        + ContentType int
+        + ItemType int
+        + PageNum int
+        + PageSize int
+
+    }
+    class ContentListResp << (S,Aquamarine) >> {
+        + List []ContentView
+        + Total int
+
+    }
+    class ContentSimilarReq << (S,Aquamarine) >> {
+        + ItemType int
+        + ItemId int64
+
+    }
+    class ContentSimilarResp << (S,Aquamarine) >> {
+        + List []ContentView
+
+    }
+    class ContentSimpleView << (S,Aquamarine) >> {
+        + Id int64
+        + Title string
+        + CoverUrl string
+        + LikeCount int
+        + CreateTime string
+
+    }
+    class ContentUpdateReq << (S,Aquamarine) >> {
+        + Id int64
+        + Title string
+        + Content string
+        + CoverUrl string
+        + Description string
+        + Tag []string
+
+    }
+    class ContentView << (S,Aquamarine) >> {
+        + Id int64
+        + UserId int64
+        + UserInfo UserInfoView
+        + ItemType int
+        + Title string
+        + CoverUrl string
+        + Content string
+        + Description string
+        + Tag []string
+        + LikeCount int
+        + CommentCount int
+        + FavorCount int
+        + CreateTime string
+        + IsLiked bool
+        + IsFavored bool
+
+    }
+    class CopyrightCreateReq << (S,Aquamarine) >> {
+        + ItemType int
+        + ItemId int64
+        + ContentUrl string
+        + UploadSwitch bool
+
+    }
+    class CopyrightDetailReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class CopyrightDetailResp << (S,Aquamarine) >> {
+        + Copyright CopyrightView
+        + UserInfo UserInfoView
+
+    }
+    class CopyrightListReq << (S,Aquamarine) >> {
+        + UserId int64
+
+    }
+    class CopyrightListResp << (S,Aquamarine) >> {
+        + List []CopyrightView
+
+    }
+    class CopyrightView << (S,Aquamarine) >> {
+        + Id int64
+        + UserId int64
+        + ItemType int
+        + ItemId int64
+        + Metadata string
+        + TradeHash string
+        + Address string
+        + Status int
+        + CreateTime string
+        + Title string
+        + CoverUrl string
+        + Account string
+        + Avatar string
+
+    }
+    class FavorCancelReq << (S,Aquamarine) >> {
+        + FavoriteId int64
+        + ItemId int64
+
+    }
+    class FavorDeleteReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class FavorListReq << (S,Aquamarine) >> {
+        + FavoriteId int64
+
+    }
+    class FavorListResp << (S,Aquamarine) >> {
+        + List []FavorView
+
+    }
+    class FavorReq << (S,Aquamarine) >> {
+        + FavoriteId int64
+        + ItemId int64
+
+    }
+    class FavorView << (S,Aquamarine) >> {
+        + Id int
+        + ItemType int
+        + ItemId int64
+        + CoverUrl string
+        + UserId int64
+        + Account string
+        + Title string
+        + LikeCount int
+        + CreateTime string
+
+    }
+    class FavoriteCreateReq << (S,Aquamarine) >> {
+        + Name string
+
+    }
+    class FavoriteDeleteReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class FavoriteDetailReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class FavoriteDetailResp << (S,Aquamarine) >> {
+        + FavoriteDetail FavoriteListView
+
+    }
+    class FavoriteListReq << (S,Aquamarine) >> {
+        + UserId int64
+        + ItemId int64
+
+    }
+    class FavoriteListResp << (S,Aquamarine) >> {
+        + List []FavoriteListView
+
+    }
+    class FavoriteListView << (S,Aquamarine) >> {
+        + Id int64
+        + UserId int64
+        + Name string
+        + CoverUrl string
+        + IsFavored bool
+
+    }
+    class HistoryCreateReq << (S,Aquamarine) >> {
+        + ItemId int64
+
+    }
+    class HistoryDeleteReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class HistoryListReq << (S,Aquamarine) >> {
+        + PageNum int
+        + PageSize int
+
+    }
+    class HistoryListResp << (S,Aquamarine) >> {
+        + List []HistoryView
+        + Total int
+
+    }
+    class HistoryView << (S,Aquamarine) >> {
+        + Id int64
+        + ItemType int
+        + ItemId int64
+        + CoverUrl string
+        + UserId int64
+        + Account string
+        + Title string
+        + Description string
+        + LikeCount int
+        + CreateTime string
+
+    }
+    class LikeReq << (S,Aquamarine) >> {
+        + ItemType int
+        + ItemId int64
+        + LikedStatus bool
+
+    }
+    class MessageCreateReq << (S,Aquamarine) >> {
+        + UserIds []int64
+        + ItemType int
+        + ItemId int64
+        + MessageType int
+        + MessageUserId int64
+        + Content string
+
+    }
+    class MessageDeleteReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class MessageListResp << (S,Aquamarine) >> {
+        + List []MessageView
+
+    }
+    class MessageUpdateReq << (S,Aquamarine) >> {
+        + Id int64
+        + MessageStatus bool
+
+    }
+    class MessageView << (S,Aquamarine) >> {
+        + Id int64
+        + ItemType int
+        + ItemId int
+        + CoverUrl string
+        + Title string
+        + MessageType int
+        + MessageStatus bool
+        + Content string
+        + MessageUserId int64
+        + Account string
+
+    }
+    class SearchReq << (S,Aquamarine) >> {
+        + Keyword string
+        + ItemType int
+        + SortType int
+        + PageNum int
+        + PageSize int
+
+    }
+    class SearchResp << (S,Aquamarine) >> {
+        + ContentList []ContentView
+        + CommunityList []CommunityView
+        + UserList []UserInfoView
+        + DynamicList []CommunityDynamicView
+        + CopyrightList []CopyrightView
+        + Total int
+
+    }
+    class UserHomeContentListReq << (S,Aquamarine) >> {
+        + UserId int64
+        + ItemType int
+        + SortType int
+        + PageNum int
+        + PageSize int
+
+    }
+    class UserHomeContentListResp << (S,Aquamarine) >> {
+        + List []ContentView
+        + Total int
+
+    }
+    class UserHomeDynamicListReq << (S,Aquamarine) >> {
+        + UserId int64
+        + PageNum int
+        + PageSize int
+
+    }
+    class UserHomeDynamicListResp << (S,Aquamarine) >> {
+        + List []CommunityDynamicView
+        + Total int
+
+    }
+    class UserHomeListReq << (S,Aquamarine) >> {
+        + UserId int64
+
+    }
+    class UserHomeListResp << (S,Aquamarine) >> {
+        + RecentArticleList []ContentView
+        + RecentVideoList []ContentView
+        + RecommendArticleList []ContentView
+        + RecommendVideoList []ContentView
+
+    }
+    class UserInfoView << (S,Aquamarine) >> {
+        + Id int64
+        + Account string
+        + Avatar string
+        + Email string
+        + IsFollowed bool
+        + Signature string
+
+    }
+}
+
+
+@enduml

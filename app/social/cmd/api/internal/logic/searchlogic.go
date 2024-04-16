@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	"github.com/jinzhu/copier"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -36,7 +37,7 @@ func (l *SearchLogic) Search(req *types.SearchReq) (resp *types.SearchResp, err 
 	var search types.SearchResp
 	switch enum.ItemType(req.ItemType) {
 	case enum.ARTICLE:
-		l.svcCtx.DB.Model(&model.Content{}).Where("itemType = ? and title like ?", enum.ARTICLE, "%"+req.Keyword+"%").Count(&total)
+		l.svcCtx.DB.Model(&model.Content{}).Where("item_type = ? and title like ?", enum.ARTICLE, "%"+req.Keyword+"%").Count(&total)
 		contents, _ := l.getSortedArticleList(req.SortType, offset, req.PageSize, req.Keyword)
 		for i, a := range contents {
 			// 用户信息
@@ -48,12 +49,12 @@ func (l *SearchLogic) Search(req *types.SearchReq) (resp *types.SearchResp, err 
 
 			// 是否点赞
 			var isLiked bool
-			l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.ARTICLE, a.Id).Scan(&isLiked)
+			l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.ARTICLE, a.Id).Scan(&isLiked)
 			contents[i].IsLiked = isLiked
 
 			// 是否收藏
 			var favor model.Favor
-			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.ARTICLE, a.Id).First(&favor).Error; err != nil {
+			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.ARTICLE, a.Id).First(&favor).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					contents[i].IsFavored = false
 				}
@@ -65,7 +66,10 @@ func (l *SearchLogic) Search(req *types.SearchReq) (resp *types.SearchResp, err 
 		search.ContentList = contents
 		break
 	case enum.VIDEO:
-		l.svcCtx.DB.Model(&model.Content{}).Where("itemType = ? and title like ?", enum.VIDEO, "%"+req.Keyword+"%").Count(&total)
+		l.svcCtx.DB.Model(&model.Content{}).Where("item_type = ? and title like ?", enum.VIDEO, "%"+req.Keyword+"%").Count(&total)
+
+		fmt.Println(total)
+
 		contents, _ := l.getSortedVideoList(req.SortType, offset, req.PageSize, req.Keyword)
 		for i, a := range contents {
 			// 用户信息
@@ -77,12 +81,12 @@ func (l *SearchLogic) Search(req *types.SearchReq) (resp *types.SearchResp, err 
 
 			// 是否点赞
 			var isLiked bool
-			l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.VIDEO, a.Id).Scan(&isLiked)
+			l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, a.Id).Scan(&isLiked)
 			contents[i].IsLiked = isLiked
 
 			// 是否收藏
 			var favor model.Favor
-			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.VIDEO, a.Id).First(&favor).Error; err != nil {
+			if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, a.Id).First(&favor).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					contents[i].IsFavored = false
 				}
@@ -113,7 +117,7 @@ func (l *SearchLogic) Search(req *types.SearchReq) (resp *types.SearchResp, err 
 		search.CommunityList = communityList
 		break
 	case enum.DYNAMIC:
-		l.svcCtx.DB.Model(&model.Dynamic{}).Where("name like ?", "%"+req.Keyword+"%").Count(&total)
+		l.svcCtx.DB.Model(&model.Dynamic{}).Where("title like ?", "%"+req.Keyword+"%").Count(&total)
 		dynamics, _ := l.getSortedDynamicList(req.SortType, offset, req.PageSize, req.Keyword)
 		for i, dynamic := range dynamics {
 			// 用户信息
@@ -131,7 +135,7 @@ func (l *SearchLogic) Search(req *types.SearchReq) (resp *types.SearchResp, err 
 
 			// 是否点赞
 			var isLiked bool
-			l.svcCtx.DB.Model(&model.Like{}).Select("likedStatus").Where("userId = ? and itemType = ? and itemId = ?", loginUserId, enum.DYNAMIC, dynamic.Id).Scan(&isLiked)
+			l.svcCtx.DB.Model(&model.Like{}).Select("liked_status").Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.DYNAMIC, dynamic.Id).Scan(&isLiked)
 			dynamics[i].IsLiked = isLiked
 		}
 		search.Total = int(total)
@@ -147,24 +151,24 @@ func (l *SearchLogic) Search(req *types.SearchReq) (resp *types.SearchResp, err 
 		break
 	}
 
-	return
+	return &search, nil
 }
 
 func (l *SearchLogic) getSortedArticleList(sortType, offset, pageSize int, keyword string) ([]types.ContentView, error) {
 	var contents []types.ContentView
 	switch enum.SortType(sortType) {
 	case enum.Newest:
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("createTime DESC").
-			Where("itemType = ? and title like ?", enum.ARTICLE, "%"+keyword+"%").Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("create_time DESC").
+			Where("item_type = ? and title like ?", enum.ARTICLE, "%"+keyword+"%").Scan(&contents)
 		break
 	case enum.Popular:
 		// TODO: 考虑评论的正负性
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("likeCount+commentCount+favorCount DESC").
-			Where("itemType = ? and title like ?", enum.ARTICLE, "%"+keyword+"%").Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("like_count+comment_count+favor_count DESC").
+			Where("item_type = ? and title like ?", enum.ARTICLE, "%"+keyword+"%").Scan(&contents)
 		break
 	case enum.Oldest:
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("createTime ASC").
-			Where("itemType = ? and title like ?", enum.ARTICLE, "%"+keyword+"%").Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("create_time ASC").
+			Where("item_type = ? and title like ?", enum.ARTICLE, "%"+keyword+"%").Scan(&contents)
 		break
 	default:
 		break
@@ -176,17 +180,17 @@ func (l *SearchLogic) getSortedVideoList(sortType, offset, pageSize int, keyword
 	var contents []types.ContentView
 	switch enum.SortType(sortType) {
 	case enum.Newest:
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("createTime DESC").
-			Where("itemType = ? and title like ?", enum.VIDEO, "%"+keyword+"%").Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("create_time DESC").
+			Where("item_type = ? and title like ?", enum.VIDEO, "%"+keyword+"%").Scan(&contents)
 		break
 	case enum.Popular:
 		// TODO: 考虑评论的正负性
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("likeCount+commentCount+favorCount DESC").
-			Where("itemType = ? and title like ?", enum.VIDEO, "%"+keyword+"%").Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("like_count+comment_count+favor_count DESC").
+			Where("item_type = ? and title like ?", enum.VIDEO, "%"+keyword+"%").Scan(&contents)
 		break
 	case enum.Oldest:
-		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("createTime ASC").
-			Where("itemType = ? and title like ?", enum.VIDEO, "%"+keyword+"%").Scan(&contents)
+		l.svcCtx.DB.Model(&model.Content{}).Offset(offset).Limit(pageSize).Order("create_time ASC").
+			Where("item_type = ? and title like ?", enum.VIDEO, "%"+keyword+"%").Scan(&contents)
 		break
 	default:
 		break
@@ -195,24 +199,36 @@ func (l *SearchLogic) getSortedVideoList(sortType, offset, pageSize int, keyword
 }
 
 func (l *SearchLogic) getSortedCommunityList(sortType, offset, pageSize int, keyword string) ([]types.CommunityView, error) {
+	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	var communityList []types.CommunityView
 	switch enum.SortType(sortType) {
 	case enum.Newest:
-		l.svcCtx.DB.Model(&model.Community{}).Offset(offset).Limit(pageSize).Order("createTime DESC").
+		l.svcCtx.DB.Model(&model.Community{}).Offset(offset).Limit(pageSize).Order("create_time DESC").
 			Where("name like ?", "%"+keyword+"%").Scan(&communityList)
 		break
 	case enum.Popular:
 		// TODO: 考虑评论的正负性
-		l.svcCtx.DB.Model(&model.Community{}).Offset(offset).Limit(pageSize).Order("memberCount DESC").
+		l.svcCtx.DB.Model(&model.Community{}).Offset(offset).Limit(pageSize).Order("member_count DESC").
 			Where("name like ?", "%"+keyword+"%").Scan(&communityList)
 		break
 	case enum.Oldest:
-		l.svcCtx.DB.Model(&model.Community{}).Offset(offset).Limit(pageSize).Order("createTime ASC").
+		l.svcCtx.DB.Model(&model.Community{}).Offset(offset).Limit(pageSize).Order("create_time ASC").
 			Where("name like ?", "%"+keyword+"%").Scan(&communityList)
 		break
 	default:
 		break
 	}
+
+	for i, c := range communityList {
+		// 获取是否已经加入
+		var id int64
+		if l.svcCtx.DB.Model(&model.UserCommunity{}).Select("id").Where("user_id = ? and community_id = ?", loginUserId, c.Id).Scan(&id); id == 0 {
+			communityList[i].IsJoined = false
+		} else {
+			communityList[i].IsJoined = true
+		}
+	}
+
 	return communityList, nil
 }
 
@@ -220,16 +236,16 @@ func (l *SearchLogic) getSortedDynamicList(sortType, offset, pageSize int, keywo
 	var dynamics []types.CommunityDynamicView
 	switch enum.SortType(sortType) {
 	case enum.Newest:
-		l.svcCtx.DB.Model(&model.Community{}).Offset(offset).Limit(pageSize).Order("createTime DESC").
+		l.svcCtx.DB.Model(&model.Dynamic{}).Offset(offset).Limit(pageSize).Order("create_time DESC").
 			Where("title like ?", "%"+keyword+"%").Scan(&dynamics)
 		break
 	case enum.Popular:
 		// TODO: 考虑评论的正负性
-		l.svcCtx.DB.Model(&model.Community{}).Offset(offset).Limit(pageSize).Order("likeCount+CommentCount DESC").
+		l.svcCtx.DB.Model(&model.Dynamic{}).Offset(offset).Limit(pageSize).Order("like_count+comment_count DESC").
 			Where("title like ?", "%"+keyword+"%").Scan(&dynamics)
 		break
 	case enum.Oldest:
-		l.svcCtx.DB.Model(&model.Community{}).Offset(offset).Limit(pageSize).Order("createTime ASC").
+		l.svcCtx.DB.Model(&model.Dynamic{}).Offset(offset).Limit(pageSize).Order("create_time ASC").
 			Where("title like ?", "%"+keyword+"%").Scan(&dynamics)
 		break
 	default:
@@ -243,11 +259,11 @@ func (l *SearchLogic) getSortedCopyrightList(sortType, offset, pageSize int, key
 	var copyrights []types.CopyrightView
 	switch enum.SortType(sortType) {
 	case enum.Newest:
-		l.svcCtx.DB.Model(&model.Copyright{}).Offset(offset).Limit(pageSize).Order("createTime DESC").
+		l.svcCtx.DB.Model(&model.Copyright{}).Offset(offset).Limit(pageSize).Order("create_time DESC").
 			Where("title like ?", "%"+keyword+"%").Scan(&copyrights)
 		break
 	case enum.Oldest:
-		l.svcCtx.DB.Model(&model.Community{}).Offset(offset).Limit(pageSize).Order("createTime ASC").
+		l.svcCtx.DB.Model(&model.Community{}).Offset(offset).Limit(pageSize).Order("create_time ASC").
 			Where("title like ?", "%"+keyword+"%").Scan(&copyrights)
 		break
 	default:
@@ -258,7 +274,7 @@ func (l *SearchLogic) getSortedCopyrightList(sortType, offset, pageSize int, key
 		switch enum.ItemType(c.ItemType) {
 		case enum.ARTICLE:
 			var article model.Content
-			l.svcCtx.DB.Model(&model.Content{}).Select("title", "coverUrl").Where("id = ?", c.ItemId).Scan(&article)
+			l.svcCtx.DB.Model(&model.Content{}).Select("title", "cover_url").Where("id = ?", c.ItemId).Scan(&article)
 			copyrights[i].Title = article.Title
 			copyrights[i].CoverUrl = article.CoverUrl
 
@@ -269,7 +285,7 @@ func (l *SearchLogic) getSortedCopyrightList(sortType, offset, pageSize int, key
 			break
 		case enum.VIDEO:
 			var video model.Content
-			l.svcCtx.DB.Model(&model.Content{}).Select("title", "coverUrl").Where("id = ?", c.ItemId).Scan(&video)
+			l.svcCtx.DB.Model(&model.Content{}).Select("title", "cover_url").Where("id = ?", c.ItemId).Scan(&video)
 			copyrights[i].Title = video.Title
 			copyrights[i].CoverUrl = video.CoverUrl
 			// 用户信息

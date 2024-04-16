@@ -18,8 +18,8 @@ func CopyrightDetailHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			return
 		}
 
-		l := logic.NewCopyrightDetailReqLogic(r.Context(), svcCtx)
-		resp, err := l.CopyrightDetailReq(&req)
+		l := logic.NewCopyrightDetailLogic(r.Context(), svcCtx)
+		resp, err := l.CopyrightDetail(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

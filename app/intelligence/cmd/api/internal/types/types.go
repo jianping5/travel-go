@@ -20,13 +20,14 @@ type ConversationListResp struct {
 }
 
 type ConversationView struct {
+	Id          int64  `json:"id"`
 	Content     string `json:"content"`
 	IsGenerated bool   `json:"isGenerated"`
 }
 
 type StrategyCreateReq struct {
 	Destination string `json:"destination"`
-	Duration    int    `json:"duration"`
+	Duration    string `json:"duration"`
 	Budget      string `json:"budget"`
 	TripGroup   string `json:"tripGroup"`
 	TripMood    string `json:"tripMood"`
@@ -37,9 +38,17 @@ type StrategyDeleteReq struct {
 	Id int64 `json:"id"`
 }
 
+type StrategyDetailReq struct {
+	Id int64 `json:"id"`
+}
+
+type StrategyDetailResp struct {
+	Strategy StrategyView `json:"strategy"`
+}
+
 type StrategyGenerateReq struct {
 	Destination string `json:"destination"`
-	Duration    int    `json:"duration"`
+	Duration    string `json:"duration"`
 	Budget      string `json:"budget"`
 	TripGroup   string `json:"tripGroup"`
 	TripMood    string `json:"tripMood"`
@@ -54,8 +63,9 @@ type StrategyListResp struct {
 }
 
 type StrategyView struct {
+	Id          int64  `json:"id"`
 	Destination string `json:"destination"`
-	Duration    int    `json:"duration"`
+	Duration    string `json:"duration"`
 	Budget      string `json:"budget"`
 	TripGroup   string `json:"tripGroup"`
 	TripMood    string `json:"tripMood"`

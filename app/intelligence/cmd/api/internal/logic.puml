@@ -1,0 +1,70 @@
+@startuml
+namespace logic {
+    class ConversationCreateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + ConversationCreate(req *types.ConversationCreateReq) error
+
+    }
+    class ConversationDeleteLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + ConversationDelete() error
+
+    }
+    class ConversationGenerateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + ConversationGenerate(req *types.ConversationGenerateReq) (*types.ConversationListResp, error)
+
+    }
+    class ConversationListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + ConversationList() (*types.ConversationListResp, error)
+
+    }
+    class StrategyCreateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + StrategyCreate(req *types.StrategyCreateReq) error
+
+    }
+    class StrategyDeleteLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + StrategyDelete(req *types.StrategyDeleteReq) error
+
+    }
+    class StrategyGenerateLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + StrategyGenerate(req *types.StrategyGenerateReq) (*types.StrategyGenerateResp, error)
+
+    }
+    class StrategyListLogic << (S,Aquamarine) >> {
+        - ctx context.Context
+        - svcCtx *svc.ServiceContext
+
+        + StrategyList() (*types.StrategyListResp, error)
+
+    }
+}
+"logx.Logger" *-- "logic.ConversationCreateLogic"
+"logx.Logger" *-- "logic.ConversationDeleteLogic"
+"logx.Logger" *-- "logic.ConversationGenerateLogic"
+"logx.Logger" *-- "logic.ConversationListLogic"
+"logx.Logger" *-- "logic.StrategyCreateLogic"
+"logx.Logger" *-- "logic.StrategyDeleteLogic"
+"logx.Logger" *-- "logic.StrategyGenerateLogic"
+"logx.Logger" *-- "logic.StrategyListLogic"
+
+
+@enduml

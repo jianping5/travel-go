@@ -3,6 +3,7 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	"travel/app/data/cmd/api/internal/svc"
 
@@ -24,5 +25,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
+		rest.WithTimeout(30000*time.Millisecond),
+		rest.WithMaxBytes(104857600),
 	)
 }

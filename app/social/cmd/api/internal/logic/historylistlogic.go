@@ -42,10 +42,11 @@ func (l *HistoryListLogic) HistoryList(req *types.HistoryListReq) (resp *types.H
 	for i, h := range historys {
 		// 内容信息 + 用户信息
 		var content model.Content
-		l.svcCtx.DB.Select("title", "cover_url", "like_count", "user_id").Where("id = ?", h.ItemId).First(&content)
+		l.svcCtx.DB.Select("title", "description", "cover_url", "like_count", "user_id").Where("id = ?", h.ItemId).First(&content)
 		historys[i].Title = content.Title
 		historys[i].CoverUrl = content.CoverUrl
 		historys[i].LikeCount = content.LikeCount
+		historys[i].Description = content.Description
 		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: content.UserId, LoginUserId: loginUserId})
 		historys[i].Account = info.Account
 	}

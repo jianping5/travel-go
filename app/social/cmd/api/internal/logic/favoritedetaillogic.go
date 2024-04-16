@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"fmt"
 	"travel/app/social/cmd/api/internal/svc"
 	"travel/app/social/cmd/api/internal/types"
 	"travel/app/social/cmd/model"
@@ -32,10 +31,6 @@ func (l *FavoriteDetailLogic) FavoriteDetail(req *types.FavoriteDeleteReq) (resp
 	var favor model.Favor
 	coverUrl := "https://cdn.pixabay.com/photo/2023/12/14/00/20/alaska-8448009_1280.jpg"
 	l.svcCtx.DB.Model(&model.Favor{}).Where("favorite_id = ?", req.Id).Order("create_time DESC").First(&favor)
-
-	// todo: test
-	fmt.Println("favor", favor)
-	fmt.Println(favor == (model.Favor{}))
 
 	if favor == (model.Favor{}) {
 		favorite.CoverUrl = coverUrl

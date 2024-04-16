@@ -125,7 +125,7 @@ func (l *ContentListLogic) SetBasicInfo(contents *[]types.ContentView, loginUser
 
 		// 是否收藏
 		var favor model.Favor
-		if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, a.Id).First(&favor).Error; err != nil {
+		if err := l.svcCtx.DB.Model(&model.Favor{}).Where("user_id = ? and item_type = ? and item_id = ?", loginUserId, enum.VIDEO, a.Id).First(&favor).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				(*contents)[i].IsFavored = false
 			}

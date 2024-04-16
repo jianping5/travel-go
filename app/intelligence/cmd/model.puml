@@ -1,0 +1,35 @@
+@startuml
+namespace model {
+    class BaseModel << (S,Aquamarine) >> {
+        + Id int64
+        + CreateTime time.Time
+        + UpdateTime time.Time
+        + IsDeleted bool
+
+    }
+    class Conversation << (S,Aquamarine) >> {
+        + UserId int64
+        + Content string
+        + IsGenerated bool
+
+        + TableName() string
+
+    }
+    class Strategy << (S,Aquamarine) >> {
+        + UserId int64
+        + Destination string
+        + Duration int
+        + Budget string
+        + TripGroup string
+        + TripMood string
+        + Strategy string
+
+        + TableName() string
+
+    }
+}
+"model.BaseModel" *-- "model.Conversation"
+"model.BaseModel" *-- "model.Strategy"
+
+
+@enduml

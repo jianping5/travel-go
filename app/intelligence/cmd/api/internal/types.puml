@@ -1,0 +1,68 @@
+@startuml
+namespace types {
+    class ConversationCreateReq << (S,Aquamarine) >> {
+        + Content string
+        + IsGenerated bool
+
+    }
+    class ConversationGenerateReq << (S,Aquamarine) >> {
+        + Content string
+        + IsGenerated bool
+
+    }
+    class ConversationGenerateResp << (S,Aquamarine) >> {
+        + Content string
+
+    }
+    class ConversationListResp << (S,Aquamarine) >> {
+        + List []ConversationView
+
+    }
+    class ConversationView << (S,Aquamarine) >> {
+        + Content string
+        + IsGenerated bool
+
+    }
+    class StrategyCreateReq << (S,Aquamarine) >> {
+        + Destination string
+        + Duration string
+        + Budget string
+        + TripGroup string
+        + TripMood string
+        + Strategy string
+
+    }
+    class StrategyDeleteReq << (S,Aquamarine) >> {
+        + Id int64
+
+    }
+    class StrategyGenerateReq << (S,Aquamarine) >> {
+        + Destination string
+        + Duration string
+        + Budget string
+        + TripGroup string
+        + TripMood string
+
+    }
+    class StrategyGenerateResp << (S,Aquamarine) >> {
+        + Strategy string
+
+    }
+    class StrategyListResp << (S,Aquamarine) >> {
+        + List []StrategyView
+
+    }
+    class StrategyView << (S,Aquamarine) >> {
+        + Destination string
+        + Duration string
+        + Budget string
+        + TripGroup string
+        + TripMood string
+        + Strategy string
+        + CreateTime string
+
+    }
+}
+
+
+@enduml

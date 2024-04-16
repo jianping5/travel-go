@@ -1,0 +1,149 @@
+@startuml
+namespace model {
+    class BaseModel << (S,Aquamarine) >> {
+        + Id int64
+        + CreateTime time.Time
+        + UpdateTime time.Time
+        + IsDeleted bool
+
+    }
+    class Comment << (S,Aquamarine) >> {
+        + UserId int64
+        + CommentItemType int
+        + CommentItemId int64
+        + ParentUserId int64
+        + TopId int64
+        + Content string
+        + LikeCount int
+        + ReplyCount int
+
+        + TableName() string
+
+    }
+    class Community << (S,Aquamarine) >> {
+        + UserId int64
+        + Name string
+        + Description string
+        + Avatar string
+        + MemberCount int
+
+        + TableName() string
+
+    }
+    class Content << (S,Aquamarine) >> {
+        + UserId int64
+        + Title string
+        + ItemType int
+        + CoverUrl string
+        + Content string
+        + Description string
+        + Tag datatypes.JSON
+        + LikeCount int
+        + CommentCount int
+        + FavorCount int
+
+        + TableName() string
+
+    }
+    class ContentUpdateReq << (S,Aquamarine) >> {
+        + Id int64
+        + Title string
+        + Content string
+        + CoverUrl string
+        + Description string
+        + Tag datatypes.JSON
+
+    }
+    class Copyright << (S,Aquamarine) >> {
+        + UserId int64
+        + ItemType int
+        + ItemId int64
+        + Metadata string
+        + TradeHash string
+        + Address string
+        + Status int
+
+        + TableName() string
+
+    }
+    class Dynamic << (S,Aquamarine) >> {
+        + UserId int64
+        + Title string
+        + Description string
+        + CommunityId int64
+        + FileType int
+        + Content string
+        + LikeCount int
+        + CommentCount int
+
+        + TableName() string
+
+    }
+    class Favor << (S,Aquamarine) >> {
+        + UserId int64
+        + FavoriteId int64
+        + ItemType int
+        + ItemId int64
+
+        + TableName() string
+
+    }
+    class Favorite << (S,Aquamarine) >> {
+        + UserId int64
+        + Name string
+
+        + TableName() string
+
+    }
+    class History << (S,Aquamarine) >> {
+        + UserId int64
+        + ItemType int
+        + ItemId int64
+
+        + TableName() string
+
+    }
+    class Like << (S,Aquamarine) >> {
+        + UserId int64
+        + ItemType int
+        + ItemId int64
+        + LikedStatus bool
+
+        + TableName() string
+
+    }
+    class Message << (S,Aquamarine) >> {
+        + UserId int64
+        + ItemType int
+        + ItemId int64
+        + MessageUserId int64
+        + MessageType int
+        + MessageStatus int
+        + Content string
+
+        + TableName() string
+
+    }
+    class UserCommunity << (S,Aquamarine) >> {
+        + UserId int64
+        + Role int
+        + CommunityId int64
+
+        + TableName() string
+
+    }
+}
+"model.BaseModel" *-- "model.Comment"
+"model.BaseModel" *-- "model.Community"
+"model.BaseModel" *-- "model.Content"
+"model.BaseModel" *-- "model.Copyright"
+"model.BaseModel" *-- "model.Dynamic"
+"model.BaseModel" *-- "model.Favor"
+"model.BaseModel" *-- "model.Favorite"
+"model.BaseModel" *-- "model.History"
+"model.BaseModel" *-- "model.Like"
+"model.BaseModel" *-- "model.Message"
+"model.BaseModel" *-- "model.UserCommunity"
+
+
+@enduml

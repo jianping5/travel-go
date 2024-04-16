@@ -21,7 +21,7 @@ CREATE TABLE `travel_intelligence_strategy` (
     `user_id`   bigint  NOT NULL    COMMENT '用户 ID',
     `ask_content`  varchar(1024)  NOT NULL    COMMENT '询问内容',
     `destination` varchar(255)                       NOT NULL COMMENT '目的地',
-    `duration`    int                                NOT NULL COMMENT '持续天数',
+    `duration`    varchar(255)                                NOT NULL COMMENT '持续天数',
     `budget`      varchar(255)                       NOT NULL COMMENT '预算',
     `trip_group`  varchar(255)                       NOT NULL COMMENT '旅行团',
     `trip_mood`   varchar(255)                       NOT NULL COMMENT '旅行心情',

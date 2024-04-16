@@ -13,7 +13,7 @@ type Strategy struct {
 	BaseModel
 	UserId      int64  `json:"userId"`
 	Destination string `json:"destination"`
-	Duration    int    `json:"duration"`
+	Duration    string `json:"duration"`
 	Budget      string `json:"budget"`
 	TripGroup   string `json:"tripGroup"`
 	TripMood    string `json:"tripMood"`

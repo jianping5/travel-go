@@ -34,23 +34,31 @@ func (l *CommunityListLogic) CommunityList(req *types.CommunityListReq) (resp *t
 	if userId == 0 {
 		userId = ctxdata.GetUidFromCtx(l.ctx)
 	}
-	// 获取该用户下的社区 ID 列表
-	var userCommunityList []model.UserCommunity
-	l.svcCtx.DB.Select("community_id").Where("user_id = ?", userId).Find(&userCommunityList)
-	if len(userCommunityList) == 0 {
-		return &types.CommunityListResp{
-			List: nil,
-		}, nil
-	}
 	var communityIds []int64
-	for _, userCommunity := range userCommunityList {
-		communityIds = append(communityIds, userCommunity.CommunityId)
+	if userId != -1 {
+		// 获取该用户下的社区 ID 列表
+		var userCommunityList []model.UserCommunity
+		l.svcCtx.DB.Select("community_id").Where("user_id = ?", userId).Find(&userCommunityList)
+		if len(userCommunityList) == 0 {
+			return &types.CommunityListResp{
+				List: nil,
+			}, nil
+		}
+		for _, userCommunity := range userCommunityList {
+			communityIds = append(communityIds, userCommunity.CommunityId)
+		}
 	}
 
 	// 获取社区详情列表
 	var communityViews []types.CommunityView
 	var communityList []model.Community
-	l.svcCtx.DB.Where("id IN (?)", communityIds).Find(&communityList)
+	// 若 userId 为 -1，则表示查询所有社区
+	if userId == -1 {
+		l.svcCtx.DB.Model(&model.Community{}).Scan(&communityList)
+	} else {
+		l.svcCtx.DB.Where("id IN (?)", communityIds).Find(&communityList)
+	}
+
 	for _, community := range communityList {
 		var communityView types.CommunityView
 		_ = copier.Copy(&communityView, community)

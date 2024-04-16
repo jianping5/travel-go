@@ -12,21 +12,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type CopyrightDetailReqLogic struct {
+type CopyrightDetailLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewCopyrightDetailReqLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CopyrightDetailReqLogic {
-	return &CopyrightDetailReqLogic{
+func NewCopyrightDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CopyrightDetailLogic {
+	return &CopyrightDetailLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *CopyrightDetailReqLogic) CopyrightDetailReq(req *types.CopyrightDetailReq) (resp *types.CopyrightDetailResp, err error) {
+func (l *CopyrightDetailLogic) CopyrightDetail(req *types.CopyrightDetailReq) (resp *types.CopyrightDetailResp, err error) {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	// 版权信息
 	var copyright types.CopyrightView

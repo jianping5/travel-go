@@ -31,11 +31,11 @@ func (l *SearchUserLogic) SearchUser(in *pb.SearchUserReq) (*pb.SearchUserResp, 
 	var users []*pb.UserInfoView
 	switch enum.SortType(in.SortType) {
 	case enum.Newest:
-		l.svcCtx.DB.Model(&model.User{}).Offset(int(in.Offset)).Limit(int(in.PageSize)).Order("createTime DESC").
+		l.svcCtx.DB.Model(&model.User{}).Offset(int(in.Offset)).Limit(int(in.PageSize)).Order("create_time DESC").
 			Where("account like ?", "%"+in.Keyword+"%").Scan(&users)
 		break
 	case enum.Oldest:
-		l.svcCtx.DB.Model(&model.User{}).Offset(int(in.Offset)).Limit(int(in.PageSize)).Order("createTime ASC").
+		l.svcCtx.DB.Model(&model.User{}).Offset(int(in.Offset)).Limit(int(in.PageSize)).Order("create_time ASC").
 			Where("account like ?", "%"+in.Keyword+"%").Scan(&users)
 		break
 	default:

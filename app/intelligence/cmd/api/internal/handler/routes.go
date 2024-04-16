@@ -3,6 +3,7 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	"travel/app/intelligence/cmd/api/internal/svc"
 
@@ -24,11 +25,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/api/intelligence/conversation/generate",
-				Handler: ConversationGenerateHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
 				Path:    "/api/intelligence/conversation/list",
 				Handler: ConversationListHandler(serverCtx),
 			},
@@ -44,8 +40,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/api/intelligence/strategy/generate",
-				Handler: StrategyGenerateHandler(serverCtx),
+				Path:    "/api/intelligence/strategy/detail",
+				Handler: StrategyDetailHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
@@ -54,5 +50,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/intelligence/conversation/generate",
+				Handler: ConversationGenerateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/intelligence/strategy/generate",
+				Handler: StrategyGenerateHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
+		rest.WithTimeout(300000*time.Millisecond),
 	)
 }

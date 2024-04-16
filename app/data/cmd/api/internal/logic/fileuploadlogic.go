@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/tencentyun/cos-go-sdk-v5"
 	"mime/multipart"
@@ -44,6 +45,9 @@ func NewFileUploadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FileUp
 }
 
 func (l *FileUploadLogic) FileUpload(fileType string, file *multipart.FileHeader) (resp *types.UploadResp, err error) {
+	// todo: test
+	fmt.Println(123123123)
+
 	// todo: add your logic here and delete this line
 	srcFile, err := file.Open()
 

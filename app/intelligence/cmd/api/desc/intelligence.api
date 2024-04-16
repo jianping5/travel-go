@@ -10,7 +10,7 @@ type (
 	// 智能攻略
 	StrategyCreateReq {
 		Destination string `json:"destination"`
-		Duration    int    `json:"duration"`
+		Duration    string `json:"duration"`
 		Budget      string `json:"budget"`
 		TripGroup   string `json:"tripGroup"`
 		TripMood    string `json:"tripMood"`
@@ -19,9 +19,16 @@ type (
 	StrategyDeleteReq {
 		Id int64 `json:"id"`
 	}
+	StrategyDetailReq {
+		Id int64 `json:"id"`
+	}
+	StrategyDetailResp {
+		Strategy StrategyView `json:"strategy"`
+	}
 	StrategyView {
+		Id          int64  `json:"id"`
 		Destination string `json:"destination"`
-		Duration    int    `json:"duration"`
+		Duration    string `json:"duration"`
 		Budget      string `json:"budget"`
 		TripGroup   string `json:"tripGroup"`
 		TripMood    string `json:"tripMood"`
@@ -33,7 +40,7 @@ type (
 	}
 	StrategyGenerateReq {
 		Destination string `json:"destination"`
-		Duration    int    `json:"duration"`
+		Duration    string `json:"duration"`
 		Budget      string `json:"budget"`
 		TripGroup   string `json:"tripGroup"`
 		TripMood    string `json:"tripMood"`
@@ -53,6 +60,7 @@ type (
 		Content string `json:"content"`
 	}
 	ConversationView {
+		Id          int64  `json:"id"`
 		Content     string `json:"content"`
 		IsGenerated bool   `json:"isGenerated"`
 	}
@@ -74,8 +82,8 @@ service Intelligence {
 	@handler StrategyList
 	post /api/intelligence/strategy/list returns (StrategyListResp)
 
-	@handler StrategyGenerate
-	post /api/intelligence/strategy/generate (StrategyGenerateReq) returns (StrategyGenerateResp)
+	@handler StrategyDetail
+	post /api/intelligence/strategy/detail (StrategyDeleteReq) returns (StrategyDetailResp)
 
 	@handler ConversationCreate
 	post /api/intelligence/conversation/create (ConversationCreateReq)
@@ -85,8 +93,17 @@ service Intelligence {
 
 	@handler ConversationList
 	post /api/intelligence/conversation/list returns (ConversationListResp)
+}
 
+@server (
+	jwt:     Auth
+	timeout: 300000ms
+)
+service Intelligence {
 	@handler ConversationGenerate
 	post /api/intelligence/conversation/generate (ConversationGenerateReq) returns (ConversationListResp)
+
+	@handler StrategyGenerate
+	post /api/intelligence/strategy/generate (StrategyGenerateReq) returns (StrategyGenerateResp)
 }
 

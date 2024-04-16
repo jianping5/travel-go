@@ -19,7 +19,9 @@ type (
 )
 
 @server (
-	jwt: Auth
+	jwt:      Auth
+	maxBytes: 104857600
+	timeout:  30000ms
 )
 service Data {
 	@handler BehaviorCreate
