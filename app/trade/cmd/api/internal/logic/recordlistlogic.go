@@ -42,6 +42,11 @@ func (l *RecordListLogic) RecordList(req *types.RecordListReq) (resp *types.Reco
 		newInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: r.NewUserId, LoginUserId: loginUserId})
 		_ = copier.Copy(&newUserInfo, &newInfo)
 		records[i].NewUserInfo = newUserInfo
+
+		// 获取价格
+		var price string
+		l.svcCtx.DB.Model(&model.Work{}).Select("price").Where("id = ?", req.WorkId).Scan(&price)
+		records[i].Price = price
 	}
 
 	return &types.RecordListResp{

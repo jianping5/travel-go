@@ -41,3 +41,8 @@ func (s *SocialServer) ContentDelete(ctx context.Context, in *pb.ContentDeleteRe
 	l := logic.NewContentDeleteLogic(ctx, s.svcCtx)
 	return l.ContentDelete(in)
 }
+
+func (s *SocialServer) CopyrightCheck(ctx context.Context, in *pb.CopyrightCheckReq) (*pb.CopyrightCheckResp, error) {
+	l := logic.NewCopyrightCheckLogic(ctx, s.svcCtx)
+	return l.CopyrightCheck(in)
+}

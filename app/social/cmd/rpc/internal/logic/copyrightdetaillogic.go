@@ -29,9 +29,10 @@ func (l *CopyrightDetailLogic) CopyrightDetail(in *pb.CopyrightDetailReq) (*pb.C
 	l.svcCtx.DB.Model(&model.Copyright{}).Where("id = ?", in.Id).Scan(&copyright)
 
 	var content model.Content
-	l.svcCtx.DB.Model(&model.Content{}).Select("title", "coverUrl").Where("id = ?", copyright.ItemId).Scan(&content)
+	l.svcCtx.DB.Model(&model.Content{}).Select("title", "cover_url", "content").Where("id = ?", copyright.ItemId).Scan(&content)
 	copyright.Title = content.Title
 	copyright.CoverUrl = content.CoverUrl
+	copyright.Content = content.Content
 
 	return &copyright, nil
 }

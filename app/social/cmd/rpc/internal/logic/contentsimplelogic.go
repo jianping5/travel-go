@@ -27,11 +27,11 @@ func NewContentSimpleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Con
 
 func (l *ContentSimpleLogic) ContentSimple(in *pb.ContentSimpleReq) (*pb.ContentSimpleResp, error) {
 	var copyright model.Copyright
-	l.svcCtx.DB.Model(&model.Copyright{}).Select("itemType", "itemId").Where("id = ?", in.Id).Scan(&copyright)
+	l.svcCtx.DB.Model(&model.Copyright{}).Select("item_type", "item_id").Where("id = ?", in.Id).Scan(&copyright)
 
 	var contentSimple pb.ContentSimpleResp
 	var content model.Content
-	l.svcCtx.DB.Model(&model.Content{}).Select("title", "coverUrl", "itemType").Where("id = ?", copyright.ItemId).Scan(&content)
+	l.svcCtx.DB.Model(&model.Content{}).Select("title", "cover_url", "item_type").Where("id = ?", copyright.ItemId).Scan(&content)
 	contentSimple.Title = content.Title
 	contentSimple.CoverUrl = content.CoverUrl
 	contentSimple.ItemType = int32(enum.ARTICLE)

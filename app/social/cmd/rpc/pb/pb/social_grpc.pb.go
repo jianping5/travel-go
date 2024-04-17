@@ -23,6 +23,7 @@ const (
 	Social_CopyrightDetail_FullMethodName = "/pb.Social/CopyrightDetail"
 	Social_ContentSimple_FullMethodName   = "/pb.Social/ContentSimple"
 	Social_ContentDelete_FullMethodName   = "/pb.Social/ContentDelete"
+	Social_CopyrightCheck_FullMethodName  = "/pb.Social/CopyrightCheck"
 )
 
 // SocialClient is the client API for Social service.
@@ -33,6 +34,7 @@ type SocialClient interface {
 	CopyrightDetail(ctx context.Context, in *CopyrightDetailReq, opts ...grpc.CallOption) (*CopyrightDetailResp, error)
 	ContentSimple(ctx context.Context, in *ContentSimpleReq, opts ...grpc.CallOption) (*ContentSimpleResp, error)
 	ContentDelete(ctx context.Context, in *ContentDeleteReq, opts ...grpc.CallOption) (*ContentDeleteResp, error)
+	CopyrightCheck(ctx context.Context, in *CopyrightCheckReq, opts ...grpc.CallOption) (*CopyrightCheckResp, error)
 }
 
 type socialClient struct {
@@ -79,6 +81,15 @@ func (c *socialClient) ContentDelete(ctx context.Context, in *ContentDeleteReq, 
 	return out, nil
 }
 
+func (c *socialClient) CopyrightCheck(ctx context.Context, in *CopyrightCheckReq, opts ...grpc.CallOption) (*CopyrightCheckResp, error) {
+	out := new(CopyrightCheckResp)
+	err := c.cc.Invoke(ctx, Social_CopyrightCheck_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SocialServer is the server API for Social service.
 // All implementations must embed UnimplementedSocialServer
 // for forward compatibility
@@ -87,6 +98,7 @@ type SocialServer interface {
 	CopyrightDetail(context.Context, *CopyrightDetailReq) (*CopyrightDetailResp, error)
 	ContentSimple(context.Context, *ContentSimpleReq) (*ContentSimpleResp, error)
 	ContentDelete(context.Context, *ContentDeleteReq) (*ContentDeleteResp, error)
+	CopyrightCheck(context.Context, *CopyrightCheckReq) (*CopyrightCheckResp, error)
 	mustEmbedUnimplementedSocialServer()
 }
 
@@ -105,6 +117,9 @@ func (UnimplementedSocialServer) ContentSimple(context.Context, *ContentSimpleRe
 }
 func (UnimplementedSocialServer) ContentDelete(context.Context, *ContentDeleteReq) (*ContentDeleteResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ContentDelete not implemented")
+}
+func (UnimplementedSocialServer) CopyrightCheck(context.Context, *CopyrightCheckReq) (*CopyrightCheckResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CopyrightCheck not implemented")
 }
 func (UnimplementedSocialServer) mustEmbedUnimplementedSocialServer() {}
 
@@ -191,6 +206,24 @@ func _Social_ContentDelete_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Social_CopyrightCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CopyrightCheckReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SocialServer).CopyrightCheck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Social_CopyrightCheck_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SocialServer).CopyrightCheck(ctx, req.(*CopyrightCheckReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Social_ServiceDesc is the grpc.ServiceDesc for Social service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -213,6 +246,10 @@ var Social_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ContentDelete",
 			Handler:    _Social_ContentDelete_Handler,
+		},
+		{
+			MethodName: "CopyrightCheck",
+			Handler:    _Social_CopyrightCheck_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

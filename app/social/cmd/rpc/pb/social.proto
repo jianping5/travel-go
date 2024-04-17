@@ -35,6 +35,7 @@ message CopyrightDetailResp {
   string CreateTime = 9;
   string Title = 10;
   string CoverUrl = 11;
+  string Content = 12;
 }
 
 message ContentSimpleReq {
@@ -57,9 +58,20 @@ message ContentDeleteResp {
 
 }
 
+// 校验当前版权是否属于当前用户
+message CopyrightCheckReq {
+  int64 UserId = 1;
+  int64 CopyrightId = 2;
+}
+
+message CopyrightCheckResp {
+  bool isBelonged = 1;
+}
+
 service Social {
   rpc MessageCreate(MessageCreateReq) returns(MessageCreateResp) ;
   rpc CopyrightDetail(CopyrightDetailReq) returns(CopyrightDetailResp);
   rpc ContentSimple(ContentSimpleReq) returns(ContentSimpleResp);
   rpc ContentDelete(ContentDeleteReq) returns(ContentDeleteResp);
+  rpc CopyrightCheck(CopyrightCheckReq) returns(CopyrightCheckResp);
 }

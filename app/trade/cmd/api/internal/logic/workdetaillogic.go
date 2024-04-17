@@ -40,11 +40,18 @@ func (l *WorkDetailLogic) WorkDetail(req *types.WorkDetailReq) (resp *types.Work
 
 	var userInfoView types.UserInfoView
 	userInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: work.UserId, LoginUserId: loginUserId})
-	_ = copier.Copy(userInfoView, userInfo)
+	_ = copier.Copy(&userInfoView, userInfo)
 
 	var copyright types.CopyrightView
-	detail, err := l.svcCtx.SocialRpc.CopyrightDetail(l.ctx, &social.CopyrightDetailReq{Id: req.Id})
-	_ = copier.Copy(&copyright, &detail)
+	detail, err := l.svcCtx.SocialRpc.CopyrightDetail(l.ctx, &social.CopyrightDetailReq{Id: work.CopyrightId})
+	_ = copier.Copy(&copyright, detail)
+
+	work.Title = copyright.Title
+	work.CoverUrl = copyright.CoverUrl
+	work.Content = copyright.Content
+	work.Account = userInfo.Account
+	work.Avatar = userInfo.Avatar
+	work.ItemType = copyright.ItemType
 
 	return &types.WorkDetailResp{
 		Work:      work,

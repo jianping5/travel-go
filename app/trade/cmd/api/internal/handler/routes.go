@@ -42,6 +42,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/api/trade/work/update",
 				Handler: WorkUpdateHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/trade/work/userwork/list",
+				Handler: UserWorkListHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
 	)

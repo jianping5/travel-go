@@ -13,6 +13,7 @@ type CopyrightView struct {
 	CreateTime string `json:"createTime"`
 	Title      string `json:"title"`
 	CoverUrl   string `json:"coverUrl"`
+	Content    string `json:"content"`
 }
 
 type RecordCreateReq struct {
@@ -34,6 +35,7 @@ type RecordView struct {
 	OldUserInfo UserInfoView `json:"oldUserInfo"`
 	NewUserId   int64        `json:"newUserId"`
 	NewUserInfo UserInfoView `json:"newUserInfo"`
+	Price       string       `json:"price"`
 	CreateTime  string       `json:"createTime"`
 }
 
@@ -43,6 +45,17 @@ type UserInfoView struct {
 	Email      string `json:"email"`
 	Avatar     string `json:"avatar"`
 	IsFollowed bool   `json:"isFollowed"`
+}
+
+type UserWorkListReq struct {
+	UserId   int64 `json:"userId"`
+	PageNum  int   `json:"pageNum"`
+	PageSize int   `json:"pageSize"`
+}
+
+type UserWorkListResp struct {
+	List  []WorkView `json:"list"`
+	Total int        `json:"total"`
 }
 
 type WorkCreateReq struct {
@@ -87,4 +100,5 @@ type WorkView struct {
 	ItemType    int    `json:"itemType"`
 	Title       string `json:"title"`
 	CoverUrl    string `json:"coverUrl"`
+	Content     string `json:"content"`
 }

@@ -31,7 +31,7 @@ func (l *WorkUpdateLogic) WorkUpdate(req *types.WorkUpdateReq) error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
 	switch enum.WorkUpdateType(req.Type) {
 	case enum.Remove:
-		l.svcCtx.DB.Delete(&model.Work{}, "id = ?", req.Id)
+		l.svcCtx.DB.Model(&model.Work{}).Where("id = ?", req.Id).Update("status", enum.Created)
 		break
 	case enum.Sell:
 		l.svcCtx.DB.Model(&model.Work{}).Where("id = ?", req.Id).Update("status", enum.OnSale)
