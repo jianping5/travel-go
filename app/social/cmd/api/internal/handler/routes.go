@@ -175,6 +175,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/api/social/copyright/mint",
+				Handler: CopyrightMintHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/api/social/favor/cancel",
 				Handler: FavorCancelHandler(serverCtx),
 			},

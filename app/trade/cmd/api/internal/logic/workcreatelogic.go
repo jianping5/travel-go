@@ -43,6 +43,12 @@ func (l *WorkCreateLogic) WorkCreate(req *types.WorkCreateReq) error {
 		return errors.Wrap(xerr.NewErrMsg("权限不足"), "权限不足")
 	}
 
+	// todo：校验该版权是否已经存在了未售卖的商品？
+	var id int64
+	if l.svcCtx.DB.Model(&model.Work{}).Select("id").Where("copyright_id = ? and status != ?", req.CopyrightId, enum.Sold).Scan(&id); id != 0 {
+		return errors.Wrap(xerr.NewErrMsg("不能重复创建商品"), "不能重复创建商品")
+	}
+
 	work := &model.Work{
 		UserId:      loginUserId,
 		CopyrightId: req.CopyrightId,

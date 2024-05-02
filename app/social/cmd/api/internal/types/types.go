@@ -236,10 +236,13 @@ type ContentView struct {
 }
 
 type CopyrightCreateReq struct {
-	ItemType     int    `json:"itemType"`
-	ItemId       int64  `json:"itemId"`
-	ContentUrl   string `json:"contentUrl"`
-	UploadSwitch bool   `json:"uploadSwitch"`
+	ItemType     int   `json:"itemType"`
+	ItemId       int64 `json:"itemId"`
+	UploadSwitch bool  `json:"uploadSwitch"`
+}
+
+type CopyrightCreateResp struct {
+	IpfsHash string `json:"ipfsHash"`
 }
 
 type CopyrightDetailReq struct {
@@ -259,20 +262,30 @@ type CopyrightListResp struct {
 	List []CopyrightView `json:"list"`
 }
 
+type CopyrightMintReq struct {
+	ItemType       int    `json:"itemType"`
+	ItemId         int64  `json:"itemId"`
+	TokenId        int64  `json:"tokenId"`
+	AccountAddress string `json:"accountAddress"`
+}
+
 type CopyrightView struct {
-	Id         int64  `json:"id"`
-	UserId     int64  `json:"userId"`
-	ItemType   int    `json:"itemType"`
-	ItemId     int64  `json:"itemId"`
-	Metadata   string `json:"metadata"`
-	TradeHash  string `json:"tradeHash"`
-	Address    string `json:"address"`
-	Status     int    `json:"status"`
-	CreateTime string `json:"createTime"`
-	Title      string `json:"title"`
-	CoverUrl   string `json:"coverUrl"`
-	Account    string `json:"account"`
-	Avatar     string `json:"avatar"`
+	Id             int64  `json:"id"`
+	UserId         int64  `json:"userId"`
+	ItemType       int    `json:"itemType"`
+	ItemId         int64  `json:"itemId"`
+	Metadata       string `json:"metadata"`
+	IpfsHash       string `json:"ipfsHash"`
+	TokenId        int64  `json:"tokenId"`
+	AccountAddress string `json:"accountAddress"`
+	Status         int    `json:"status"`
+	CreateTime     string `json:"createTime"`
+	Title          string `json:"title"`
+	CoverUrl       string `json:"coverUrl"`
+	Account        string `json:"account"`
+	Avatar         string `json:"avatar"`
+	Content        string `json:"content"`
+	Description    string `json:"description"`
 }
 
 type FavorCancelReq struct {
@@ -407,6 +420,7 @@ type MessageView struct {
 	ItemId        int    `json:"itemId"`
 	CoverUrl      string `json:"coverUrl"`
 	Title         string `json:"title"`
+	CreateTime    string `json:"createTime"`
 	MessageType   int    `json:"messageType"`
 	MessageStatus bool   `json:"messageStatus"`
 	Content       string `json:"content"`

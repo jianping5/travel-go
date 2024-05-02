@@ -38,22 +38,27 @@ func (l *WorkUpdateLogic) WorkUpdate(req *types.WorkUpdateReq) error {
 		break
 	case enum.Buy:
 		l.svcCtx.DB.Model(&model.Work{}).Where("id = ?", req.Id).Update("status", enum.Sold)
-		// TODO:考虑使用消息队列
-		// 将视频的拥有者更改为当前用户
-		// TODO：增添一个版权记录给购买用户，区块链上怎么操作呢？
-
-		// TODO: 并将原用户的对应作品归属权删除（目前是直接删除）
+		// 获取版权 Id
 		var copyrightId int64
 		l.svcCtx.DB.Model(&model.Work{}).Select("copyright_id").Where("id = ?", req.Id).Scan(&copyrightId)
-		l.svcCtx.SocialRpc.ContentDelete(l.ctx, &social.ContentDeleteReq{Id: copyrightId})
+		// TODO:考虑使用消息队列
+		// TODO：区块链上怎么操作呢？
+		// 更改版权归属权
+		l.svcCtx.SocialRpc.CopyrightUpdate(l.ctx, &social.CopyrightUpdateReq{CopyrightId: copyrightId, UserId: loginUserId, AccountAddress: req.AccountAddress})
+
+		// 将原作品的 userId 更改为 购买用户的 userId
+		l.svcCtx.SocialRpc.ContentUpdate(l.ctx, &social.ContentUpdateReq{CopyrightId: copyrightId, UserId: loginUserId})
 
 		// 增加交易记录
 		var userId int64
 		l.svcCtx.DB.Model(&model.Work{}).Select("user_id").Where("id = ?", req.Id).Scan(&userId)
 		record := &model.Record{
-			WorkId:    req.Id,
-			OldUserId: userId,
-			NewUserId: loginUserId,
+			WorkId:            req.Id,
+			CopyrightId:       copyrightId,
+			OldUserId:         userId,
+			OldAccountAddress: req.OldAccountAddress,
+			NewUserId:         loginUserId,
+			NewAccountAddress: req.AccountAddress,
 		}
 		l.svcCtx.DB.Create(record)
 		break

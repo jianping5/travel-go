@@ -2,18 +2,20 @@
 package types
 
 type CopyrightView struct {
-	Id         int64  `json:"id"`
-	UserId     int64  `json:"userId"`
-	ItemType   int    `json:"itemType"`
-	ItemId     int64  `json:"itemId"`
-	Metadata   string `json:"metadata"`
-	TradeHash  string `json:"tradeHash"`
-	Address    string `json:"address"`
-	Status     int    `json:"status"`
-	CreateTime string `json:"createTime"`
-	Title      string `json:"title"`
-	CoverUrl   string `json:"coverUrl"`
-	Content    string `json:"content"`
+	Id             int64  `json:"id"`
+	UserId         int64  `json:"userId"`
+	ItemType       int    `json:"itemType"`
+	ItemId         int64  `json:"itemId"`
+	Metadata       string `json:"metadata"`
+	IpfsHash       string `json:"ipfsHash"`
+	TokenId        int64  `json:"tokenId"`
+	AccountAddress string `json:"accountAddress"`
+	Status         int    `json:"status"`
+	CreateTime     string `json:"createTime"`
+	Title          string `json:"title"`
+	CoverUrl       string `json:"coverUrl"`
+	Content        string `json:"content"`
+	Description    string `json:"description"`
 }
 
 type RecordCreateReq struct {
@@ -30,13 +32,17 @@ type RecordListResp struct {
 }
 
 type RecordView struct {
-	Id          int64        `json:"id"`
-	OldUserId   int64        `json:"oldUserId"`
-	OldUserInfo UserInfoView `json:"oldUserInfo"`
-	NewUserId   int64        `json:"newUserId"`
-	NewUserInfo UserInfoView `json:"newUserInfo"`
-	Price       string       `json:"price"`
-	CreateTime  string       `json:"createTime"`
+	Id                int64        `json:"id"`
+	WorkId            int64        `json:"workId"`
+	CopyrightId       int64        `json:"copyrightId"`
+	OldUserId         int64        `json:"oldUserId"`
+	OldAccountAddress string       `json:"oldAccountAddress"`
+	NewAccountAddress string       `json:"newAccountAddress"`
+	OldUserInfo       UserInfoView `json:"oldUserInfo"`
+	NewUserId         int64        `json:"newUserId"`
+	NewUserInfo       UserInfoView `json:"newUserInfo"`
+	Price             string       `json:"price"`
+	CreateTime        string       `json:"createTime"`
 }
 
 type UserInfoView struct {
@@ -84,21 +90,25 @@ type WorkListResp struct {
 }
 
 type WorkUpdateReq struct {
-	Id   int64 `json:"id"`
-	Type int   `json:"type"`
+	Id                int64  `json:"id"`
+	Type              int    `json:"type"`
+	OldAccountAddress string `json:"oldAccountAddress"`
+	AccountAddress    string `json:"accountAddress"`
 }
 
 type WorkView struct {
-	Id          int64  `json:"id"`
-	UserId      int64  `json:"userId"`
-	CopyrightId int64  `json:"copyrightId"`
-	Price       string `json:"price"`
-	Status      int    `json:"status"`
-	CreateTime  string `json:"createTime"`
-	Account     string `json:"account"`
-	Avatar      string `json:"avatar"`
-	ItemType    int    `json:"itemType"`
-	Title       string `json:"title"`
-	CoverUrl    string `json:"coverUrl"`
-	Content     string `json:"content"`
+	Id             int64  `json:"id"`
+	UserId         int64  `json:"userId"`
+	CopyrightId    int64  `json:"copyrightId"`
+	Price          string `json:"price"`
+	Status         int    `json:"status"`
+	CreateTime     string `json:"createTime"`
+	AccountAddress string `json:"accountAddress"`
+	Account        string `json:"account"`
+	Avatar         string `json:"avatar"`
+	ItemType       int    `json:"itemType"`
+	Title          string `json:"title"`
+	CoverUrl       string `json:"coverUrl"`
+	Content        string `json:"content"`
+	Description    string `json:"description"`
 }

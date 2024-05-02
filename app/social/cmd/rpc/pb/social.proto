@@ -29,13 +29,15 @@ message CopyrightDetailResp {
   int32 ItemType = 3;
   int64 ItemId = 4;
   string Metadata = 5;
-  string TradeHash = 6;
-  string Address = 7;
-  int32 Status = 8;
-  string CreateTime = 9;
-  string Title = 10;
-  string CoverUrl = 11;
-  string Content = 12;
+  string IpfsHash = 6;
+  int64 tokenId = 7;
+  string AccountAddress = 8;
+  int32 Status = 9;
+  string CreateTime = 10;
+  string Title = 11;
+  string CoverUrl = 12;
+  string Content = 13;
+  string Description = 14;
 }
 
 message ContentSimpleReq {
@@ -58,6 +60,16 @@ message ContentDeleteResp {
 
 }
 
+// 更改作品归属权
+message ContentUpdateReq {
+  int64 CopyrightId = 1;
+  int64 UserId = 2;
+}
+
+message ContentUpdateResp {
+
+}
+
 // 校验当前版权是否属于当前用户
 message CopyrightCheckReq {
   int64 UserId = 1;
@@ -68,10 +80,33 @@ message CopyrightCheckResp {
   bool isBelonged = 1;
 }
 
+// 更改版权归属权
+message CopyrightUpdateReq {
+  int64 CopyrightId = 1;
+  int64 UserId = 2;
+  string AccountAddress = 3;
+}
+
+message CopyrightUpdateResp {
+
+}
+
+// 获取版权简略信息
+message CopyrightSimpleReq {
+  int64 CopyrightId = 1;
+}
+
+message CopyrightSimpleResp {
+  string AccountAddress = 1;
+}
+
 service Social {
   rpc MessageCreate(MessageCreateReq) returns(MessageCreateResp) ;
   rpc CopyrightDetail(CopyrightDetailReq) returns(CopyrightDetailResp);
   rpc ContentSimple(ContentSimpleReq) returns(ContentSimpleResp);
   rpc ContentDelete(ContentDeleteReq) returns(ContentDeleteResp);
   rpc CopyrightCheck(CopyrightCheckReq) returns(CopyrightCheckResp);
+  rpc ContentUpdate(ContentUpdateReq) returns(ContentUpdateResp);
+  rpc CopyrightUpdate(CopyrightUpdateReq) returns(CopyrightUpdateResp);
+  rpc CopyrightSimple(CopyrightSimpleReq) returns(CopyrightSimpleResp);
 }

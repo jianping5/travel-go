@@ -17,10 +17,16 @@ type (
 	ContentDeleteResp   = pb.ContentDeleteResp
 	ContentSimpleReq    = pb.ContentSimpleReq
 	ContentSimpleResp   = pb.ContentSimpleResp
+	ContentUpdateReq    = pb.ContentUpdateReq
+	ContentUpdateResp   = pb.ContentUpdateResp
 	CopyrightCheckReq   = pb.CopyrightCheckReq
 	CopyrightCheckResp  = pb.CopyrightCheckResp
 	CopyrightDetailReq  = pb.CopyrightDetailReq
 	CopyrightDetailResp = pb.CopyrightDetailResp
+	CopyrightSimpleReq  = pb.CopyrightSimpleReq
+	CopyrightSimpleResp = pb.CopyrightSimpleResp
+	CopyrightUpdateReq  = pb.CopyrightUpdateReq
+	CopyrightUpdateResp = pb.CopyrightUpdateResp
 	MessageCreateReq    = pb.MessageCreateReq
 	MessageCreateResp   = pb.MessageCreateResp
 
@@ -30,6 +36,9 @@ type (
 		ContentSimple(ctx context.Context, in *ContentSimpleReq, opts ...grpc.CallOption) (*ContentSimpleResp, error)
 		ContentDelete(ctx context.Context, in *ContentDeleteReq, opts ...grpc.CallOption) (*ContentDeleteResp, error)
 		CopyrightCheck(ctx context.Context, in *CopyrightCheckReq, opts ...grpc.CallOption) (*CopyrightCheckResp, error)
+		ContentUpdate(ctx context.Context, in *ContentUpdateReq, opts ...grpc.CallOption) (*ContentUpdateResp, error)
+		CopyrightUpdate(ctx context.Context, in *CopyrightUpdateReq, opts ...grpc.CallOption) (*CopyrightUpdateResp, error)
+		CopyrightSimple(ctx context.Context, in *CopyrightSimpleReq, opts ...grpc.CallOption) (*CopyrightSimpleResp, error)
 	}
 
 	defaultSocial struct {
@@ -66,4 +75,19 @@ func (m *defaultSocial) ContentDelete(ctx context.Context, in *ContentDeleteReq,
 func (m *defaultSocial) CopyrightCheck(ctx context.Context, in *CopyrightCheckReq, opts ...grpc.CallOption) (*CopyrightCheckResp, error) {
 	client := pb.NewSocialClient(m.cli.Conn())
 	return client.CopyrightCheck(ctx, in, opts...)
+}
+
+func (m *defaultSocial) ContentUpdate(ctx context.Context, in *ContentUpdateReq, opts ...grpc.CallOption) (*ContentUpdateResp, error) {
+	client := pb.NewSocialClient(m.cli.Conn())
+	return client.ContentUpdate(ctx, in, opts...)
+}
+
+func (m *defaultSocial) CopyrightUpdate(ctx context.Context, in *CopyrightUpdateReq, opts ...grpc.CallOption) (*CopyrightUpdateResp, error) {
+	client := pb.NewSocialClient(m.cli.Conn())
+	return client.CopyrightUpdate(ctx, in, opts...)
+}
+
+func (m *defaultSocial) CopyrightSimple(ctx context.Context, in *CopyrightSimpleReq, opts ...grpc.CallOption) (*CopyrightSimpleResp, error) {
+	client := pb.NewSocialClient(m.cli.Conn())
+	return client.CopyrightSimple(ctx, in, opts...)
 }

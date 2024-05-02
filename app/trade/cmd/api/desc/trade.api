@@ -14,8 +14,10 @@ type (
 	}
 	// 下架、售卖、购买
 	WorkUpdateReq {
-		Id   int64 `json:"id"`
-		Type int   `json:"type"`
+		Id                int64  `json:"id"`
+		Type              int    `json:"type"`
+		OldAccountAddress string `json:"oldAccountAddress"`
+		AccountAddress    string `json:"accountAddress"`
 	}
 	WorkListReq {
 		PageNum  int `json:"pageNum"`
@@ -30,18 +32,20 @@ type (
 		Id int64 `json:"id"`
 	}
 	WorkView {
-		Id          int64  `json:"id"`
-		UserId      int64  `json:"userId"`
-		CopyrightId int64  `json:"copyrightId"`
-		Price       string `json:"price"`
-		Status      int    `json:"status"`
-		CreateTime  string `json:"createTime"`
-		Account     string `json:"account"`
-		Avatar      string `json:"avatar"`
-		ItemType    int    `json:"itemType"`
-		Title       string `json:"title"`
-		CoverUrl    string `json:"coverUrl"`
-		Content     string `json:"content"`
+		Id             int64  `json:"id"`
+		UserId         int64  `json:"userId"`
+		CopyrightId    int64  `json:"copyrightId"`
+		Price          string `json:"price"`
+		Status         int    `json:"status"`
+		CreateTime     string `json:"createTime"`
+		AccountAddress string `json:"accountAddress"`
+		Account        string `json:"account"`
+		Avatar         string `json:"avatar"`
+		ItemType       int    `json:"itemType"`
+		Title          string `json:"title"`
+		CoverUrl       string `json:"coverUrl"`
+		Content        string `json:"content"`
+		Description    string `json:"description"`
 	}
 	WorkDetailResp {
 		Work      WorkView      `json:"work"`
@@ -66,18 +70,20 @@ type (
 	}
 	// 版权
 	CopyrightView {
-		Id         int64  `json:"id"`
-		UserId     int64  `json:"userId"`
-		ItemType   int    `json:"itemType"`
-		ItemId     int64  `json:"itemId"`
-		Metadata   string `json:"metadata"`
-		TradeHash  string `json:"tradeHash"`
-		Address    string `json:"address"`
-		Status     int    `json:"status"`
-		CreateTime string `json:"createTime"`
-		Title      string `json:"title"`
-		CoverUrl   string `json:"coverUrl"`
-		Content    string `json:"content"`
+		Id             int64  `json:"id"`
+		UserId         int64  `json:"userId"`
+		ItemType       int    `json:"itemType"`
+		ItemId         int64  `json:"itemId"`
+		Metadata       string `json:"metadata"`
+		IpfsHash       string `json:"ipfsHash"`
+		TokenId        int64  `json:"tokenId"`
+		AccountAddress string `json:"accountAddress"`
+		Status         int    `json:"status"`
+		CreateTime     string `json:"createTime"`
+		Title          string `json:"title"`
+		CoverUrl       string `json:"coverUrl"`
+		Content        string `json:"content"`
+		Description    string `json:"description"`
 	}
 	// 交易记录
 	RecordCreateReq {
@@ -88,13 +94,17 @@ type (
 		WorkId int64 `json:"workId"`
 	}
 	RecordView {
-		Id          int64        `json:"id"`
-		OldUserId   int64        `json:"oldUserId"`
-		OldUserInfo UserInfoView `json:"oldUserInfo"`
-		NewUserId   int64        `json:"newUserId"`
-		NewUserInfo UserInfoView `json:"newUserInfo"`
-		Price       string       `json:"price"`
-		CreateTime  string       `json:"createTime"`
+		Id                int64        `json:"id"`
+		WorkId            int64        `json:"workId"`
+		CopyrightId       int64        `json:"copyrightId"`
+		OldUserId         int64        `json:"oldUserId"`
+		OldAccountAddress string       `json:"oldAccountAddress"`
+		NewAccountAddress string       `json:"newAccountAddress"`
+		OldUserInfo       UserInfoView `json:"oldUserInfo"`
+		NewUserId         int64        `json:"newUserId"`
+		NewUserInfo       UserInfoView `json:"newUserInfo"`
+		Price             string       `json:"price"`
+		CreateTime        string       `json:"createTime"`
 	}
 	RecordListResp {
 		List []RecordView `json:"list"`

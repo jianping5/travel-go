@@ -29,8 +29,12 @@ func NewRecordListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Record
 
 func (l *RecordListLogic) RecordList(req *types.RecordListReq) (resp *types.RecordListResp, err error) {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
+	// 获取获取对应版权 id
+	var copyrightId int64
+	l.svcCtx.DB.Model(&model.Work{}).Select("copyright_id").Where("id = ?", req.WorkId).Scan(&copyrightId)
+
 	var records []types.RecordView
-	l.svcCtx.DB.Model(&model.Record{}).Where("work_id = ?", req.WorkId).Scan(records)
+	l.svcCtx.DB.Model(&model.Record{}).Where("copyright_id = ?", copyrightId).Scan(records)
 
 	for i, r := range records {
 		var oldUserInfo types.UserInfoView
@@ -45,7 +49,7 @@ func (l *RecordListLogic) RecordList(req *types.RecordListReq) (resp *types.Reco
 
 		// 获取价格
 		var price string
-		l.svcCtx.DB.Model(&model.Work{}).Select("price").Where("id = ?", req.WorkId).Scan(&price)
+		l.svcCtx.DB.Model(&model.Work{}).Select("price").Where("id = ?", r.WorkId).Scan(&price)
 		records[i].Price = price
 	}
 

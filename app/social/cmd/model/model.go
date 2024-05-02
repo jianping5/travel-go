@@ -148,13 +148,14 @@ func (Like) TableName() string {
 
 type Copyright struct {
 	BaseModel
-	UserId    int64  `json:"userId"`
-	ItemType  int    `json:"itemType"`
-	ItemId    int64  `json:"itemId"`
-	Metadata  string `json:"metadata"`
-	TradeHash string `json:"tradeHash"`
-	Address   string `json:"address"`
-	Status    int    `json:"status"`
+	UserId         int64  `json:"userId"`
+	ItemType       int    `json:"itemType"`
+	ItemId         int64  `json:"itemId"`
+	Metadata       string `json:"metadata"`
+	IpfsHash       string `json:"ipfsHash"`
+	TokenId        int64  `json:"tokenId"`
+	AccountAddress string `json:"accountAddress"`
+	Status         int    `json:"status"`
 }
 
 func (Copyright) TableName() string {

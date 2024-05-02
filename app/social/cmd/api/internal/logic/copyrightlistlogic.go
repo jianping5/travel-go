@@ -33,18 +33,18 @@ func (l *CopyrightListLogic) CopyrightList(req *types.CopyrightListReq) (resp *t
 		userId = ctxdata.GetUidFromCtx(l.ctx)
 	}
 	var copyrights []types.CopyrightView
-	l.svcCtx.DB.Model(&model.Copyright{}).Where("userId = ?", userId).Scan(&copyrights)
+	l.svcCtx.DB.Model(&model.Copyright{}).Where("user_id = ?", userId).Scan(&copyrights)
 
 	for i, c := range copyrights {
 		var content model.Content
-		l.svcCtx.DB.Model(&model.Content{}).Select("title", "coverUrl").Where("id = ?", c.ItemId).Scan(&content)
+		l.svcCtx.DB.Model(&model.Content{}).Select("title", "cover_url").Where("id = ?", c.ItemId).Scan(&content)
 		copyrights[i].Title = content.Title
 		copyrights[i].CoverUrl = content.CoverUrl
 
 		// 用户信息
 		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId, LoginUserId: loginUserId})
 		copyrights[i].Account = info.Account
-		copyrights[i].CoverUrl = info.Avatar
+		copyrights[i].Avatar = info.Avatar
 	}
 
 	return &types.CopyrightListResp{

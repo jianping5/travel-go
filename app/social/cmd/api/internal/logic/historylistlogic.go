@@ -37,7 +37,7 @@ func (l *HistoryListLogic) HistoryList(req *types.HistoryListReq) (resp *types.H
 	countTx.Count(&total)
 
 	// 查询历史记录
-	tx.Offset(offset).Limit(req.PageSize).Scan(&historys)
+	tx.Offset(offset).Limit(req.PageSize).Order("create_time DESC").Scan(&historys)
 
 	for i, h := range historys {
 		// 内容信息 + 用户信息

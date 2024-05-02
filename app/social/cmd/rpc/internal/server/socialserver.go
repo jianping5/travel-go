@@ -46,3 +46,18 @@ func (s *SocialServer) CopyrightCheck(ctx context.Context, in *pb.CopyrightCheck
 	l := logic.NewCopyrightCheckLogic(ctx, s.svcCtx)
 	return l.CopyrightCheck(in)
 }
+
+func (s *SocialServer) ContentUpdate(ctx context.Context, in *pb.ContentUpdateReq) (*pb.ContentUpdateResp, error) {
+	l := logic.NewContentUpdateLogic(ctx, s.svcCtx)
+	return l.ContentUpdate(in)
+}
+
+func (s *SocialServer) CopyrightUpdate(ctx context.Context, in *pb.CopyrightUpdateReq) (*pb.CopyrightUpdateResp, error) {
+	l := logic.NewCopyrightUpdateLogic(ctx, s.svcCtx)
+	return l.CopyrightUpdate(in)
+}
+
+func (s *SocialServer) CopyrightSimple(ctx context.Context, in *pb.CopyrightSimpleReq) (*pb.CopyrightSimpleResp, error) {
+	l := logic.NewCopyrightSimpleLogic(ctx, s.svcCtx)
+	return l.CopyrightSimple(in)
+}

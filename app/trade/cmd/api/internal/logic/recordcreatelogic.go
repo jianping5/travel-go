@@ -27,10 +27,14 @@ func NewRecordCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Reco
 
 func (l *RecordCreateLogic) RecordCreate(req *types.RecordCreateReq) error {
 	loginUserId := ctxdata.GetUidFromCtx(l.ctx)
+	// 获取获取对应版权 id
+	var copyrightId int64
+	l.svcCtx.DB.Model(&model.Work{}).Select("copyright_id").Where("id = ?", req.WorkId).Scan(&copyrightId)
 	record := &model.Record{
-		WorkId:    req.WorkId,
-		OldUserId: req.UserId,
-		NewUserId: loginUserId,
+		WorkId:      req.WorkId,
+		CopyrightId: copyrightId,
+		OldUserId:   req.UserId,
+		NewUserId:   loginUserId,
 	}
 	l.svcCtx.DB.Create(record)
 

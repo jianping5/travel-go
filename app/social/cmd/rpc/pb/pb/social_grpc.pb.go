@@ -24,6 +24,9 @@ const (
 	Social_ContentSimple_FullMethodName   = "/pb.Social/ContentSimple"
 	Social_ContentDelete_FullMethodName   = "/pb.Social/ContentDelete"
 	Social_CopyrightCheck_FullMethodName  = "/pb.Social/CopyrightCheck"
+	Social_ContentUpdate_FullMethodName   = "/pb.Social/ContentUpdate"
+	Social_CopyrightUpdate_FullMethodName = "/pb.Social/CopyrightUpdate"
+	Social_CopyrightSimple_FullMethodName = "/pb.Social/CopyrightSimple"
 )
 
 // SocialClient is the client API for Social service.
@@ -35,6 +38,9 @@ type SocialClient interface {
 	ContentSimple(ctx context.Context, in *ContentSimpleReq, opts ...grpc.CallOption) (*ContentSimpleResp, error)
 	ContentDelete(ctx context.Context, in *ContentDeleteReq, opts ...grpc.CallOption) (*ContentDeleteResp, error)
 	CopyrightCheck(ctx context.Context, in *CopyrightCheckReq, opts ...grpc.CallOption) (*CopyrightCheckResp, error)
+	ContentUpdate(ctx context.Context, in *ContentUpdateReq, opts ...grpc.CallOption) (*ContentUpdateResp, error)
+	CopyrightUpdate(ctx context.Context, in *CopyrightUpdateReq, opts ...grpc.CallOption) (*CopyrightUpdateResp, error)
+	CopyrightSimple(ctx context.Context, in *CopyrightSimpleReq, opts ...grpc.CallOption) (*CopyrightSimpleResp, error)
 }
 
 type socialClient struct {
@@ -90,6 +96,33 @@ func (c *socialClient) CopyrightCheck(ctx context.Context, in *CopyrightCheckReq
 	return out, nil
 }
 
+func (c *socialClient) ContentUpdate(ctx context.Context, in *ContentUpdateReq, opts ...grpc.CallOption) (*ContentUpdateResp, error) {
+	out := new(ContentUpdateResp)
+	err := c.cc.Invoke(ctx, Social_ContentUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *socialClient) CopyrightUpdate(ctx context.Context, in *CopyrightUpdateReq, opts ...grpc.CallOption) (*CopyrightUpdateResp, error) {
+	out := new(CopyrightUpdateResp)
+	err := c.cc.Invoke(ctx, Social_CopyrightUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *socialClient) CopyrightSimple(ctx context.Context, in *CopyrightSimpleReq, opts ...grpc.CallOption) (*CopyrightSimpleResp, error) {
+	out := new(CopyrightSimpleResp)
+	err := c.cc.Invoke(ctx, Social_CopyrightSimple_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SocialServer is the server API for Social service.
 // All implementations must embed UnimplementedSocialServer
 // for forward compatibility
@@ -99,6 +132,9 @@ type SocialServer interface {
 	ContentSimple(context.Context, *ContentSimpleReq) (*ContentSimpleResp, error)
 	ContentDelete(context.Context, *ContentDeleteReq) (*ContentDeleteResp, error)
 	CopyrightCheck(context.Context, *CopyrightCheckReq) (*CopyrightCheckResp, error)
+	ContentUpdate(context.Context, *ContentUpdateReq) (*ContentUpdateResp, error)
+	CopyrightUpdate(context.Context, *CopyrightUpdateReq) (*CopyrightUpdateResp, error)
+	CopyrightSimple(context.Context, *CopyrightSimpleReq) (*CopyrightSimpleResp, error)
 	mustEmbedUnimplementedSocialServer()
 }
 
@@ -120,6 +156,15 @@ func (UnimplementedSocialServer) ContentDelete(context.Context, *ContentDeleteRe
 }
 func (UnimplementedSocialServer) CopyrightCheck(context.Context, *CopyrightCheckReq) (*CopyrightCheckResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CopyrightCheck not implemented")
+}
+func (UnimplementedSocialServer) ContentUpdate(context.Context, *ContentUpdateReq) (*ContentUpdateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ContentUpdate not implemented")
+}
+func (UnimplementedSocialServer) CopyrightUpdate(context.Context, *CopyrightUpdateReq) (*CopyrightUpdateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CopyrightUpdate not implemented")
+}
+func (UnimplementedSocialServer) CopyrightSimple(context.Context, *CopyrightSimpleReq) (*CopyrightSimpleResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CopyrightSimple not implemented")
 }
 func (UnimplementedSocialServer) mustEmbedUnimplementedSocialServer() {}
 
@@ -224,6 +269,60 @@ func _Social_CopyrightCheck_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Social_ContentUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ContentUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SocialServer).ContentUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Social_ContentUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SocialServer).ContentUpdate(ctx, req.(*ContentUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Social_CopyrightUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CopyrightUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SocialServer).CopyrightUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Social_CopyrightUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SocialServer).CopyrightUpdate(ctx, req.(*CopyrightUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Social_CopyrightSimple_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CopyrightSimpleReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SocialServer).CopyrightSimple(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Social_CopyrightSimple_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SocialServer).CopyrightSimple(ctx, req.(*CopyrightSimpleReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Social_ServiceDesc is the grpc.ServiceDesc for Social service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +349,18 @@ var Social_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CopyrightCheck",
 			Handler:    _Social_CopyrightCheck_Handler,
+		},
+		{
+			MethodName: "ContentUpdate",
+			Handler:    _Social_ContentUpdate_Handler,
+		},
+		{
+			MethodName: "CopyrightUpdate",
+			Handler:    _Social_CopyrightUpdate_Handler,
+		},
+		{
+			MethodName: "CopyrightSimple",
+			Handler:    _Social_CopyrightSimple_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -52,6 +52,7 @@ func (l *WorkDetailLogic) WorkDetail(req *types.WorkDetailReq) (resp *types.Work
 	work.Account = userInfo.Account
 	work.Avatar = userInfo.Avatar
 	work.ItemType = copyright.ItemType
+	work.Description = copyright.Description
 
 	return &types.WorkDetailResp{
 		Work:      work,

@@ -314,6 +314,7 @@ type (
 		ItemId        int    `json:"itemId"`
 		CoverUrl      string `json:"coverUrl"`
 		Title         string `json:"title"`
+		CreateTime    string `json:"createTime"`
 		MessageType   int    `json:"messageType"`
 		MessageStatus bool   `json:"messageStatus"`
 		Content       string `json:"content"`
@@ -361,10 +362,15 @@ type (
 	}
 	// 版权
 	CopyrightCreateReq {
-		ItemType     int    `json:"itemType"`
-		ItemId       int64  `json:"itemId"`
-		ContentUrl   string `json:"contentUrl"`
-		UploadSwitch bool   `json:"uploadSwitch"`
+		ItemType     int   `json:"itemType"`
+		ItemId       int64 `json:"itemId"`
+		UploadSwitch bool  `json:"uploadSwitch"`
+	}
+	CopyrightMintReq {
+		ItemType       int    `json:"itemType"`
+		ItemId         int64  `json:"itemId"`
+		TokenId        int64  `json:"tokenId"`
+		AccountAddress string `json:"accountAddress"`
 	}
 	CopyrightDetailReq {
 		Id int64 `json:"id"`
@@ -373,19 +379,25 @@ type (
 		UserId int64 `json:"userId"`
 	}
 	CopyrightView {
-		Id         int64  `json:"id"`
-		UserId     int64  `json:"userId"`
-		ItemType   int    `json:"itemType"`
-		ItemId     int64  `json:"itemId"`
-		Metadata   string `json:"metadata"`
-		TradeHash  string `json:"tradeHash"`
-		Address    string `json:"address"`
-		Status     int    `json:"status"`
-		CreateTime string `json:"createTime"`
-		Title      string `json:"title"`
-		CoverUrl   string `json:"coverUrl"`
-		Account    string `json:"account"`
-		Avatar     string `json:"avatar"`
+		Id             int64  `json:"id"`
+		UserId         int64  `json:"userId"`
+		ItemType       int    `json:"itemType"`
+		ItemId         int64  `json:"itemId"`
+		Metadata       string `json:"metadata"`
+		IpfsHash       string `json:"ipfsHash"`
+		TokenId        int64  `json:"tokenId"`
+		AccountAddress string `json:"accountAddress"`
+		Status         int    `json:"status"`
+		CreateTime     string `json:"createTime"`
+		Title          string `json:"title"`
+		CoverUrl       string `json:"coverUrl"`
+		Account        string `json:"account"`
+		Avatar         string `json:"avatar"`
+		Content        string `json:"content"`
+		Description    string `json:"description"`
+	}
+	CopyrightCreateResp {
+		IpfsHash string `json:"ipfsHash"`
 	}
 	CopyrightDetailResp {
 		Copyright CopyrightView `json:"copyright"`
@@ -559,6 +571,9 @@ service Social {
 	post /api/social/like (LikeReq)
 
 	@handler CopyrightCreate
-	post /api/social/copyright/create (CopyrightCreateReq)
+	post /api/social/copyright/create (CopyrightCreateReq) returns (CopyrightCreateResp)
+
+	@handler CopyrightMint
+	post /api/social/copyright/mint (CopyrightMintReq)
 }
 

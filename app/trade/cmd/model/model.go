@@ -33,9 +33,12 @@ func (UserWork) TableName() string {
 
 type Record struct {
 	BaseModel
-	WorkId    int64 `json:"workId"`
-	OldUserId int64 `json:"oldUserId"`
-	NewUserId int64 `json:"newUserId"`
+	WorkId            int64  `json:"workId"`
+	CopyrightId       int64  `json:"copyrightId"`
+	OldUserId         int64  `json:"oldUserId"`
+	OldAccountAddress string `json:"oldAccountAddress"`
+	NewUserId         int64  `json:"newUserId"`
+	NewAccountAddress string `json:"newAccountAddress"`
 }
 
 func (Record) TableName() string {
