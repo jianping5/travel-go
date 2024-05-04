@@ -37,9 +37,10 @@ func (l *CopyrightListLogic) CopyrightList(req *types.CopyrightListReq) (resp *t
 
 	for i, c := range copyrights {
 		var content model.Content
-		l.svcCtx.DB.Model(&model.Content{}).Select("title", "cover_url").Where("id = ?", c.ItemId).Scan(&content)
+		l.svcCtx.DB.Model(&model.Content{}).Select("title", "cover_url", "content").Where("id = ?", c.ItemId).Scan(&content)
 		copyrights[i].Title = content.Title
 		copyrights[i].CoverUrl = content.CoverUrl
+		copyrights[i].Content = content.Content
 
 		// 用户信息
 		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: c.UserId, LoginUserId: loginUserId})

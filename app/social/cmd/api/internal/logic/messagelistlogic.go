@@ -41,9 +41,10 @@ func (l *MessageListLogic) MessageList() (resp *types.MessageListResp, err error
 		messageView.Account = userInfo.Account
 		// 内容信息
 		var content model.Content
-		l.svcCtx.DB.Model(&model.Content{}).Select("title", "cover_url", "create_time").Where("id = ?", m.ItemId).First(&content)
+		l.svcCtx.DB.Model(&model.Content{}).Select("title", "cover_url", "content", "create_time").Where("id = ?", m.ItemId).First(&content)
 		messageView.Title = content.Title
 		messageView.CoverUrl = content.CoverUrl
+		messageView.Content = content.Content
 		messageView.CreateTime = tool.TimeToString(content.CreateTime)
 		messageViews = append(messageViews, messageView)
 	}

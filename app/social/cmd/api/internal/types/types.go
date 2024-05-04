@@ -314,6 +314,7 @@ type FavorView struct {
 	Id         int    `json:"id"`
 	ItemType   int    `json:"itemType"`
 	ItemId     int64  `json:"itemId"`
+	Content    string `json:"content"`
 	CoverUrl   string `json:"coverUrl"`
 	UserId     int64  `json:"userId"`
 	Account    string `json:"account"`
@@ -377,6 +378,7 @@ type HistoryView struct {
 	Id          int64  `json:"id"`
 	ItemType    int    `json:"itemType"`
 	ItemId      int64  `json:"itemId"`
+	Content     string `json:"content"`
 	CoverUrl    string `json:"coverUrl"`
 	UserId      int64  `json:"userId"`
 	Account     string `json:"account"`

@@ -36,23 +36,23 @@ func (l *UserHomeListLogic) UserHomeList(req *types.UserHomeListReq) (resp *type
 	}
 	// 最新文章
 	var recentArticles []types.ContentView
-	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "like_count", "create_time").
+	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "content", "like_count", "create_time").
 		Where("user_id = ? and item_type = ?", userId, enum.ARTICLE).Order("create_time DESC").Limit(5).Scan(&recentArticles)
 	l.SetContentInfo(&recentArticles)
 	// 最新视频
 	var recentVideos []types.ContentView
-	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "like_count", "create_time").
+	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "content", "like_count", "create_time").
 		Where("user_id = ? and item_type = ?", userId, enum.VIDEO).Order("create_time DESC").Limit(5).Scan(&recentVideos)
 	l.SetContentInfo(&recentVideos)
 	// TODO: 推荐是否考虑评论的正负性
 	// 文章推荐
 	var recommendArticles []types.ContentView
-	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "like_count", "create_time").
+	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "content", "like_count", "create_time").
 		Where("user_id = ? and item_type = ?", userId, enum.ARTICLE).Order("like_count+comment_count+favor_count DESC").Limit(5).Scan(&recommendArticles)
 	l.SetContentInfo(&recommendArticles)
 	// 视频推荐
 	var recommendVideos []types.ContentView
-	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "like_count", "create_time").
+	l.svcCtx.DB.Model(&model.Content{}).Select("id", "user_id", "title", "cover_url", "content", "like_count", "create_time").
 		Where("user_id = ? and item_type = ?", userId, enum.VIDEO).Order("like_count+comment_count+favor_count DESC").Limit(5).Scan(&recommendVideos)
 	l.SetContentInfo(&recommendVideos)
 

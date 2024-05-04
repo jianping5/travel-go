@@ -51,9 +51,10 @@ func (l *WorkListLogic) WorkList(req *types.WorkListReq) (resp *types.WorkListRe
 		works[i].CoverUrl = simple.CoverUrl
 		works[i].ItemType = int(simple.ItemType)
 
-		// 获取账户地址
+		// 获取账户地址和 tokenId
 		copyrightSimple, _ := l.svcCtx.SocialRpc.CopyrightSimple(l.ctx, &social.CopyrightSimpleReq{CopyrightId: w.CopyrightId})
 		works[i].AccountAddress = copyrightSimple.AccountAddress
+		works[i].TokenId = copyrightSimple.TokenId
 	}
 
 	return &types.WorkListResp{

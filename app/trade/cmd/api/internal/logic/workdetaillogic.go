@@ -46,6 +46,19 @@ func (l *WorkDetailLogic) WorkDetail(req *types.WorkDetailReq) (resp *types.Work
 	detail, err := l.svcCtx.SocialRpc.CopyrightDetail(l.ctx, &social.CopyrightDetailReq{Id: work.CopyrightId})
 	_ = copier.Copy(&copyright, detail)
 
+	// 用户信息
+	var copyrightUserInfoView types.UserInfoView
+	userId := copyright.UserId
+	copyrightUserInfo, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: userId, LoginUserId: loginUserId})
+	_ = copier.Copy(&copyrightUserInfoView, &copyrightUserInfo)
+	copyright.Account = copyrightUserInfo.Account
+	copyright.Avatar = copyrightUserInfo.Avatar
+
+	// 获取账户地址和 tokenId
+	copyrightSimple, _ := l.svcCtx.SocialRpc.CopyrightSimple(l.ctx, &social.CopyrightSimpleReq{CopyrightId: work.CopyrightId})
+	work.AccountAddress = copyrightSimple.AccountAddress
+	work.TokenId = copyrightSimple.TokenId
+
 	work.Title = copyright.Title
 	work.CoverUrl = copyright.CoverUrl
 	work.Content = copyright.Content

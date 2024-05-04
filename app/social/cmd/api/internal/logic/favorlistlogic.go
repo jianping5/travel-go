@@ -34,9 +34,10 @@ func (l *FavorListLogic) FavorList(req *types.FavorListReq) (resp *types.FavorLi
 	// 注入内容信息+用户信息
 	for i, f := range favors {
 		var content model.Content
-		l.svcCtx.DB.Select("title", "cover_url", "like_count", "user_id", "create_time").Where("id = ?", f.ItemId).First(&content)
+		l.svcCtx.DB.Select("title", "cover_url", "content", "like_count", "user_id", "create_time").Where("id = ?", f.ItemId).First(&content)
 		favors[i].Title = content.Title
 		favors[i].CoverUrl = content.CoverUrl
+		favors[i].Content = content.Content
 		favors[i].LikeCount = content.LikeCount
 		info, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoReq{Id: content.UserId, LoginUserId: loginUserId})
 		favors[i].Account = info.Account

@@ -26,7 +26,7 @@ func NewCopyrightMintLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cop
 
 func (l *CopyrightMintLogic) CopyrightMint(req *types.CopyrightMintReq) error {
 	// 更新对应版权的 token_id 和 account_address
-	l.svcCtx.DB.Model(model.Copyright{}).Where("id = ?", req.ItemId).Updates(map[string]interface{}{
+	l.svcCtx.DB.Model(model.Copyright{}).Where("item_id = ?", req.ItemId).Updates(map[string]interface{}{
 		"token_id":        req.TokenId,
 		"account_address": req.AccountAddress,
 	})

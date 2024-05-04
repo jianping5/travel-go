@@ -14,6 +14,8 @@ type CopyrightView struct {
 	CreateTime     string `json:"createTime"`
 	Title          string `json:"title"`
 	CoverUrl       string `json:"coverUrl"`
+	Account        string `json:"account"`
+	Avatar         string `json:"avatar"`
 	Content        string `json:"content"`
 	Description    string `json:"description"`
 }
@@ -103,6 +105,7 @@ type WorkView struct {
 	Price          string `json:"price"`
 	Status         int    `json:"status"`
 	CreateTime     string `json:"createTime"`
+	TokenId        int64  `json:"tokenId"`
 	AccountAddress string `json:"accountAddress"`
 	Account        string `json:"account"`
 	Avatar         string `json:"avatar"`

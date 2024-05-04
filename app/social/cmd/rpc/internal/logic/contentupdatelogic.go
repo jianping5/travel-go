@@ -28,7 +28,8 @@ func (l *ContentUpdateLogic) ContentUpdate(in *pb.ContentUpdateReq) (*pb.Content
 	// todo: add your logic here and delete this line
 	var contentId int64
 	l.svcCtx.DB.Model(&model.Copyright{}).Select("item_id").Where("id = ?", in.CopyrightId).Scan(&contentId)
-	l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", contentId).Update("user_id = ?", in.UserId)
+
+	l.svcCtx.DB.Model(&model.Content{}).Where("id = ?", contentId).Update("user_id", in.UserId)
 
 	return &pb.ContentUpdateResp{}, nil
 }

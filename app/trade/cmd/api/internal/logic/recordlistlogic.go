@@ -34,7 +34,7 @@ func (l *RecordListLogic) RecordList(req *types.RecordListReq) (resp *types.Reco
 	l.svcCtx.DB.Model(&model.Work{}).Select("copyright_id").Where("id = ?", req.WorkId).Scan(&copyrightId)
 
 	var records []types.RecordView
-	l.svcCtx.DB.Model(&model.Record{}).Where("copyright_id = ?", copyrightId).Scan(records)
+	l.svcCtx.DB.Model(&model.Record{}).Where("copyright_id = ?", copyrightId).Scan(&records)
 
 	for i, r := range records {
 		var oldUserInfo types.UserInfoView

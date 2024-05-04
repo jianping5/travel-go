@@ -40,7 +40,7 @@ func (l *CopyrightCreateLogic) CopyrightCreate(req *types.CopyrightCreateReq) (*
 
 	// step1：获取作品信息
 	var content model.Content
-	l.svcCtx.DB.Model(&model.Content{}).Select("title", "description", "coverUrl", "content").Where("id = ?", req.ItemId).Scan(&content)
+	l.svcCtx.DB.Model(&model.Content{}).Select("title", "description", "cover_url", "content").Where("id = ?", req.ItemId).Scan(&content)
 
 	// step2：上传到 IPFS
 	// 构建版权元数据
@@ -56,7 +56,8 @@ func (l *CopyrightCreateLogic) CopyrightCreate(req *types.CopyrightCreateReq) (*
 		return nil, err
 	}
 	// 上传到 IPFS，并获取 path
-	ipfsHash, err := upload2IPFS(string(metadataJson))
+	metadataStr := string(metadataJson)
+	ipfsHash, err := upload2IPFS(metadataStr)
 	if err != nil {
 		fmt.Println("Error uploading:", err)
 		return nil, err
@@ -67,7 +68,7 @@ func (l *CopyrightCreateLogic) CopyrightCreate(req *types.CopyrightCreateReq) (*
 		UserId:   loginUserId,
 		ItemType: req.ItemType,
 		ItemId:   req.ItemId,
-		Metadata: string(metadataJson),
+		Metadata: metadataStr,
 		IpfsHash: ipfsHash,
 	}
 	l.svcCtx.DB.Model(&model.Copyright{}).Create(copyright)

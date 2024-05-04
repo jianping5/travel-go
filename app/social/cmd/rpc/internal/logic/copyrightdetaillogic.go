@@ -2,11 +2,10 @@ package logic
 
 import (
 	"context"
+	"github.com/zeromicro/go-zero/core/logx"
 	"travel/app/social/cmd/model"
 	"travel/app/social/cmd/rpc/internal/svc"
 	"travel/app/social/cmd/rpc/pb/pb"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type CopyrightDetailLogic struct {
