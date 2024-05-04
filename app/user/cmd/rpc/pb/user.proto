@@ -79,6 +79,14 @@ message GetUserIdsResp {
   repeated int64 UserIds = 1;
 }
 
+message GetFansReq {
+  int64 UserId = 1;
+}
+
+message GetFansResp {
+  repeated int64 UserIds = 1;
+}
+
 service User {
   rpc Login(LoginReq) returns(LoginResp);
   rpc Register(RegisterReq) returns(RegisterResp);
@@ -86,4 +94,5 @@ service User {
   rpc generateToken(GenerateTokenReq) returns(GenerateTokenResp);
   rpc SearchUser(SearchUserReq) returns(SearchUserResp);
   rpc GetUserIds(GetUserIdsReq) returns(GetUserIdsResp);
+  rpc GetFans(GetFansReq) returns(GetFansResp);
 }

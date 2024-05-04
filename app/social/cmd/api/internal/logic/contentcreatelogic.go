@@ -6,6 +6,8 @@ import (
 	"github.com/pkg/errors"
 	"travel/app/data/cmd/rpc/data"
 	"travel/app/social/cmd/model"
+	"travel/app/social/cmd/rpc/social"
+	"travel/app/user/cmd/rpc/user"
 	"travel/common/ctxdata"
 	"travel/common/enum"
 	"travel/common/xerr"
@@ -58,6 +60,19 @@ func (l *ContentCreateLogic) ContentCreate(req *types.ContentCreateReq) error {
 		})
 
 		// todo：给关注该用户的人发送消息
+		var userIds []int64
+		fans, _ := l.svcCtx.UserRpc.GetFans(l.ctx, &user.GetFansReq{
+			UserId: loginUserId,
+		})
+		userIds = fans.UserIds
+		l.svcCtx.SocialRpc.MessageCreate(l.ctx, &social.MessageCreateReq{
+			UserIds:       userIds,
+			ItemType:      int32(enum.ARTICLE),
+			ItemId:        content.Id,
+			MessageType:   int32(0),
+			MessageUserId: loginUserId,
+			Content:       "发布新内容",
+		})
 		break
 	case enum.VIDEO:
 		content := &model.Content{
@@ -81,6 +96,19 @@ func (l *ContentCreateLogic) ContentCreate(req *types.ContentCreateReq) error {
 		})
 
 		// todo：给关注该用户的人发送消息
+		var userIds []int64
+		fans, _ := l.svcCtx.UserRpc.GetFans(l.ctx, &user.GetFansReq{
+			UserId: loginUserId,
+		})
+		userIds = fans.UserIds
+		l.svcCtx.SocialRpc.MessageCreate(l.ctx, &social.MessageCreateReq{
+			UserIds:       userIds,
+			ItemType:      int32(enum.VIDEO),
+			ItemId:        content.Id,
+			MessageType:   int32(0),
+			MessageUserId: loginUserId,
+			Content:       "发布新内容",
+		})
 		break
 	default:
 		return errors.Wrap(xerr.NewErrMsg("参数错误"), "参数错误")

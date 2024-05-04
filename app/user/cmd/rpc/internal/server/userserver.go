@@ -51,3 +51,8 @@ func (s *UserServer) GetUserIds(ctx context.Context, in *pb.GetUserIdsReq) (*pb.
 	l := logic.NewGetUserIdsLogic(ctx, s.svcCtx)
 	return l.GetUserIds(in)
 }
+
+func (s *UserServer) GetFans(ctx context.Context, in *pb.GetFansReq) (*pb.GetFansResp, error) {
+	l := logic.NewGetFansLogic(ctx, s.svcCtx)
+	return l.GetFans(in)
+}

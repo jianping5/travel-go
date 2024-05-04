@@ -15,6 +15,8 @@ import (
 type (
 	GenerateTokenReq  = pb.GenerateTokenReq
 	GenerateTokenResp = pb.GenerateTokenResp
+	GetFansReq        = pb.GetFansReq
+	GetFansResp       = pb.GetFansResp
 	GetUserIdsReq     = pb.GetUserIdsReq
 	GetUserIdsResp    = pb.GetUserIdsResp
 	LoginReq          = pb.LoginReq
@@ -34,6 +36,7 @@ type (
 		GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*GenerateTokenResp, error)
 		SearchUser(ctx context.Context, in *SearchUserReq, opts ...grpc.CallOption) (*SearchUserResp, error)
 		GetUserIds(ctx context.Context, in *GetUserIdsReq, opts ...grpc.CallOption) (*GetUserIdsResp, error)
+		GetFans(ctx context.Context, in *GetFansReq, opts ...grpc.CallOption) (*GetFansResp, error)
 	}
 
 	defaultUser struct {
@@ -75,4 +78,9 @@ func (m *defaultUser) SearchUser(ctx context.Context, in *SearchUserReq, opts ..
 func (m *defaultUser) GetUserIds(ctx context.Context, in *GetUserIdsReq, opts ...grpc.CallOption) (*GetUserIdsResp, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.GetUserIds(ctx, in, opts...)
+}
+
+func (m *defaultUser) GetFans(ctx context.Context, in *GetFansReq, opts ...grpc.CallOption) (*GetFansResp, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.GetFans(ctx, in, opts...)
 }

@@ -25,6 +25,7 @@ const (
 	User_GenerateToken_FullMethodName = "/pb.User/generateToken"
 	User_SearchUser_FullMethodName    = "/pb.User/SearchUser"
 	User_GetUserIds_FullMethodName    = "/pb.User/GetUserIds"
+	User_GetFans_FullMethodName       = "/pb.User/GetFans"
 )
 
 // UserClient is the client API for User service.
@@ -37,6 +38,7 @@ type UserClient interface {
 	GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*GenerateTokenResp, error)
 	SearchUser(ctx context.Context, in *SearchUserReq, opts ...grpc.CallOption) (*SearchUserResp, error)
 	GetUserIds(ctx context.Context, in *GetUserIdsReq, opts ...grpc.CallOption) (*GetUserIdsResp, error)
+	GetFans(ctx context.Context, in *GetFansReq, opts ...grpc.CallOption) (*GetFansResp, error)
 }
 
 type userClient struct {
@@ -101,6 +103,15 @@ func (c *userClient) GetUserIds(ctx context.Context, in *GetUserIdsReq, opts ...
 	return out, nil
 }
 
+func (c *userClient) GetFans(ctx context.Context, in *GetFansReq, opts ...grpc.CallOption) (*GetFansResp, error) {
+	out := new(GetFansResp)
+	err := c.cc.Invoke(ctx, User_GetFans_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -111,6 +122,7 @@ type UserServer interface {
 	GenerateToken(context.Context, *GenerateTokenReq) (*GenerateTokenResp, error)
 	SearchUser(context.Context, *SearchUserReq) (*SearchUserResp, error)
 	GetUserIds(context.Context, *GetUserIdsReq) (*GetUserIdsResp, error)
+	GetFans(context.Context, *GetFansReq) (*GetFansResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -135,6 +147,9 @@ func (UnimplementedUserServer) SearchUser(context.Context, *SearchUserReq) (*Sea
 }
 func (UnimplementedUserServer) GetUserIds(context.Context, *GetUserIdsReq) (*GetUserIdsResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserIds not implemented")
+}
+func (UnimplementedUserServer) GetFans(context.Context, *GetFansReq) (*GetFansResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFans not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -257,6 +272,24 @@ func _User_GetUserIds_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_GetFans_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFansReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetFans(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_GetFans_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetFans(ctx, req.(*GetFansReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -287,6 +320,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserIds",
 			Handler:    _User_GetUserIds_Handler,
+		},
+		{
+			MethodName: "GetFans",
+			Handler:    _User_GetFans_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
