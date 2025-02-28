@@ -10,7 +10,7 @@ DataRpcConf:
   NonBlock: true
 
 DB:
-  DataSource: root:011205@tcp(localhost:3306)/dravel_data?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  DataSource: xxx:xxx@tcp(localhost:3306)/dravel_data?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 
 #jwtAuth
 JwtAuth:
@@ -19,7 +19,7 @@ JwtAuth:
 
 #COS
 COS:
-  SecretID: 'AKIDmWEohOyNcgkeLxSnunW7VwETfs2BE9ta'
-  SecretKey: 'nkhWAmOwLcoskXDmN6iEYfj3HRVSElT3'
+  SecretID: 'xxx'
+  SecretKey: 'xxx'
   Region: 'ap-shanghai'
-  Bucket: 'travel-7-1310703557'
+  Bucket: 'xxx'
