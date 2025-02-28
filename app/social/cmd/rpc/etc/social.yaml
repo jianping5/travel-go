@@ -4,5 +4,5 @@ Mode: dev
 
 
 DB:
-  DataSource: root:011205@tcp(localhost:3306)/dravel_social?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  DataSource: xxx:xxx@tcp(localhost:3306)/dravel_social?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 
